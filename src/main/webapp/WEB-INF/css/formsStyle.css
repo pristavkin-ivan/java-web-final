@@ -1,0 +1,70 @@
+body {
+    background: url(https://images.ctfassets.net/uoaa2cfwzbej/7yr4lLqx1uCtbyJhHM5KqM/43313098d3224ff73ec1ee4e67aaae56/B2_Trump_Ally_Faces_Massive_Backlash.jpg) no-repeat center top;
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #5970de;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: #111111;
+}
+
+#form {
+    height: 10em;
+    position: relative;
+}
+
+#form div {
+    text-align: center;
+    margin: 100px 200px;
+    padding: 200px;
+    background-color: #e5e7e7;
+    opacity: 0.7;
+}
+
+#form div a {
+    color: blue;
+}
+
+#login, #password, #name, span {
+    width: 300px;
+    height: 30px;
+    border: 2px solid blue;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+span {
+    border:0;
+}
+
+button {
+    height: 30px;
+    font-size: large;
+    width: 150px;
+    border: 2px solid #5970de;
+    margin: 10px;
+    color: black;
+    background-color: #5970de;
+}
+
+#errorLabel {
+    color: red;
+}
+
