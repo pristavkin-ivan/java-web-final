@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface ClientService {
 
-    List<Client> getAllClients();
+    List<ClientDTO> getAllClients();
 
-    Optional<Client> getClientById(Integer id);
+    Optional<ClientDTO> getClientById(Integer id);
 
     Optional<ClientDTO> login(String login, String password);
 

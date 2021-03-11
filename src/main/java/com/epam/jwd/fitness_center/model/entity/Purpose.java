@@ -1,12 +1,12 @@
 package com.epam.jwd.fitness_center.model.entity;
 
-public final class Training implements Entity {
+public final class Purpose implements Entity {
 
     private final Integer id;
 
     private final String name;
 
-    public Training(Integer id, String name) {
+    public Purpose(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -25,4 +25,5 @@ public final class Training implements Entity {
     public Integer getId() {
         return null;
     }
+
 }

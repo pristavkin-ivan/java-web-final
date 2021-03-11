@@ -5,7 +5,7 @@ import com.epam.jwd.fitness_center.model.entity.Entity;
 import java.util.List;
 import java.util.Optional;
 
-public interface DAO <T extends Entity> {
+public interface UserDAO<T extends Entity> {
     List<T> findAll();
     Optional<T> findByString(String string);
     Optional<T> findEntityById(Integer id);

@@ -21,6 +21,8 @@ public enum SignupCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(SIGNUP_COMMAND.name());
 
+    private static final ClientService CLIENT_SERVICE = ClientServiceImpl.getInstance();
+
     private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
 
         private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME,
@@ -47,10 +49,9 @@ public enum SignupCommand implements Command {
         if (login.equals("null") || login.equals("") || password.equals("") || name.equals("")) {
             return RESPONSE_CONTEXT;
         }
-        final ClientService service = ClientServiceImpl.getInstance();
 
         try {
-            service.signup(login, name, password);
+            CLIENT_SERVICE.signup(login, name, password);
             requestContext.setSessionAttribute("login", login);
             return DefaultCommand.DEFAULT_COMMAND.execute(requestContext);
         } catch (SignupException e) {

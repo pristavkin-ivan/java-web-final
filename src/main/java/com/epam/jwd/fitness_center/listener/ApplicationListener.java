@@ -11,7 +11,7 @@ import javax.servlet.annotation.WebListener;
 import java.sql.SQLException;
 
 @WebListener
-public class ApplicationListener implements ServletContextListener {
+public final class ApplicationListener implements ServletContextListener {
 
     public final static String URL = "jdbc:mysql://localhost:3306/fitnessCenterDB?serverTimezone=Europe/Moscow";
 

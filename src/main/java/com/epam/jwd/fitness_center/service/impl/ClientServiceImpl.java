@@ -1,9 +1,10 @@
 package com.epam.jwd.fitness_center.service.impl;
 
-import com.epam.jwd.fitness_center.dao.api.DAO;
+import com.epam.jwd.fitness_center.dao.api.UserDAO;
 import com.epam.jwd.fitness_center.dao.impl.ClientDAO;
 import com.epam.jwd.fitness_center.exception.SignupException;
 import com.epam.jwd.fitness_center.model.dto.ClientDTO;
+import com.epam.jwd.fitness_center.model.dto.DTOManager;
 import com.epam.jwd.fitness_center.pool.ConnectionPool;
 import com.epam.jwd.fitness_center.model.entity.Client;
 import com.epam.jwd.fitness_center.exception.ConnectionPoolException;
@@ -16,6 +17,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public final class ClientServiceImpl implements ClientService {
 
@@ -29,25 +31,27 @@ public final class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Client> getAllClients() {
+    public List<ClientDTO> getAllClients() {
         List<Client> clients = null;
         //todo в фуннкциях сервиса будут реализованы транзакции
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            DAO<Client> dao = new ClientDAO(connection);
+            UserDAO<Client> dao = new ClientDAO(connection);
 
             clients = dao.findAll();
         } catch (SQLException | ConnectionPoolException exception) {
             LOGGER.error(exception.getMessage());
         }
-        return clients;
+
+        assert clients != null;
+        return clients.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Client> getClientById(Integer id) {
+    public Optional<ClientDTO> getClientById(Integer id) {
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            DAO<Client> dao = new ClientDAO(connection);
+            UserDAO<Client> dao = new ClientDAO(connection);
 
-            return dao.findEntityById(id);
+            return dao.findEntityById(id).map(this::convertToDto);
         } catch (SQLException | ConnectionPoolException exception) {
             LOGGER.error(exception.getMessage());
         }
@@ -57,7 +61,7 @@ public final class ClientServiceImpl implements ClientService {
     @Override
     public Optional<ClientDTO> login(String login, String password) {
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            final DAO<Client> dao = new ClientDAO(connection);
+            final UserDAO<Client> dao = new ClientDAO(connection);
             final Optional<Client> client = dao.findByString(login);
 
             if (client.isPresent()) {
@@ -77,7 +81,7 @@ public final class ClientServiceImpl implements ClientService {
     @Override
     public void signup(String login, String name, String password) throws SignupException {
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            DAO<Client> dao = new ClientDAO(connection);
+            UserDAO<Client> dao = new ClientDAO(connection);
 
             if (dao.findByString(login).isPresent()) {
                 throw new SignupException(SIGNUP_EXCEPTION_MESSAGE);
@@ -93,7 +97,7 @@ public final class ClientServiceImpl implements ClientService {
     }
 
     private ClientDTO convertToDto(Client client) {
-        return new ClientDTO(client.getLogin(), client.getName());
+        return DTOManager.DTO_MANAGER.createClientDTO(client.getLogin(), client.getName());
     }
 
 }

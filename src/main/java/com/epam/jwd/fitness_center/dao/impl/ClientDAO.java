@@ -1,7 +1,8 @@
 package com.epam.jwd.fitness_center.dao.impl;
 
-import com.epam.jwd.fitness_center.dao.api.DAO;
+import com.epam.jwd.fitness_center.dao.api.UserDAO;
 import com.epam.jwd.fitness_center.model.entity.Client;
+import com.epam.jwd.fitness_center.model.entity.EntityManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ClientDAO implements DAO<Client> {
+public class ClientDAO implements UserDAO<Client> {
 
     private final Connection connection;
 
@@ -43,8 +44,9 @@ public class ClientDAO implements DAO<Client> {
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(SELECT_ALL_CLIENTS)) {
             while (resultSet.next()) {
-                clients.add(new Client(resultSet.getInt(1), resultSet.getString(3),
-                        resultSet.getString(2), resultSet.getString(PASSWORD_LABEL)));
+                clients.add(EntityManager.ENTITY_MANAGER.createClient(resultSet.getInt(1)
+                        , resultSet.getString(3), resultSet.getString(2)
+                        , resultSet.getString(PASSWORD_LABEL)));
             }
         } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
@@ -59,7 +61,7 @@ public class ClientDAO implements DAO<Client> {
 
             try(ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return Optional.of(new Client(resultSet.getInt(ID_LABEL), resultSet.getString(LOGIN_LABEL)
+                    return Optional.of(EntityManager.ENTITY_MANAGER.createClient(resultSet.getInt(ID_LABEL), resultSet.getString(LOGIN_LABEL)
                             , resultSet.getString(NAME_LABEL), resultSet.getString(PASSWORD_LABEL)));
                 }
             }
@@ -77,7 +79,7 @@ public class ClientDAO implements DAO<Client> {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
 
                 if (resultSet.next()) {
-                    return Optional.of(new Client(resultSet.getInt(ID_LABEL), resultSet.getString(LOGIN_LABEL)
+                    return Optional.of(EntityManager.ENTITY_MANAGER.createClient(resultSet.getInt(ID_LABEL), resultSet.getString(LOGIN_LABEL)
                             , resultSet.getString(NAME_LABEL), resultSet.getString(PASSWORD_LABEL)));
                 }
             }

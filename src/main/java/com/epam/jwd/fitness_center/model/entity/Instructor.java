@@ -8,16 +8,18 @@ public class Instructor implements Entity {
 
     private final Integer id;
 
-    private String login, name, password;
+    private String login, name, password, imgUrl;
 
-    private List<Training> trainingList;
+    private List<Training> trainings;
 
-    public Instructor(Integer id, String login, String name, String password, List<Training> trainingList) {
+    Instructor(Integer id, String login, String name, String password, List<Training> trainingList
+            , String imgUrl) {
         this.id = id;
         this.name = name;
         this.login = login;
         this.password = password;
-        this.trainingList = trainingList;
+        this.trainings = trainingList;
+        this.imgUrl = imgUrl;
     }
 
     @Override
@@ -67,18 +69,28 @@ public class Instructor implements Entity {
         return password;
     }
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
     public void addTraining(Training training) {
-        if (trainingList == null) {
-            trainingList = new ArrayList<>();
+        if (trainings == null) {
+            trainings = new ArrayList<>();
         }
-        trainingList.add(training);
+        trainings.add(training);
     }
 
-    public List<Training> getTrainingList() {
-        return trainingList;
+    public List<Training> getTrainings() {
+        return trainings;
     }
+
+
 }

@@ -1,3 +1,9 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+<fmt:setLocale value="en_us" scope="session"/>
+
+
+
 <style>
     footer {
         position: fixed;
@@ -11,6 +17,8 @@
     }
 </style>
 
-<footer>
-    <p>Created by Ivan Pristavkin. +375 (29) 382-22-19 Belarus, Minsk.</p>
-</footer>
+<fmt:bundle basename="pagecontent_en_us" prefix="footer.">
+    <footer>
+        <p><fmt:message key="info"/></p>
+    </footer>
+</fmt:bundle>

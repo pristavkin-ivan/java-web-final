@@ -1,5 +1,6 @@
 package com.epam.jwd.fitness_center.model.entity;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Client implements Entity {
@@ -8,7 +9,9 @@ public class Client implements Entity {
 
     private String login, name, password;
 
-    public Client(Integer id, String login, String name, String password) {
+    private List<Training> trainings;
+
+    Client(Integer id, String login, String name, String password) {
         this.id = id;
         this.name = name;
         this.login = login;

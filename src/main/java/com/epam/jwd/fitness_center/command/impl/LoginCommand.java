@@ -4,7 +4,9 @@ import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
 import com.epam.jwd.fitness_center.service.api.ClientService;
+import com.epam.jwd.fitness_center.service.api.InstructorService;
 import com.epam.jwd.fitness_center.service.impl.ClientServiceImpl;
+import com.epam.jwd.fitness_center.service.impl.InstructorServiceImpl;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -15,6 +17,10 @@ public enum LoginCommand implements Command {
     private static final String PAGE_KEY = "loginPage";
 
     private static final String BUNDLE_NAME = "pages";
+
+    private static final ClientService CLIENT_SERVICE = ClientServiceImpl.getInstance();
+
+    private static final InstructorService INSTRUCTOR_SERVICE = InstructorServiceImpl.getInstance();
 
     private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
 
@@ -41,13 +47,28 @@ public enum LoginCommand implements Command {
         if (login.equals("null") || login.equals("") || password.equals("")) {
             return RESPONSE_CONTEXT;
         }
-        final ClientService service = ClientServiceImpl.getInstance();
 
-        if (service.login(login, password).isPresent()) {
-            requestContext.setSessionAttribute("login", login);
-            return DefaultCommand.DEFAULT_COMMAND.execute(requestContext);
+        return login(requestContext, login, password);
+    }
+
+    private ResponseContext login(RequestContext requestContext, String login, String password) {
+        if (!Boolean.parseBoolean(requestContext.getParameter("isInstructor"))) {
+
+            if (CLIENT_SERVICE.login(login, password).isPresent()) {
+                requestContext.setSessionAttribute("login", login);
+                return DefaultCommand.DEFAULT_COMMAND.execute(requestContext);
+            }
+        } else {
+
+            if (INSTRUCTOR_SERVICE.login(login, password).isPresent()) {
+                requestContext.setSessionAttribute("isInstructor", true);
+                requestContext.setSessionAttribute("login", login);
+                return DefaultCommand.DEFAULT_COMMAND.execute(requestContext);
+            }
         }
+
         requestContext.setAttribute("error", "Incorrect login or password, try again!");
         return RESPONSE_CONTEXT;
     }
+
 }

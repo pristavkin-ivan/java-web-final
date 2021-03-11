@@ -1,12 +1,13 @@
 package com.epam.jwd.fitness_center.model.dto;
 
-public class ClientDTO implements DTO {
+public class InstructorDTO implements DTO {
 
-    private final String login, name;
+    private final String login, name, url;
 
-    ClientDTO(String login, String name) {
+    InstructorDTO(String login, String name, String url) {
         this.login = login;
         this.name = name;
+        this.url = url;
     }
 
     public String getLogin() {
@@ -15,5 +16,9 @@ public class ClientDTO implements DTO {
 
     public String getName() {
         return name;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }
