@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Ivan
-  Date: 09.03.2021
-  Time: 19:28
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -39,6 +32,7 @@
             <li>
                 <span ><b>${instructor.name}</b></span><br><br>
                     <img style="text-align: center" src="${instructor.url}"/>
+                <span>${instructor.info}</span>
                     <br>
             </li>
                 <br>

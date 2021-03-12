@@ -28,7 +28,8 @@ public class InstructorDaoTest {
     static Connection connection;
 
     InstructorDaoTest() {
-        instructor = EntityManager.ENTITY_MANAGER.createInstructor(0, "admin", "admin", "admin", null, null);
+        instructor = EntityManager.ENTITY_MANAGER.createInstructor(0, "admin", "admin", "admin"
+                , null, null, null);
         try {
             connection = DriverManager.getConnection(ApplicationListener.URL, ApplicationListener.USER
                     , ApplicationListener.PASSWORD);

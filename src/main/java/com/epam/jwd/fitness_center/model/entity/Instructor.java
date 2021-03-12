@@ -8,18 +8,19 @@ public class Instructor implements Entity {
 
     private final Integer id;
 
-    private String login, name, password, imgUrl;
+    private String login, name, password, imgUrl, info;
 
     private List<Training> trainings;
 
     Instructor(Integer id, String login, String name, String password, List<Training> trainingList
-            , String imgUrl) {
+            , String imgUrl, String info) {
         this.id = id;
         this.name = name;
         this.login = login;
         this.password = password;
         this.trainings = trainingList;
         this.imgUrl = imgUrl;
+        this.info = info;
     }
 
     @Override
@@ -92,5 +93,7 @@ public class Instructor implements Entity {
         return trainings;
     }
 
-
+    public String getInfo() {
+        return info;
+    }
 }

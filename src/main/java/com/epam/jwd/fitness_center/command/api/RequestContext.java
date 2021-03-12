@@ -8,6 +8,8 @@ public interface RequestContext {
 
     void setSessionAttribute(String attribute, Object value);
 
+    Object getSessionAttribute(String name);
+
     Object getAttribute(String name);
 
     String getParameter(String name);

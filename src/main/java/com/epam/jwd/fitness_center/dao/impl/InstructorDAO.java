@@ -33,6 +33,7 @@ public class InstructorDAO implements UserDAO<Instructor> {
     private static final String NAME_LABEL = "i_name";
     private static final String PASSWORD_LABEL = "i_password";
     private static final String URL_LABEL = "i_url";
+    private static final String INFO_LABEL = "i_info";
 
     public InstructorDAO(Connection connection) {
         this.connection = connection;
@@ -48,7 +49,8 @@ public class InstructorDAO implements UserDAO<Instructor> {
             while (resultSet.next()) {
                 instructors.add(EntityManager.ENTITY_MANAGER.createInstructor(resultSet.getInt(ID_LABEL)
                         , resultSet.getString(LOGIN_LABEL), resultSet.getString(NAME_LABEL)
-                        , resultSet.getString(PASSWORD_LABEL), null, resultSet.getString(URL_LABEL)));
+                        , resultSet.getString(PASSWORD_LABEL), null, resultSet.getString(URL_LABEL)
+                        , resultSet.getString(INFO_LABEL)));
             }
         } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
@@ -66,7 +68,8 @@ public class InstructorDAO implements UserDAO<Instructor> {
                 if (resultSet.next()) {
                     return Optional.of(EntityManager.ENTITY_MANAGER.createInstructor(resultSet.getInt(ID_LABEL)
                             , resultSet.getString(LOGIN_LABEL), resultSet.getString(NAME_LABEL)
-                            , resultSet.getString(PASSWORD_LABEL), null, resultSet.getString(URL_LABEL)));
+                            , resultSet.getString(PASSWORD_LABEL), null, resultSet.getString(URL_LABEL)
+                            , resultSet.getString(INFO_LABEL)));
                 }
             }
         } catch (SQLException exception) {
@@ -85,7 +88,8 @@ public class InstructorDAO implements UserDAO<Instructor> {
                 if (resultSet.next()) {
                     return Optional.of(EntityManager.ENTITY_MANAGER.createInstructor(resultSet.getInt(ID_LABEL)
                             , resultSet.getString(LOGIN_LABEL), resultSet.getString(NAME_LABEL)
-                            , resultSet.getString(PASSWORD_LABEL), null, resultSet.getString(URL_LABEL)));
+                            , resultSet.getString(PASSWORD_LABEL), null, resultSet.getString(URL_LABEL)
+                            , resultSet.getString(INFO_LABEL)));
                 }
             }
         } catch (SQLException exception) {

@@ -7,12 +7,12 @@ import com.epam.jwd.fitness_center.command.api.ResponseContext;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public enum DefaultCommand implements Command {
-    DEFAULT_COMMAND;
+public enum ShowTrainingsCommand implements Command {
+    INSTANCE;
 
     private final static String BUNDLE_NAME = "pages";
 
-    private final static String PAGE_KEY = "mainPage";
+    private final static String PAGE_KEY = "trainingsPage";
 
     private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
 
@@ -33,11 +33,8 @@ public enum DefaultCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        if(requestContext.getSessionAttribute("login") == null) {
-            return LoginCommand.LOGIN_COMMAND.execute(requestContext);
-        }
-
         return RESPONSE_CONTEXT;
     }
+
 
 }

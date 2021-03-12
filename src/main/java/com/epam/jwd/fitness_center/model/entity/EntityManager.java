@@ -13,8 +13,8 @@ public enum EntityManager {
     }
 
     public Instructor createInstructor(Integer id, String login, String name, String password, List<Training> trainings
-            , String url) {
-        return new Instructor(id, login, name, password, trainings, url);
+            , String url, String info) {
+        return new Instructor(id, login, name, password, trainings, url, info);
     }
 
 }

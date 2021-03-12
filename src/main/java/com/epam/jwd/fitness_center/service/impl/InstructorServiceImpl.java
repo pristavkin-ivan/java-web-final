@@ -82,7 +82,7 @@ public final class InstructorServiceImpl implements InstructorService {
             }
 
             dao.create(EntityManager.ENTITY_MANAGER.createInstructor(0, login, name, BCrypt.hashpw(password, BCrypt.gensalt()), null
-                    , null));
+                    , null, null));
         } catch (SQLException | ConnectionPoolException exception) {
             LOGGER.error(exception.getMessage());
         }
@@ -93,7 +93,8 @@ public final class InstructorServiceImpl implements InstructorService {
     }
 
     private InstructorDTO convertToDto(Instructor instructor) {
-        return DTOManager.DTO_MANAGER.createInstructorDTO(instructor.getLogin(), instructor.getName(), instructor.getImgUrl());
+        return DTOManager.DTO_MANAGER.createInstructorDTO(instructor.getLogin(), instructor.getName()
+                , instructor.getImgUrl(), instructor.getInfo());
     }
 
 }

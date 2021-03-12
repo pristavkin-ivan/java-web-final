@@ -5,6 +5,6 @@
     <title>index</title>
 </head>
 <body>
-<jsp:forward page="/go?command=login"/>
+<jsp:forward page="/go?command=default"/>
 </body>
 </html>

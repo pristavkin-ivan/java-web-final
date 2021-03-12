@@ -32,6 +32,11 @@ public class RequestContextImpl implements RequestContext {
     }
 
     @Override
+    public Object getSessionAttribute(String name) {
+        return request.getSession().getAttribute(name);
+    }
+
+    @Override
     public Object getAttribute(String name) {
         return request.getAttribute(name);
     }

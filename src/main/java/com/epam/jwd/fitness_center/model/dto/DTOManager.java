@@ -7,8 +7,8 @@ public enum DTOManager {
         return new ClientDTO(login, name);
     }
 
-    public InstructorDTO createInstructorDTO(String login, String name, String url) {
-        return new InstructorDTO(login, name, url);
+    public InstructorDTO createInstructorDTO(String login, String name, String url, String info) {
+        return new InstructorDTO(login, name, url, info);
     }
 
 }
