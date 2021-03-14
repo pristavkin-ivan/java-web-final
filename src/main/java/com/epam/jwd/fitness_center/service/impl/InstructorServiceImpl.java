@@ -1,11 +1,13 @@
 package com.epam.jwd.fitness_center.service.impl;
 
 import com.epam.jwd.fitness_center.dao.api.UserDAO;
+import com.epam.jwd.fitness_center.dao.impl.ClientDAO;
 import com.epam.jwd.fitness_center.dao.impl.InstructorDAO;
 import com.epam.jwd.fitness_center.exception.ConnectionPoolException;
 import com.epam.jwd.fitness_center.exception.SignupException;
 import com.epam.jwd.fitness_center.model.dto.DTOManager;
 import com.epam.jwd.fitness_center.model.dto.InstructorDTO;
+import com.epam.jwd.fitness_center.model.entity.Client;
 import com.epam.jwd.fitness_center.model.entity.EntityManager;
 import com.epam.jwd.fitness_center.model.entity.Instructor;
 import com.epam.jwd.fitness_center.pool.ConnectionPool;
@@ -49,6 +51,13 @@ public final class InstructorServiceImpl implements InstructorService {
 
     @Override
     public Optional<InstructorDTO> getInstructorById(Integer id) {
+        try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
+            UserDAO<Instructor> dao = new InstructorDAO(connection);
+
+            return dao.findEntityById(id).map(this::convertToDto);
+        } catch (SQLException | ConnectionPoolException exception) {
+            LOGGER.error(exception.getMessage());
+        }
         return Optional.empty();
     }
 
@@ -81,8 +90,19 @@ public final class InstructorServiceImpl implements InstructorService {
                 throw new SignupException(SIGNUP_EXCEPTION_MESSAGE);
             }
 
-            dao.create(EntityManager.ENTITY_MANAGER.createInstructor(0, login, name, BCrypt.hashpw(password, BCrypt.gensalt()), null
-                    , null, null));
+            dao.create(EntityManager.ENTITY_MANAGER.createInstructor(0, login, name
+                    , BCrypt.hashpw(password, BCrypt.gensalt()), null, null, null));
+        } catch (SQLException | ConnectionPoolException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+    }
+
+    @Override
+    public void updateProfile(Instructor instructor) {
+        try(final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
+            UserDAO<Instructor> dao = new InstructorDAO(connection);
+
+            dao.update(instructor);
         } catch (SQLException | ConnectionPoolException exception) {
             LOGGER.error(exception.getMessage());
         }
@@ -93,8 +113,8 @@ public final class InstructorServiceImpl implements InstructorService {
     }
 
     private InstructorDTO convertToDto(Instructor instructor) {
-        return DTOManager.DTO_MANAGER.createInstructorDTO(instructor.getLogin(), instructor.getName()
-                , instructor.getImgUrl(), instructor.getInfo());
+        return DTOManager.DTO_MANAGER.createInstructorDTO(instructor.getId(), instructor.getLogin()
+                , instructor.getName(), instructor.getImgUrl(), instructor.getInfo());
     }
 
 }

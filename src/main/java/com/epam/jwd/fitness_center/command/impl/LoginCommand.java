@@ -3,12 +3,15 @@ package com.epam.jwd.fitness_center.command.impl;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
+import com.epam.jwd.fitness_center.model.dto.ClientDTO;
+import com.epam.jwd.fitness_center.model.dto.InstructorDTO;
 import com.epam.jwd.fitness_center.service.api.ClientService;
 import com.epam.jwd.fitness_center.service.api.InstructorService;
 import com.epam.jwd.fitness_center.service.impl.ClientServiceImpl;
 import com.epam.jwd.fitness_center.service.impl.InstructorServiceImpl;
 
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public enum LoginCommand implements Command {
@@ -54,21 +57,41 @@ public enum LoginCommand implements Command {
     private ResponseContext login(RequestContext requestContext, String login, String password) {
         if (!Boolean.parseBoolean(requestContext.getParameter("isInstructor"))) {
 
-            if (CLIENT_SERVICE.login(login, password).isPresent()) {
-                requestContext.setSessionAttribute("login", login);
+            if (loginClient(requestContext, login, password)) {
                 return DefaultCommand.DEFAULT_COMMAND.execute(requestContext);
             }
         } else {
 
-            if (INSTRUCTOR_SERVICE.login(login, password).isPresent()) {
-                requestContext.setSessionAttribute("isInstructor", true);
-                requestContext.setSessionAttribute("login", login);
+            if (loginInstructor(requestContext, login, password)) {
                 return DefaultCommand.DEFAULT_COMMAND.execute(requestContext);
             }
         }
 
         requestContext.setAttribute("error", "Incorrect login or password, try again!");
         return RESPONSE_CONTEXT;
+    }
+
+    private boolean loginClient(RequestContext requestContext, String login, String password) {
+        final Optional<ClientDTO> client = CLIENT_SERVICE.login(login, password);
+
+        if (client.isPresent()) {
+            requestContext.setSessionAttribute("login", login);
+            requestContext.setSessionAttribute("id", client.get().getId());
+            return true;
+        }
+        return false;
+    }
+
+    private boolean loginInstructor(RequestContext requestContext, String login, String password) {
+        final Optional<InstructorDTO> instructor = INSTRUCTOR_SERVICE.login(login, password);
+
+        if (instructor.isPresent()) {
+            requestContext.setSessionAttribute("isInstructor", true);
+            requestContext.setSessionAttribute("login", login);
+            requestContext.setSessionAttribute("id", instructor.get().getId());
+            return true;
+        }
+        return false;
     }
 
 }

@@ -8,8 +8,8 @@ import java.util.List;
 public enum EntityManager {
     ENTITY_MANAGER;
 
-    public Client createClient(Integer id, String login, String name, String password) {
-        return new Client(id, login, name, password);
+    public Client createClient(Integer id, String login, String name, String password, Double height, Double weight) {
+        return new Client(id, login, name, password, height, weight, null);
     }
 
     public Instructor createInstructor(Integer id, String login, String name, String password, List<Training> trainings

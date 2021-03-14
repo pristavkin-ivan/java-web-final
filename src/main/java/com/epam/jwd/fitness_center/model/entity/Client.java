@@ -9,35 +9,38 @@ public class Client implements Entity {
 
     private String login, name, password;
 
+    private Double height, weight;
+
     private List<Training> trainings;
 
-    Client(Integer id, String login, String name, String password) {
+    Client(Integer id, String login, String name, String password, Double height, Double weight, List<Training> trainings) {
         this.id = id;
-        this.name = name;
         this.login = login;
+        this.name = name;
         this.password = password;
+        this.height = height;
+        this.weight = weight;
+        this.trainings = trainings;
     }
 
-    public Client(String login, String name, String password) {
-        this.id = null;
-        this.name = name;
-        this.login = login;
-        this.password = password;
+    public Double getHeight() {
+        return height;
     }
 
-    @Override
+    public Double getWeight() {
+        return weight;
+    }
+
+    public List<Training> getTrainings() {
+        return trainings;
+    }
+
     public Integer getId() {
         return id;
     }
 
-    @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override
@@ -73,6 +76,60 @@ public class Client implements Entity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public static Builder getBuilder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Integer id;
+        private String login, name, password;
+        private Double height, weight;
+        private List<Training> trainings;
+
+        public Builder() {
+        }
+
+        public Builder id(Integer id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder login(String login) {
+            this.login = login;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder height(Double height) {
+            this.height = height;
+            return this;
+        }
+
+        public Builder weight(Double weight) {
+            this.weight = weight;
+            return this;
+        }
+
+        public Builder trainings(List<Training> trainings) {
+            this.trainings = trainings;
+            return this;
+        }
+
+        public Client build() {
+            return new Client(this.id, this.login, this.name, this.password, this.height, this.weight, this.trainings);
+        }
+
     }
 
 }

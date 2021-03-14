@@ -1,6 +1,7 @@
 package com.epam.jwd.fitness_center.dao.impl;
 
 import com.epam.jwd.fitness_center.listener.ApplicationListener;
+import com.epam.jwd.fitness_center.model.entity.Client;
 import com.epam.jwd.fitness_center.model.entity.EntityManager;
 import com.epam.jwd.fitness_center.model.entity.Instructor;
 import org.junit.jupiter.api.AfterAll;
@@ -10,6 +11,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -28,8 +30,8 @@ public class InstructorDaoTest {
     static Connection connection;
 
     InstructorDaoTest() {
-        instructor = EntityManager.ENTITY_MANAGER.createInstructor(0, "admin", "admin", "admin"
-                , null, null, null);
+        instructor = EntityManager.ENTITY_MANAGER.createInstructor(0, "login", "name", "pass"
+                , null, "dsafa", "asfdasd");
         try {
             connection = DriverManager.getConnection(ApplicationListener.URL, ApplicationListener.USER
                     , ApplicationListener.PASSWORD);
@@ -37,6 +39,18 @@ public class InstructorDaoTest {
             exception.printStackTrace();
         }
         instructorDAO = new InstructorDAO(connection);
+    }
+
+    @Test
+    public void UpdateClientTest_MustUpdateClientInDataBase_NotThrowSqlException() {
+        final Instructor instructor = Instructor.getBuilder().id(0)
+                .login("sdfsdf")
+                .name("trytr4y")
+                .url("reter")
+                .info("asdfa")
+                .build();
+
+        assertDoesNotThrow( () -> instructorDAO.update(instructor));
     }
 
     @Test

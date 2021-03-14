@@ -3,60 +3,56 @@ package com.epam.jwd.fitness_center.command.impl;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
+import com.epam.jwd.fitness_center.model.entity.Client;
+import com.epam.jwd.fitness_center.model.entity.Instructor;
+import com.epam.jwd.fitness_center.service.api.ClientService;
+import com.epam.jwd.fitness_center.service.api.InstructorService;
+import com.epam.jwd.fitness_center.service.impl.ClientServiceImpl;
+import com.epam.jwd.fitness_center.service.impl.InstructorServiceImpl;
 
-import java.util.Locale;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 public enum UpdateProfileCommand implements Command {
     INSTANCE;
 
-    private final static String BUNDLE_NAME = "pages";
+    private final static InstructorService INSTRUCTOR_SERVICE = InstructorServiceImpl.getInstance();
 
-    private final static String CLIENT_PAGE_KEY = "clientProfilePage";
-
-    private final static String INSTRUCTOR_PAGE_KEY = "instructorProfilePage";
-
-    private static final ResponseContext CLIENT_RESPONSE_CONTEXT = new ResponseContext() {
-
-        private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME,
-                new Locale("be", "By"));
-
-        @Override
-        public String getPage() {
-            return resourceBundle.getString(CLIENT_PAGE_KEY);
-        }
-
-        @Override
-        public boolean isRedirect() {
-            return false;
-        }
-
-    };
-
-    private static final ResponseContext INSTRUCTOR_RESPONSE_CONTEXT = new ResponseContext() {
-
-        private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME,
-                new Locale("be", "By"));
-
-        @Override
-        public String getPage() {
-            return resourceBundle.getString(INSTRUCTOR_PAGE_KEY);
-        }
-
-        @Override
-        public boolean isRedirect() {
-            return false;
-        }
-
-    };
+    private final static ClientService CLIENT_SERVICE = ClientServiceImpl.getInstance();
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         if (Objects.equals(requestContext.getSessionAttribute("isInstructor"), true)) {
-            return INSTRUCTOR_RESPONSE_CONTEXT;
+            updateInstructor(requestContext);
+        } else {
+            updateClient(requestContext);
         }
-
-        return CLIENT_RESPONSE_CONTEXT;
+        return ShowProfileCommand.INSTANCE.execute(requestContext);
     }
+
+    private void updateClient(RequestContext requestContext) {
+        final Client.Builder builder = Client.getBuilder();
+
+        final Client client = builder.id((Integer) requestContext.getSessionAttribute("id"))
+                .login(requestContext.getParameter("login"))
+                .name(requestContext.getParameter("name"))
+                .height(Double.valueOf(requestContext.getParameter("height")))
+                .weight(Double.valueOf(requestContext.getParameter("weight")))
+                .build();
+
+        CLIENT_SERVICE.updateProfile(client);
+    }
+
+    private void updateInstructor(RequestContext requestContext) {
+        final Instructor.Builder builder = Instructor.getBuilder();
+
+        final Instructor instructor = builder.id((Integer) requestContext.getSessionAttribute("id"))
+                .login(requestContext.getParameter("login"))
+                .name(requestContext.getParameter("name"))
+                .url(requestContext.getParameter("photoUrl"))
+                .info(requestContext.getParameter("info"))
+                .build();
+
+        INSTRUCTOR_SERVICE.updateProfile(instructor);
+    }
+
 }

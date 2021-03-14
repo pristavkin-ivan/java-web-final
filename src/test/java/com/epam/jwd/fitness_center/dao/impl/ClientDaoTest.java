@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -29,7 +30,8 @@ public class ClientDaoTest {
     static Connection connection;
 
     ClientDaoTest() {
-        client = EntityManager.ENTITY_MANAGER.createClient(0, TEST_LOGIN, TEST_NAME, TEST_PASS);
+        client = EntityManager.ENTITY_MANAGER.createClient(0, TEST_LOGIN, TEST_NAME, TEST_PASS, 100.0
+                , 100.0);
         try {
             connection = DriverManager.getConnection(ApplicationListener.URL, ApplicationListener.USER
                     , ApplicationListener.PASSWORD);
@@ -37,6 +39,16 @@ public class ClientDaoTest {
             exception.printStackTrace();
         }
         clientDAO = new ClientDAO(connection);
+    }
+
+    @Test
+    public void UpdateClientTest_MustUpdateClientInDataBase_NotThrowSqlException() {
+        assertDoesNotThrow( () -> clientDAO.update(Client.getBuilder().id(0)
+                .login("asdasd")
+                .name("asd")
+                .height(150.0)
+                .weight(150.0)
+                .build()));
     }
 
     @Test

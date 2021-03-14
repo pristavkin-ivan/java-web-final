@@ -23,17 +23,14 @@ public class Instructor implements Entity {
         this.info = info;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
 
-    @Override
     public Integer getId() {
         return id;
     }
@@ -62,6 +59,59 @@ public class Instructor implements Entity {
         return Objects.hash(id, login, name, password);
     }
 
+    public static Builder getBuilder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Integer id;
+        private String login, name, password, url, info;
+        private List<Training> trainings;
+
+        public Builder() {
+        }
+
+        public Builder id(Integer id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder login(String login) {
+            this.login = login;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder url(String url) {
+            this.url = url;
+            return this;
+        }
+
+        public Builder info(String info) {
+            this.info = info;
+            return this;
+        }
+
+        public Builder trainings(List<Training> trainings) {
+            this.trainings = trainings;
+            return this;
+        }
+
+        public Instructor build() {
+            return new Instructor(this.id, this.login, this.name, this.password, this.trainings, this.url, this.info);
+        }
+
+    }
+
     public String getLogin() {
         return login;
     }
@@ -82,18 +132,18 @@ public class Instructor implements Entity {
         this.password = password;
     }
 
-    public void addTraining(Training training) {
-        if (trainings == null) {
-            trainings = new ArrayList<>();
-        }
-        trainings.add(training);
-    }
-
     public List<Training> getTrainings() {
         return trainings;
     }
 
     public String getInfo() {
         return info;
+    }
+
+    public void addTraining(Training training) {
+        if (trainings == null) {
+            trainings = new ArrayList<>();
+        }
+        trainings.add(training);
     }
 }

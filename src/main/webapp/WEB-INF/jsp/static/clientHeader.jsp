@@ -34,7 +34,7 @@
 <ul>
     <li><a href="${pageContext.request.contextPath}/go?command=default"><fmt:message key="title.home" bundle="${rb}"/></a></li>
     <li>
-        <a href="${pageContext.request.contextPath}/go?command=update_profile">
+        <a href="${pageContext.request.contextPath}/go?command=show_profile">
             <fmt:message key="title.profile" bundle="${rb}"/>
         </a>
     </li>

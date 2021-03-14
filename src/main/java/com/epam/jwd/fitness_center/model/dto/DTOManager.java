@@ -3,12 +3,12 @@ package com.epam.jwd.fitness_center.model.dto;
 public enum DTOManager {
     DTO_MANAGER;
 
-    public ClientDTO createClientDTO(String login, String name) {
-        return new ClientDTO(login, name);
+    public ClientDTO createClientDTO(Integer id, String login, String name, Double height, Double weight) {
+        return new ClientDTO(id, login, name, height, weight);
     }
 
-    public InstructorDTO createInstructorDTO(String login, String name, String url, String info) {
-        return new InstructorDTO(login, name, url, info);
+    public InstructorDTO createInstructorDTO(Integer id, String login, String name, String url, String info) {
+        return new InstructorDTO(id, login, name, url, info);
     }
 
 }

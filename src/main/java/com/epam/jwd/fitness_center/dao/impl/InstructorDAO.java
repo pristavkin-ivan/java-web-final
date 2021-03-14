@@ -1,6 +1,7 @@
 package com.epam.jwd.fitness_center.dao.impl;
 
 import com.epam.jwd.fitness_center.dao.api.UserDAO;
+import com.epam.jwd.fitness_center.model.entity.Client;
 import com.epam.jwd.fitness_center.model.entity.EntityManager;
 import com.epam.jwd.fitness_center.model.entity.Instructor;
 import org.apache.logging.log4j.LogManager;
@@ -25,6 +26,8 @@ public class InstructorDAO implements UserDAO<Instructor> {
     private static final String INSERT_INSTRUCTOR = "insert into instructor(i_login, i_name, i_password) values(?,?,?)";
     private static final String DELETE_INSTRUCTOR = "delete from instructor where c_login =?";
     private static final String DELETE_INSTRUCTOR_BY_ID = "delete from instructor where c_id =?";
+    private static final String UPDATE_INSTRUCTOR = "update Instructor set i_login = ?,i_name = ?, i_url = ?" +
+            ", i_info = ? where i_id = ?";
 
     private final static Logger LOGGER = LogManager.getLogger(ClientDAO.class);
 
@@ -61,10 +64,10 @@ public class InstructorDAO implements UserDAO<Instructor> {
     @Override
     public Optional<Instructor> findByString(String string) {
 
-        try(PreparedStatement statement = connection.prepareStatement(SELECT_INSTRUCTOR_BY_LOGIN)) {
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_INSTRUCTOR_BY_LOGIN)) {
             statement.setString(1, string);
 
-            try(ResultSet resultSet = statement.executeQuery()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return Optional.of(EntityManager.ENTITY_MANAGER.createInstructor(resultSet.getInt(ID_LABEL)
                             , resultSet.getString(LOGIN_LABEL), resultSet.getString(NAME_LABEL)
@@ -138,14 +141,26 @@ public class InstructorDAO implements UserDAO<Instructor> {
     }
 
     @Override
-    public Instructor update(Instructor entity) {
-        //todo after builder
-        return null;
+    public void update(Instructor entity) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_INSTRUCTOR)) {
+            configureUpdateStatement(entity, preparedStatement);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LOGGER.error(exception.getMessage());
+        }
     }
 
     private void configureStatement(Instructor entity, PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setString(1, entity.getLogin());
         preparedStatement.setString(2, entity.getName());
         preparedStatement.setString(3, entity.getPassword());
+    }
+
+    private void configureUpdateStatement(Instructor entity, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, entity.getLogin());
+        preparedStatement.setString(2, entity.getName());
+        preparedStatement.setString(3, entity.getImgUrl());
+        preparedStatement.setString(4, entity.getInfo());
+        preparedStatement.setInt(5, entity.getId());
     }
 }

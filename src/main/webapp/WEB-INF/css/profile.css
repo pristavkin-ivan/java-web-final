@@ -1,0 +1,51 @@
+
+main div {
+    text-align: center;
+    margin: 5px 200px;
+    padding: 200px;
+    background-color: #e5e7e7;
+    opacity: 0.7;
+}
+
+input, span {
+    width: 300px;
+    height: 30px;
+    border: 2px solid blue;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+
+textarea {
+    width: 300px;
+    height: 200px;
+    border: 2px solid blue;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+span {
+    border:0;
+}
+
+h1 {
+    color: blue;
+    text-align: center;
+    vertical-align: top;
+    padding-top: 20px;
+
+}
+
+button {
+    height: 30px;
+    font-size: large;
+    width: 150px;
+    border: 2px solid #5970de;
+    margin: 10px;
+    color: black;
+    background-color: #5970de;
+}
+
+#errorLabel {
+    color: red;
+}

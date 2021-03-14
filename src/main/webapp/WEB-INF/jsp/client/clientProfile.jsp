@@ -9,6 +9,9 @@
 <html>
 <head>
     <title><fmt:message key="title.profile" bundle="${pageContent}"/></title>
+    <style>
+    <c:import url="${pageContext.request.contextPath}/WEB-INF/css/profile.css"/>
+    </style>
 </head>
 
 <body>
@@ -16,6 +19,8 @@
 <c:import url="../static/clientHeader.jsp"/>
 
 <main>
+
+    <h1><fmt:message key="title.profile" bundle="${pageContent}"/></h1>
 
     <form method="post" action="${pageContext.request.contextPath}/go">
 
@@ -25,22 +30,22 @@
             <br>
             <span><b><fmt:message key="label.name" bundle="${pageContent}"/></b> </span>
             <br>
-            <input type="text" name="name" id="name"/>
+            <input type="text" name="name" id="name" value="${name}"/>
 
             <br>
             <span><b><fmt:message key="label.login" bundle="${pageContent}"/></b> </span>
             <br>
-            <input type="text" name="login" id="login"/>
+            <input type="text" name="login" id="login" value="${login}"/>
 
             <br>
             <span><b><fmt:message key="label.height" bundle="${pageContent}"/></b> </span>
             <br>
-            <input type="number" name="height" id = "height"/>
+            <input type="number" name="height" id = "height" required="" min="0.0" step="0.1" value="${height}"/>
 
             <br>
             <span><b><fmt:message key="label.weight" bundle="${pageContent}"/></b> </span>
             <br>
-            <input type="number" name="weight" id = "weight"/>
+            <input type="number" name="weight" id = "weight" required="" min="0.0" step="0.1" value="${weight}"/>
 
             <br>
             <button type="submit"><fmt:message key="label.change" bundle="${pageContent}"/></button>

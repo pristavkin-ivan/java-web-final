@@ -11,17 +11,14 @@ public final class Training implements Entity {
         this.name = name;
     }
 
-    @Override
     public String getName() {
         return null;
     }
 
-    @Override
     public void setName(String name) {
 
     }
 
-    @Override
     public Integer getId() {
         return null;
     }

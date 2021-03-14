@@ -86,7 +86,23 @@ public final class ClientServiceImpl implements ClientService {
             if (dao.findByString(login).isPresent()) {
                 throw new SignupException(SIGNUP_EXCEPTION_MESSAGE);
             }
-            dao.create(new Client(login, name, BCrypt.hashpw(password, BCrypt.gensalt())));
+            dao.create(Client.getBuilder()
+                    .login(login)
+                    .name(name)
+                    .password(BCrypt.hashpw(password, BCrypt.gensalt()))
+                    .build());
+
+        } catch (SQLException | ConnectionPoolException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+    }
+
+    @Override
+    public void updateProfile(Client client) {
+        try(final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
+            UserDAO<Client> dao = new ClientDAO(connection);
+
+            dao.update(client);
         } catch (SQLException | ConnectionPoolException exception) {
             LOGGER.error(exception.getMessage());
         }
@@ -97,7 +113,8 @@ public final class ClientServiceImpl implements ClientService {
     }
 
     private ClientDTO convertToDto(Client client) {
-        return DTOManager.DTO_MANAGER.createClientDTO(client.getLogin(), client.getName());
+        return DTOManager.DTO_MANAGER.createClientDTO(client.getId(), client.getLogin(), client.getName()
+                , client.getHeight(), client.getWeight());
     }
 
 }

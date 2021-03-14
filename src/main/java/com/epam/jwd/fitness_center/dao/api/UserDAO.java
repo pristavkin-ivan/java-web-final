@@ -12,5 +12,5 @@ public interface UserDAO<T extends Entity> {
     boolean delete(Integer id);
     abstract boolean delete(T entity);
     abstract boolean create(T entity);
-    abstract T update(T entity);
+    abstract void update(T entity);
 }
