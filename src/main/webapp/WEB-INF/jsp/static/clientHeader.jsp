@@ -1,7 +1,10 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<fmt:setLocale value="en_US" scope="session"/>
-<fmt:setBundle basename="pagecontent_en_us" var="rb"/>
+<c:import url="../static/localization.jsp"/>
+
+<fmt:setBundle basename="pagecontent" var="rb"/>
 
 <style>
     header ul {
@@ -49,6 +52,12 @@
         </a>
     </li>
     <li><a href="${pageContext.request.contextPath}/go?command=logout"><fmt:message key="nav.logout" bundle="${rb}"/></a></li>
+    <c:if test="${empty sessionScope.isInstructor}">
+    <li style="text-align: right; margin-right: 15px; margin-top: 15px; float:right; color: #e5e7e7">
+        <fmt:message key="label.balance" bundle="${rb}"/>
+        <fmt:formatNumber value="${sessionScope.balance}" type="currency"/>
+    </li>
+    </c:if>
 </ul>
 
 </header>

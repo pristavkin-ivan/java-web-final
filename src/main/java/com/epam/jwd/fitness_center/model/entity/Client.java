@@ -1,26 +1,27 @@
 package com.epam.jwd.fitness_center.model.entity;
 
-import java.util.List;
 import java.util.Objects;
 
 public class Client implements Entity {
 
     private final Integer id;
 
-    private String login, name, password;
+    private final String login, name, password;
 
-    private Double height, weight;
+    private final Double height, weight, balance;
 
-    private List<Training> trainings;
-
-    Client(Integer id, String login, String name, String password, Double height, Double weight, List<Training> trainings) {
+    Client(Integer id, String login, String name, String password, Double height, Double weight, Double balance) {
         this.id = id;
         this.login = login;
         this.name = name;
         this.password = password;
         this.height = height;
         this.weight = weight;
-        this.trainings = trainings;
+        this.balance = balance;
+    }
+
+    public Double getBalance() {
+        return balance;
     }
 
     public Double getHeight() {
@@ -29,10 +30,6 @@ public class Client implements Entity {
 
     public Double getWeight() {
         return weight;
-    }
-
-    public List<Training> getTrainings() {
-        return trainings;
     }
 
     public Integer getId() {
@@ -74,10 +71,6 @@ public class Client implements Entity {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public static Builder getBuilder() {
         return new Builder();
     }
@@ -85,8 +78,7 @@ public class Client implements Entity {
     public static class Builder {
         private Integer id;
         private String login, name, password;
-        private Double height, weight;
-        private List<Training> trainings;
+        private Double height, weight, balance;
 
         public Builder() {
         }
@@ -121,13 +113,13 @@ public class Client implements Entity {
             return this;
         }
 
-        public Builder trainings(List<Training> trainings) {
-            this.trainings = trainings;
+        public Builder balance(Double balance) {
+            this.balance = balance;
             return this;
         }
 
         public Client build() {
-            return new Client(this.id, this.login, this.name, this.password, this.height, this.weight, this.trainings);
+            return new Client(this.id, this.login, this.name, this.password, this.height, this.weight, this.balance);
         }
 
     }

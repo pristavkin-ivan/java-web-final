@@ -16,8 +16,7 @@ public enum DefaultCommand implements Command {
 
     private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
 
-        private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME,
-                new Locale("be", "By"));
+        private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
         @Override
         public String getPage() {
@@ -33,10 +32,20 @@ public enum DefaultCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        if(requestContext.getSessionAttribute("login") == null) {
+        String localization = requestContext.getParameter("localization");
+
+        if (requestContext.getSessionAttribute("login") == null) {
+            if (localization == null) {
+                localization = "en";
+            }
+
+            requestContext.setSessionAttribute("localization", localization);
             return LoginCommand.LOGIN_COMMAND.execute(requestContext);
         }
 
+        if (localization != null) {
+            requestContext.setSessionAttribute("localization", localization);
+        }
         return RESPONSE_CONTEXT;
     }
 

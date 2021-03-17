@@ -1,34 +1,24 @@
 package com.epam.jwd.fitness_center.model.entity;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Instructor implements Entity {
 
     private final Integer id;
 
-    private String login, name, password, imgUrl, info;
+    private final String login, name, password, imgUrl, info;
 
-    private List<Training> trainings;
-
-    Instructor(Integer id, String login, String name, String password, List<Training> trainingList
-            , String imgUrl, String info) {
+    Instructor(Integer id, String login, String name, String password, String imgUrl, String info) {
         this.id = id;
         this.name = name;
         this.login = login;
         this.password = password;
-        this.trainings = trainingList;
         this.imgUrl = imgUrl;
         this.info = info;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Integer getId() {
@@ -66,7 +56,6 @@ public class Instructor implements Entity {
     public static class Builder {
         private Integer id;
         private String login, name, password, url, info;
-        private List<Training> trainings;
 
         public Builder() {
         }
@@ -101,13 +90,8 @@ public class Instructor implements Entity {
             return this;
         }
 
-        public Builder trainings(List<Training> trainings) {
-            this.trainings = trainings;
-            return this;
-        }
-
         public Instructor build() {
-            return new Instructor(this.id, this.login, this.name, this.password, this.trainings, this.url, this.info);
+            return new Instructor(this.id, this.login, this.name, this.password, this.url, this.info);
         }
 
     }
@@ -124,26 +108,8 @@ public class Instructor implements Entity {
         return imgUrl;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Training> getTrainings() {
-        return trainings;
-    }
-
     public String getInfo() {
         return info;
     }
 
-    public void addTraining(Training training) {
-        if (trainings == null) {
-            trainings = new ArrayList<>();
-        }
-        trainings.add(training);
-    }
 }

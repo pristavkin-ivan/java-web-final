@@ -28,8 +28,7 @@ public enum ShowProfileCommand implements Command {
 
     private static final ResponseContext CLIENT_RESPONSE_CONTEXT = new ResponseContext() {
 
-        private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME,
-                new Locale("be", "By"));
+        private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
         @Override
         public String getPage() {

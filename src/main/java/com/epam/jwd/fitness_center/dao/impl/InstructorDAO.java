@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class InstructorDAO implements UserDAO<Instructor> {
+public final class InstructorDAO implements UserDAO<Instructor> {
 
     private final Connection connection;
 
@@ -52,7 +52,7 @@ public class InstructorDAO implements UserDAO<Instructor> {
             while (resultSet.next()) {
                 instructors.add(EntityManager.ENTITY_MANAGER.createInstructor(resultSet.getInt(ID_LABEL)
                         , resultSet.getString(LOGIN_LABEL), resultSet.getString(NAME_LABEL)
-                        , resultSet.getString(PASSWORD_LABEL), null, resultSet.getString(URL_LABEL)
+                        , resultSet.getString(PASSWORD_LABEL), resultSet.getString(URL_LABEL)
                         , resultSet.getString(INFO_LABEL)));
             }
         } catch (SQLException exception) {
@@ -71,12 +71,12 @@ public class InstructorDAO implements UserDAO<Instructor> {
                 if (resultSet.next()) {
                     return Optional.of(EntityManager.ENTITY_MANAGER.createInstructor(resultSet.getInt(ID_LABEL)
                             , resultSet.getString(LOGIN_LABEL), resultSet.getString(NAME_LABEL)
-                            , resultSet.getString(PASSWORD_LABEL), null, resultSet.getString(URL_LABEL)
+                            , resultSet.getString(PASSWORD_LABEL), resultSet.getString(URL_LABEL)
                             , resultSet.getString(INFO_LABEL)));
                 }
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
+           LOGGER.error(exception);
         }
         return Optional.empty();
     }
@@ -91,7 +91,7 @@ public class InstructorDAO implements UserDAO<Instructor> {
                 if (resultSet.next()) {
                     return Optional.of(EntityManager.ENTITY_MANAGER.createInstructor(resultSet.getInt(ID_LABEL)
                             , resultSet.getString(LOGIN_LABEL), resultSet.getString(NAME_LABEL)
-                            , resultSet.getString(PASSWORD_LABEL), null, resultSet.getString(URL_LABEL)
+                            , resultSet.getString(PASSWORD_LABEL), resultSet.getString(URL_LABEL)
                             , resultSet.getString(INFO_LABEL)));
                 }
             }

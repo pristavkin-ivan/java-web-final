@@ -25,8 +25,7 @@ public enum SignupCommand implements Command {
 
     private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
 
-        private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME,
-                new Locale("be", "By"));
+        private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
         @Override
         public String getPage() {

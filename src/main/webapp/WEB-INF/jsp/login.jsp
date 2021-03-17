@@ -2,9 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<fmt:setLocale value="en_US" scope="session"/>
-<fmt:setBundle basename="pagecontent_en_us" var="rb"/>
+<c:import url="static/localization.jsp"/>
 
+<fmt:setBundle basename="pagecontent" var="rb"/>
 <html>
 <head>
     <title><fmt:message key="title.authorization" bundle="${rb}"/></title>

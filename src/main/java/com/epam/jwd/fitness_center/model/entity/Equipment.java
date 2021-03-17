@@ -2,24 +2,28 @@ package com.epam.jwd.fitness_center.model.entity;
 
 public final class Equipment implements Entity {
 
-    private final Integer id;
-
     private final String name;
 
-    public Equipment(Integer id, String name) {
-        this.id = id;
+    private final Integer difficulty;
+
+    Equipment(String name, Integer difficulty) {
         this.name = name;
+        this.difficulty = difficulty;
     }
 
     public String getName() {
-        return null;
+        return name;
     }
 
-    public void setName(String name) {
-
+    public Integer getDifficulty() {
+        return difficulty;
     }
 
-    public Integer getId() {
-        return null;
+    @Override
+    public String toString() {
+        return "Equipment{" +
+                "name='" + name + '\'' +
+                ", difficulty=" + difficulty +
+                '}';
     }
 }

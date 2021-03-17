@@ -91,7 +91,7 @@ public final class InstructorServiceImpl implements InstructorService {
             }
 
             dao.create(EntityManager.ENTITY_MANAGER.createInstructor(0, login, name
-                    , BCrypt.hashpw(password, BCrypt.gensalt()), null, null, null));
+                    , BCrypt.hashpw(password, BCrypt.gensalt()), null, null));
         } catch (SQLException | ConnectionPoolException exception) {
             LOGGER.error(exception.getMessage());
         }

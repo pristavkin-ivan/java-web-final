@@ -1,7 +1,7 @@
 body {
     background: url(https://images.ctfassets.net/uoaa2cfwzbej/7yr4lLqx1uCtbyJhHM5KqM/43313098d3224ff73ec1ee4e67aaae56/B2_Trump_Ally_Faces_Massive_Backlash.jpg) no-repeat center top;
 }
-ul {
+header ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -9,11 +9,11 @@ ul {
     background-color: #5970de;
 }
 
-li {
+header li {
     float: left;
 }
 
-li a {
+header li a {
     display: block;
     color: white;
     text-align: center;
@@ -21,7 +21,7 @@ li a {
     text-decoration: none;
 }
 
-li a:hover {
+header li a:hover {
     background-color: #111111;
 }
 

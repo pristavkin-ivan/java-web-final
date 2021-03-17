@@ -31,7 +31,7 @@ public class InstructorDaoTest {
 
     InstructorDaoTest() {
         instructor = EntityManager.ENTITY_MANAGER.createInstructor(0, "login", "name", "pass"
-                , null, "dsafa", "asfdasd");
+                ,  "dsafa", "asfdasd");
         try {
             connection = DriverManager.getConnection(ApplicationListener.URL, ApplicationListener.USER
                     , ApplicationListener.PASSWORD);

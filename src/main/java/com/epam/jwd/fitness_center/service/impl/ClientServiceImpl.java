@@ -114,7 +114,7 @@ public final class ClientServiceImpl implements ClientService {
 
     private ClientDTO convertToDto(Client client) {
         return DTOManager.DTO_MANAGER.createClientDTO(client.getId(), client.getLogin(), client.getName()
-                , client.getHeight(), client.getWeight());
+                , client.getHeight(), client.getWeight(), client.getBalance());
     }
 
 }

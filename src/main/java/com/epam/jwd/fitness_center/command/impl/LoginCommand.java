@@ -27,8 +27,7 @@ public enum LoginCommand implements Command {
 
     private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
 
-        private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME,
-                new Locale("be", "By"));
+        private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
         @Override
         public String getPage() {
@@ -77,6 +76,7 @@ public enum LoginCommand implements Command {
         if (client.isPresent()) {
             requestContext.setSessionAttribute("login", login);
             requestContext.setSessionAttribute("id", client.get().getId());
+            requestContext.setSessionAttribute("balance", client.get().getBalance());
             return true;
         }
         return false;

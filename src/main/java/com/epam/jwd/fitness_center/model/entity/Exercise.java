@@ -2,25 +2,34 @@ package com.epam.jwd.fitness_center.model.entity;
 
 public final class Exercise implements Entity {
 
-    private final Integer id;
-
     private final String name;
 
-    public Exercise(Integer id, String name) {
-        this.id = id;
+    private final Integer difficulty, repetitions;
+
+    Exercise(String name, Integer difficulty, Integer repetitions) {
         this.name = name;
+        this.difficulty = difficulty;
+        this.repetitions = repetitions;
     }
 
     public String getName() {
-        return null;
+        return name;
     }
 
-    public void setName(String name) {
-
+    public Integer getDifficulty() {
+        return difficulty;
     }
 
-    public Integer getId() {
-        return null;
+    public Integer getRepetitions() {
+        return repetitions;
     }
 
+    @Override
+    public String toString() {
+        return "Exercise{" +
+                "name='" + name + '\'' +
+                ", difficulty=" + difficulty +
+                ", repetitions=" + repetitions +
+                '}';
+    }
 }

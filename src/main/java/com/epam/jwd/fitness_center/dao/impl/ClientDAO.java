@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ClientDAO implements UserDAO<Client> {
+public final class ClientDAO implements UserDAO<Client> {
 
     private final Connection connection;
 
@@ -36,6 +36,7 @@ public class ClientDAO implements UserDAO<Client> {
     private static final String PASSWORD_LABEL = "c_password";
     private static final String HEIGHT_LABEL = "c_height";
     private static final String WEIGHT_LABEL = "c_weight";
+    private static final String BALANCE_LABEL = "c_balance";
 
     public ClientDAO(Connection connection) {
         this.connection = connection;
@@ -51,7 +52,7 @@ public class ClientDAO implements UserDAO<Client> {
                 clients.add(EntityManager.ENTITY_MANAGER.createClient(resultSet.getInt(ID_LABEL)
                         , resultSet.getString(LOGIN_LABEL), resultSet.getString(NAME_LABEL)
                         , resultSet.getString(PASSWORD_LABEL), resultSet.getDouble(HEIGHT_LABEL)
-                        , resultSet.getDouble(WEIGHT_LABEL)));
+                        , resultSet.getDouble(WEIGHT_LABEL), resultSet.getDouble(BALANCE_LABEL)));
             }
         } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
@@ -69,7 +70,7 @@ public class ClientDAO implements UserDAO<Client> {
                     return Optional.of(EntityManager.ENTITY_MANAGER.createClient(resultSet.getInt(ID_LABEL)
                             , resultSet.getString(LOGIN_LABEL), resultSet.getString(NAME_LABEL)
                             , resultSet.getString(PASSWORD_LABEL), resultSet.getDouble(HEIGHT_LABEL)
-                            , resultSet.getDouble(WEIGHT_LABEL)));
+                            , resultSet.getDouble(WEIGHT_LABEL), resultSet.getDouble(BALANCE_LABEL)));
                 }
             }
         } catch (SQLException exception) {
@@ -89,7 +90,7 @@ public class ClientDAO implements UserDAO<Client> {
                     return Optional.of(EntityManager.ENTITY_MANAGER.createClient(resultSet.getInt(ID_LABEL)
                             , resultSet.getString(LOGIN_LABEL), resultSet.getString(NAME_LABEL)
                             , resultSet.getString(PASSWORD_LABEL), resultSet.getDouble(HEIGHT_LABEL)
-                            , resultSet.getDouble(WEIGHT_LABEL)));
+                            , resultSet.getDouble(WEIGHT_LABEL), resultSet.getDouble(BALANCE_LABEL)));
                 }
             }
         } catch (SQLException exception) {
