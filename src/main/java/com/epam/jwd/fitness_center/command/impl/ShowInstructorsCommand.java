@@ -1,5 +1,6 @@
 package com.epam.jwd.fitness_center.command.impl;
 
+import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
@@ -13,7 +14,6 @@ public enum ShowInstructorsCommand implements Command {
     INSTANCE;
 
     private final static String BUNDLE_NAME = "pages";
-
     private final static String PAGE_KEY = "instructorsPage";
 
     private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
@@ -36,7 +36,7 @@ public enum ShowInstructorsCommand implements Command {
     public ResponseContext execute(RequestContext requestContext) {
         final InstructorService service = InstructorServiceImpl.getInstance();
 
-        requestContext.setAttribute("instructors", service.getAllInstructors());
+        requestContext.setAttribute(Attributes.INSTRUCTORS, service.getAllInstructors());
         return RESPONSE_CONTEXT;
     }
 }

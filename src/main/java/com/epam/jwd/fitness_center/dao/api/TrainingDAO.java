@@ -7,12 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TrainingDAO<T extends Entity> {
+    List<Training.Builder> findAll();
     List<Training.Builder> findAllTrainingsByClientId(Integer clientId);
     List<Training.Builder> findAllTrainingsByInstructorId(Integer instructorId);
-    Optional<Training.Builder> findByString(String string);
     Optional<Training.Builder> findEntityById(Integer id);
     boolean delete(Integer id);
-    abstract boolean delete(T entity);
-    abstract void create(T entity);
+    void createTraining(Integer clientId, Integer instructorId, Integer amount, Integer difficulty, Double price);
     abstract void update(T entity);
 }

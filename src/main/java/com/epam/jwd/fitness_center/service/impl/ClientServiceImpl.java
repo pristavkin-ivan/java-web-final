@@ -1,7 +1,7 @@
 package com.epam.jwd.fitness_center.service.impl;
 
-import com.epam.jwd.fitness_center.dao.api.UserDAO;
-import com.epam.jwd.fitness_center.dao.impl.ClientDAO;
+import com.epam.jwd.fitness_center.dao.api.ClientDAO;
+import com.epam.jwd.fitness_center.dao.impl.ClientDAOImpl;
 import com.epam.jwd.fitness_center.exception.SignupException;
 import com.epam.jwd.fitness_center.model.dto.ClientDTO;
 import com.epam.jwd.fitness_center.model.dto.DTOManager;
@@ -26,6 +26,7 @@ public final class ClientServiceImpl implements ClientService {
     private static final ClientServiceImpl CLIENT_SERVICE = new ClientServiceImpl();
 
     private static final String SIGNUP_EXCEPTION_MESSAGE = "Sign up error: such user exists!";
+    private static final String DUMMY_PASSWORD = "dummyPass";
 
     private ClientServiceImpl() {
     }
@@ -33,9 +34,9 @@ public final class ClientServiceImpl implements ClientService {
     @Override
     public List<ClientDTO> getAllClients() {
         List<Client> clients = null;
-        //todo в фуннкциях сервиса будут реализованы транзакции
+
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            UserDAO<Client> dao = new ClientDAO(connection);
+            ClientDAO<Client> dao = new ClientDAOImpl(connection);
 
             clients = dao.findAll();
         } catch (SQLException | ConnectionPoolException exception) {
@@ -49,7 +50,7 @@ public final class ClientServiceImpl implements ClientService {
     @Override
     public Optional<ClientDTO> getClientById(Integer id) {
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            UserDAO<Client> dao = new ClientDAO(connection);
+            ClientDAO<Client> dao = new ClientDAOImpl(connection);
 
             return dao.findEntityById(id).map(this::convertToDto);
         } catch (SQLException | ConnectionPoolException exception) {
@@ -61,15 +62,15 @@ public final class ClientServiceImpl implements ClientService {
     @Override
     public Optional<ClientDTO> login(String login, String password) {
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            final UserDAO<Client> dao = new ClientDAO(connection);
-            final Optional<Client> client = dao.findByString(login);
+            final ClientDAO<Client> dao = new ClientDAOImpl(connection);
+            final Optional<Client> client = dao.findByLogin(login);
 
             if (client.isPresent()) {
                 if (BCrypt.checkpw(password, client.get().getPassword())) {
                     return client.map(this::convertToDto);
                 }
             } else {
-                BCrypt.checkpw(password, "dummyPass"); //to prevent timing attack
+                BCrypt.checkpw(password, DUMMY_PASSWORD);
             }
 
         } catch (Exception exception) {
@@ -81,9 +82,9 @@ public final class ClientServiceImpl implements ClientService {
     @Override
     public void signup(String login, String name, String password) throws SignupException {
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            UserDAO<Client> dao = new ClientDAO(connection);
+            ClientDAO<Client> dao = new ClientDAOImpl(connection);
 
-            if (dao.findByString(login).isPresent()) {
+            if (dao.findByLogin(login).isPresent()) {
                 throw new SignupException(SIGNUP_EXCEPTION_MESSAGE);
             }
             dao.create(Client.getBuilder()
@@ -100,7 +101,7 @@ public final class ClientServiceImpl implements ClientService {
     @Override
     public void updateProfile(Client client) {
         try(final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            UserDAO<Client> dao = new ClientDAO(connection);
+            ClientDAO<Client> dao = new ClientDAOImpl(connection);
 
             dao.update(client);
         } catch (SQLException | ConnectionPoolException exception) {

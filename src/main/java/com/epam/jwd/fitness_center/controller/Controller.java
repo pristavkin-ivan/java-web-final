@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 public class Controller extends HttpServlet {
 
     private final static Logger CONTROLLER_LOGGER = LogManager.getLogger(Controller.class);
+    private final static String COMMAND_PARAM = "command";
+    private final String ERROR_MESSAGE = "Page can't be forwarded!";
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
@@ -24,7 +26,7 @@ public class Controller extends HttpServlet {
     }
 
     private void command(HttpServletRequest req, HttpServletResponse resp) {
-        final String name = req.getParameter("command");
+        final String name = req.getParameter(COMMAND_PARAM);
         final Command command = Command.of(name);
         final ResponseContext response = command.execute(new RequestContextImpl(req));
 
@@ -34,7 +36,7 @@ public class Controller extends HttpServlet {
             try {
                 req.getRequestDispatcher(response.getPage()).forward(req, resp);
             } catch (ServletException | IOException e) {
-                CONTROLLER_LOGGER.error("Page can't be forwarded!", e);
+                CONTROLLER_LOGGER.error(ERROR_MESSAGE, e);
             }
         }
     }

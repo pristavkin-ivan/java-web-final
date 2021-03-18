@@ -33,7 +33,7 @@ public class TrainingServiceTest {
 
     @Test
     public void getTrainingsTest_ReturnTrainingsDtoList_NotEmptyList() {
-        final List<TrainingDTO> trainingsDto = TrainingServiceImpl.getInstance().getTrainingsByClientId(18);
+        final List<TrainingDTO> trainingsDto = TrainingServiceImpl.getInstance().findTrainingsByClientId(18);
 
         assertNotNull(trainingsDto);
         System.out.println(trainingsDto);

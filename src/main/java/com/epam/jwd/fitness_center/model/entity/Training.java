@@ -6,6 +6,8 @@ public final class Training implements Entity {
 
     private Integer id, amount, difficulty;
 
+    private Double price;
+
     private Purposes purposes;
 
     private Client client;
@@ -13,15 +15,19 @@ public final class Training implements Entity {
     private Instructor instructor;
 
     Training(Integer id, Client client, Instructor instructor, Integer amount, Integer difficulty
-            , Purposes purposes) {
+            , Purposes purposes, Double price) {
         this.id = id;
         this.client = client;
         this.instructor = instructor;
         this.amount = amount;
         this.difficulty = difficulty;
         this.purposes = purposes;
+        this.price = price;
     }
 
+    public Double getPrice() {
+        return price;
+    }
 
     public Integer getId() {
         return id;
@@ -66,6 +72,8 @@ public final class Training implements Entity {
     public static class Builder {
         private Integer id, amount, difficulty;
 
+        private Double price;
+
         private Purposes purposes;
 
         private Client client;
@@ -100,6 +108,11 @@ public final class Training implements Entity {
             return this;
         }
 
+        public Builder price(Double price) {
+            this.price = price;
+            return this;
+        }
+
         public Builder purposes(Purposes purposes) {
             this.purposes = purposes;
             return this;
@@ -111,7 +124,7 @@ public final class Training implements Entity {
 
         public Training build() {
             return new Training(this.id, this.client, this.instructor, this.amount, this.difficulty
-                    , this.purposes);
+                    , this.purposes, this.price);
         }
 
     }

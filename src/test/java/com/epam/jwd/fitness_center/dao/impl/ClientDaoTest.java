@@ -25,7 +25,7 @@ public class ClientDaoTest {
 
     Client client;
 
-    ClientDAO clientDAO;
+    ClientDAOImpl clientDAO;
 
     static Connection connection;
 
@@ -38,7 +38,7 @@ public class ClientDaoTest {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
-        clientDAO = new ClientDAO(connection);
+        clientDAO = new ClientDAOImpl(connection);
     }
 
     @Test
@@ -54,6 +54,11 @@ public class ClientDaoTest {
     @Test
     public void CreateClientTest_MustAddClientToDataBase_True() {
         assertTrue(clientDAO.create(client));
+    }
+
+    @Test
+    public void InsertBalanceTest_MustInsertBalanceToDataBase_NotThrowSqlException() {
+        clientDAO.pay(18, 500);
     }
 
     @Test

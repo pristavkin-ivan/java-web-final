@@ -4,16 +4,21 @@ import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
+import com.epam.jwd.fitness_center.model.dto.TrainingDTO;
+import com.epam.jwd.fitness_center.service.api.TrainingService;
+import com.epam.jwd.fitness_center.service.impl.TrainingServiceImpl;
 
-import java.util.Locale;
+import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
-public enum DefaultCommand implements Command {
-    DEFAULT_COMMAND;
+public enum ShowAllTrainingsCommand implements Command {
+    INSTANCE;
 
-    private static final String EN = "en";
     private final static String BUNDLE_NAME = "pages";
-    private final static String PAGE_KEY = "mainPage";
+    private final static String PAGE_KEY = "trainingsPage";
+
+    private final static TrainingService TRAINING_SERVICE = TrainingServiceImpl.getInstance();
 
     private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
 
@@ -33,20 +38,8 @@ public enum DefaultCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        String localization = requestContext.getParameter(Attributes.LOCALIZATION);
-
-        if (requestContext.getSessionAttribute(Attributes.LOGIN) == null) {
-            if (localization == null) {
-                localization = EN;
-            }
-
-            requestContext.setSessionAttribute(Attributes.LOCALIZATION, localization);
-            return LoginCommand.LOGIN_COMMAND.execute(requestContext);
-        }
-
-        if (localization != null) {
-            requestContext.setSessionAttribute(Attributes.LOCALIZATION, localization);
-        }
+        List<TrainingDTO> trainings = TRAINING_SERVICE.findAll();
+        requestContext.setAttribute(Attributes.TRAININGS, trainings);
         return RESPONSE_CONTEXT;
     }
 

@@ -8,14 +8,14 @@ public class TrainingDTO implements DTO {
 
     private final Integer id, amount, difficulty;
 
-    private Integer price = 0;
+    private final Double price;
 
     private String comment = "Comment";
 
     private final Purposes purposes;
 
-    TrainingDTO(Integer id, String instructorName, String clientName, String instructorPhotoUrl, Integer amount, Integer difficulty
-            , Purposes purposes) {
+    TrainingDTO(Integer id, String instructorName, String clientName, String instructorPhotoUrl, Integer amount
+            , Integer difficulty, Purposes purposes, Double price) {
         this.id = id;
         this.instructorName = instructorName;
         this.clientName = clientName;
@@ -23,6 +23,7 @@ public class TrainingDTO implements DTO {
         this.amount = amount;
         this.difficulty = difficulty;
         this.purposes = purposes;
+        this.price = price;
     }
 
     public String getClientName() {
@@ -33,7 +34,7 @@ public class TrainingDTO implements DTO {
         return id;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 

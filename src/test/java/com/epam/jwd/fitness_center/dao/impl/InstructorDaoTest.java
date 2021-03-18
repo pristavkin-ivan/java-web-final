@@ -1,7 +1,6 @@
 package com.epam.jwd.fitness_center.dao.impl;
 
 import com.epam.jwd.fitness_center.listener.ApplicationListener;
-import com.epam.jwd.fitness_center.model.entity.Client;
 import com.epam.jwd.fitness_center.model.entity.EntityManager;
 import com.epam.jwd.fitness_center.model.entity.Instructor;
 import org.junit.jupiter.api.AfterAll;
@@ -25,7 +24,7 @@ public class InstructorDaoTest {
 
     Instructor instructor;
 
-    InstructorDAO instructorDAO;
+    InstructorDAOImpl instructorDAO;
 
     static Connection connection;
 
@@ -38,7 +37,7 @@ public class InstructorDaoTest {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
-        instructorDAO = new InstructorDAO(connection);
+        instructorDAO = new InstructorDAOImpl(connection);
     }
 
     @Test

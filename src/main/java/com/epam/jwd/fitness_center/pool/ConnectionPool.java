@@ -17,6 +17,9 @@ public final class ConnectionPool implements Pool {
     private final static ConnectionPool CONNECTION_POOL = new ConnectionPool();
 
     private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
+    private static final String CLASS_NAME = "com.mysql.cj.jdbc.Driver";
+    private static final String LIMIT_REACHED = "Can't get connection: limit reached!";
+    private static final String POOL_IS_FULL = "Error: connection pool is full";
 
     private ReentrantLock lock = new ReentrantLock();
 
@@ -34,7 +37,7 @@ public final class ConnectionPool implements Pool {
         lock.lock();
         if (CONNECTION_STACK.isEmpty()) {
             lock.unlock();
-            throw new ConnectionPoolException("Can't get connection: limit reached!");
+            throw new ConnectionPoolException(LIMIT_REACHED);
         }
         lock.unlock();
         return CONNECTION_STACK.pop();
@@ -42,13 +45,13 @@ public final class ConnectionPool implements Pool {
 
     @Override
     public void returnConnection(Connection connection) throws ConnectionPoolException {
-        //todo check connection on fake
+        //todo check connection on fake?
         lock.lock();
         if (CONNECTION_STACK.size() <= MAX_CONNECTIONS) {
             CONNECTION_STACK.push((ProxyConnection) connection);
         } else {
             lock.unlock();
-            throw new ConnectionPoolException("Error: connection pool is full");
+            throw new ConnectionPoolException(POOL_IS_FULL);
         }
         lock.unlock();
     }
@@ -85,7 +88,7 @@ public final class ConnectionPool implements Pool {
 
     private static void registerDrivers(String url) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(CLASS_NAME);
             DriverManager.registerDriver(DriverManager.getDriver(url));
         } catch (SQLException | ClassNotFoundException e) {
             LOGGER.error(e);

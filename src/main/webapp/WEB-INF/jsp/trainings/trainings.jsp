@@ -8,15 +8,26 @@
 
 <html>
 <head>
-    <title><fmt:message key="title.trainings"/></title>
-</head>
+    <title>
+<c:choose>
 
+    <c:when test="${sessionScope.login eq 'admin' and not empty sessionScope.isInstructor}">
+        <title><fmt:message key="title.orders" />
+    </c:when>
+
+    <c:otherwise>
+        <fmt:message key="title.myTrainings" />
+    </c:otherwise>
+
+</c:choose>
+    </title>
+</head>
 <body>
 
-<c:import url="../static/clientHeader.jsp"/>
+<c:import url="../static/header.jsp"/>
 
 <main>
-    <c:if test="${empty sessionScope.isInstructor}">
+    <c:if test="${empty sessionScope.isInstructor }">
 
         <p style="text-align: right; margin-right: 20px">
             <a href="/go?command=create_training">
@@ -32,13 +43,16 @@
                 <li>
                     <p>
                         <fmt:message key="label.orderNumber"/>${training.id}.
-                        <c:if test="${empty sessionScope.isInstructor}">
+                        <c:if test="${empty sessionScope.isInstructor || sessionScope.login eq 'admin' }">
                             <fmt:message key="label.instructor"/> ${training.instructorName}.
                         </c:if>
-                        <c:if test="${ sessionScope.isInstructor == true }">
+                        <c:if test="${ not empty sessionScope.isInstructor }">
                             <fmt:message key="label.client"/> ${training.clientName}.
                         </c:if>
-                        <fmt:message key="label.amount"/>${training.amount}.
+                            <fmt:message key="label.amount"/>${training.amount}.
+                            <c:if test="${sessionScope.login eq 'admin' and not empty sessionScope.isInstructor}">
+                                <fmt:message key="label.price"/>${training.price}.
+                            </c:if>
                         <a href="/go?command=inspect_training&trainingId=${training.id}"><fmt:message key="label.details"/></a>
                     </p>
                 </li>

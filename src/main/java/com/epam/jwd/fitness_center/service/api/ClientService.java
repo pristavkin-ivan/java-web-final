@@ -3,7 +3,6 @@ package com.epam.jwd.fitness_center.service.api;
 import com.epam.jwd.fitness_center.exception.SignupException;
 import com.epam.jwd.fitness_center.model.dto.ClientDTO;
 import com.epam.jwd.fitness_center.model.entity.Client;
-import com.epam.jwd.fitness_center.model.entity.Instructor;
 
 import java.util.List;
 import java.util.Optional;

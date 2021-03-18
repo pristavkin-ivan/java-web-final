@@ -14,27 +14,28 @@ import java.sql.SQLException;
 public final class ApplicationListener implements ServletContextListener {
 
     public final static String URL = "jdbc:mysql://localhost:3306/fitnessCenterDB?serverTimezone=Europe/Moscow";
-
     public final static String USER = "root";
-
     public final static String PASSWORD = "12345678L";
 
     private final static Logger LOGGER = LogManager.getLogger(ApplicationListener.class);
+    private final static String INIT_MESSAGE = "ServletContext and connection pool were initialized.";
+    private final static String ERROR_MESSAGE = "Connection pool wasn't initialized.";
+    private final static String DESTROY_MESSAGE = "ServletContext and connection pool were destroyed.";
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         try {
             ConnectionPool.getConnectionPool().init(URL, USER, PASSWORD);
-            LOGGER.info("ServletContext and connection pool were initialized.");
+            LOGGER.info(INIT_MESSAGE);
         } catch (SQLException | ConnectionPoolException exception) {
-            LOGGER.error("Connection pool wasn't initialized.", exception);
+            LOGGER.error(ERROR_MESSAGE, exception);
         }
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         ConnectionPool.getConnectionPool().destroyConnectionPool();
-        LOGGER.info("ServletContext and connection pool were destroyed.");
+        LOGGER.info(DESTROY_MESSAGE);
     }
 
 }

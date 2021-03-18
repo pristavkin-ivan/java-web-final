@@ -1,5 +1,6 @@
 package com.epam.jwd.fitness_center.command.impl;
 
+import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
@@ -10,9 +11,6 @@ import com.epam.jwd.fitness_center.service.api.InstructorService;
 import com.epam.jwd.fitness_center.service.impl.ClientServiceImpl;
 import com.epam.jwd.fitness_center.service.impl.InstructorServiceImpl;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -21,9 +19,7 @@ public enum ShowProfileCommand implements Command {
     INSTANCE;
 
     private final static String BUNDLE_NAME = "pages";
-
     private final static String CLIENT_PAGE_KEY = "clientProfilePage";
-
     private final static String INSTRUCTOR_PAGE_KEY = "instructorProfilePage";
 
     private static final ResponseContext CLIENT_RESPONSE_CONTEXT = new ResponseContext() {
@@ -44,8 +40,7 @@ public enum ShowProfileCommand implements Command {
 
     private static final ResponseContext INSTRUCTOR_RESPONSE_CONTEXT = new ResponseContext() {
 
-        private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME,
-                new Locale("be", "By"));
+        private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
         @Override
         public String getPage() {
@@ -65,16 +60,16 @@ public enum ShowProfileCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        if (Objects.equals(requestContext.getSessionAttribute("isInstructor"), true)) {
+        if (Objects.equals(requestContext.getSessionAttribute(Attributes.IS_INSTRUCTOR), true)) {
             final Optional<InstructorDTO> instructor
-                    = INSTRUCTOR_SERVICE.getInstructorById((Integer) requestContext.getSessionAttribute("id"));
+                    = INSTRUCTOR_SERVICE.getInstructorById((Integer) requestContext.getSessionAttribute(Attributes.ID));
 
             configureInstructorProfileAttributes(requestContext, instructor);
             return INSTRUCTOR_RESPONSE_CONTEXT;
         }
 
         final Optional<ClientDTO> client
-                = CLIENT_SERVICE.getClientById((Integer) requestContext.getSessionAttribute("id"));
+                = CLIENT_SERVICE.getClientById((Integer) requestContext.getSessionAttribute(Attributes.ID));
 
         configureClientProfileAttributes(requestContext, client);
         return CLIENT_RESPONSE_CONTEXT;
@@ -82,22 +77,19 @@ public enum ShowProfileCommand implements Command {
 
     private void configureInstructorProfileAttributes(RequestContext requestContext, Optional<InstructorDTO> instructor) {
         if (instructor.isPresent()) {
-            requestContext.setAttribute("login", instructor.get().getLogin());
-            requestContext.setAttribute("name", instructor.get().getName());
-            requestContext.setAttribute("info", instructor.get().getInfo());
-            requestContext.setAttribute("photoUrl", instructor.get().getUrl());
+            requestContext.setAttribute(Attributes.LOGIN, instructor.get().getLogin());
+            requestContext.setAttribute(Attributes.NAME, instructor.get().getName());
+            requestContext.setAttribute(Attributes.INFO, instructor.get().getInfo());
+            requestContext.setAttribute(Attributes.PHOTO_URL, instructor.get().getUrl());
         }
     }
 
     private void configureClientProfileAttributes(RequestContext requestContext, Optional<ClientDTO> client ) {
-        /*DecimalFormat df = new DecimalFormat("#.#");
-        df.setRoundingMode(RoundingMode.CEILING);*/
-
         if (client.isPresent()) {
-            requestContext.setAttribute("login", client.get().getLogin());
-            requestContext.setAttribute("name", client.get().getName());
-            requestContext.setAttribute("height", client.get().getHeight());
-            requestContext.setAttribute("weight",client.get().getWeight());
+            requestContext.setAttribute(Attributes.LOGIN, client.get().getLogin());
+            requestContext.setAttribute(Attributes.NAME, client.get().getName());
+            requestContext.setAttribute(Attributes.HEIGHT, client.get().getHeight());
+            requestContext.setAttribute(Attributes.WEIGHT,client.get().getWeight());
         }
     }
 

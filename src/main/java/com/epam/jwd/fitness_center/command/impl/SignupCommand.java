@@ -1,5 +1,6 @@
 package com.epam.jwd.fitness_center.command.impl;
 
+import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
@@ -16,7 +17,7 @@ public enum SignupCommand implements Command {
     SIGNUP_COMMAND;
 
     private static final String PAGE_KEY = "signupPage";
-
+    private static final String W_MESSAGE = "\nTry another login.";
     private static final String BUNDLE_NAME = "pages";
 
     private static final Logger LOGGER = LogManager.getLogger(SIGNUP_COMMAND.name());
@@ -41,21 +42,21 @@ public enum SignupCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        final String login = String.valueOf(requestContext.getParameter("login"));
-        final String password = String.valueOf(requestContext.getParameter("password"));
-        final String name = String.valueOf(requestContext.getParameter("name"));
+        final String login = String.valueOf(requestContext.getParameter(Attributes.LOGIN));
+        final String password = String.valueOf(requestContext.getParameter(Attributes.PASSWORD));
+        final String name = String.valueOf(requestContext.getParameter(Attributes.NAME));
 
-        if (login.equals("null") || login.equals("") || password.equals("") || name.equals("")) {
+        if (login.equals(Attributes.NULL) || login.equals("") || password.equals("") || name.equals("")) {
             return RESPONSE_CONTEXT;
         }
 
         try {
             CLIENT_SERVICE.signup(login, name, password);
-            requestContext.setSessionAttribute("login", login);
+            requestContext.setSessionAttribute(Attributes.LOGIN, login);
             return DefaultCommand.DEFAULT_COMMAND.execute(requestContext);
         } catch (SignupException e) {
             LOGGER.error(e.getMessage());
-            requestContext.setAttribute("error", e.getMessage() + "\nTry another login.");
+            requestContext.setAttribute(Attributes.ERROR, e.getMessage() + W_MESSAGE);
         }
         return RESPONSE_CONTEXT;
     }

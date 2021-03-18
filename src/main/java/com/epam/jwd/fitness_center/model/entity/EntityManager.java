@@ -16,8 +16,8 @@ public enum EntityManager {
     }
 
     public Training createTraining(Integer id, Client client, Instructor instructor, Integer amount, Integer difficulty
-            , Purposes purposes) {
-        return new Training(id, client, instructor, amount, difficulty, purposes);
+            , Purposes purposes, Double price) {
+        return new Training(id, client, instructor, amount, difficulty, purposes, price);
     }
 
     public Purposes createPurposes(Integer trainingId, List<Exercise> exercises, List<Equipment> equipment

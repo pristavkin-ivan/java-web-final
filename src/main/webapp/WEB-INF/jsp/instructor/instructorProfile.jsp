@@ -16,7 +16,7 @@
 
 <body>
 
-<c:import url="../static/clientHeader.jsp"/>
+<c:import url="../static/header.jsp"/>
 
 <main>
 

@@ -2,7 +2,6 @@ package com.epam.jwd.fitness_center.dao.impl;
 
 import com.epam.jwd.fitness_center.dao.api.TrainingDAO;
 import com.epam.jwd.fitness_center.model.entity.Client;
-import com.epam.jwd.fitness_center.model.entity.EntityManager;
 import com.epam.jwd.fitness_center.model.entity.Instructor;
 import com.epam.jwd.fitness_center.model.entity.Training;
 import org.apache.logging.log4j.LogManager;
@@ -12,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,9 +30,17 @@ public final class TrainingDAOImpl implements TrainingDAO<Training> {
             " Join instructor on training.instructor_id = instructor.i_id" +
             " where instructor_id = ?";
 
-    private static final String SELECT_TRAINING_BY_ID = "select * from training where i_id =?";
+    private static final String SELECT_TRAINING_BY_ID = "select * from training" +
+            " Join client on training.client_id = client.c_id" +
+            " Join instructor on training.instructor_id = instructor.i_id" +
+            " where t_id = ?";
+
+    private static final String SELECT_ALL = "select * from training" +
+            " Join client on training.client_id = client.c_id" +
+            " Join instructor on training.instructor_id = instructor.i_id";
+
     private static final String INSERT_TRAINING = "insert into training(client_id, instructor_id, t_amount" +
-            ", t_difficulty) values(?,?,?,?) ";
+            ", t_difficulty, t_price) values(?,?,?,?,?) ";
 
     //todo продумать по какой
     private static final String DELETE_TRAINING = "delete from training where client_login =?";
@@ -43,16 +51,34 @@ public final class TrainingDAOImpl implements TrainingDAO<Training> {
     private static final String INSTRUCTOR_URL_LABEL = "instructor.i_url";
     private static final String INSTRUCTOR_INFO_LABEL = "instructor.i_info";
     private static final String CLIENT_NAME_LABEL = "client.c_name";
+    private static final String CLIENT_ID_LABEL = "client_id";
 
 
-    private final static Logger LOGGER = LogManager.getLogger(ClientDAO.class);
+    private final static Logger LOGGER = LogManager.getLogger(ClientDAOImpl.class);
 
     private static final String ID_LABEL = "t_id";
-    private final String AMOUNT_LABEL = "t_amount";
-    private final String DIFFICULTY_LABEL = "t_difficulty";
+    private static final String AMOUNT_LABEL = "t_amount";
+    private static final String DIFFICULTY_LABEL = "t_difficulty";
+    private static final String PRICE_LABEL = "t_price";
 
     public TrainingDAOImpl(Connection connection) {
         this.connection = connection;
+    }
+
+    @Override
+    public List<Training.Builder> findAll() {
+        List<Training.Builder> builders = new ArrayList<>();
+
+        try (Statement statement = connection.createStatement()) {
+            try (ResultSet resultSet = statement.executeQuery(SELECT_ALL)) {
+                while(resultSet.next()) {
+                    builders.add(createTraining(resultSet.getInt(CLIENT_ID_LABEL), resultSet));
+                }
+            }
+        } catch (SQLException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+        return builders;
     }
 
     @Override
@@ -63,6 +89,56 @@ public final class TrainingDAOImpl implements TrainingDAO<Training> {
     @Override
     public List<Training.Builder> findAllTrainingsByInstructorId(Integer instructorId) {
         return getBuilders(instructorId, SELECT_ALL_TRAININGS_BY_INSTRUCTOR_ID);
+    }
+
+    @Override
+    public Optional<Training.Builder> findEntityById(Integer id) {
+        return Optional.of(getBuilders(id, SELECT_TRAINING_BY_ID).get(0));
+    }
+
+    @Override
+    public boolean delete(Integer id) {
+        return false;
+    }
+
+    @Override
+    public void createTraining(Integer clientId, Integer instructorId, Integer amount, Integer difficulty, Double price) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_TRAINING)) {
+            configureStatement(clientId, instructorId, amount, difficulty, price, preparedStatement);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+    }
+
+    @Override
+    public void update(Training entity) {
+    }
+
+    private void configureStatement(Integer clientId, Integer instructorId, Integer amount, Integer difficulty
+            , Double price, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setInt(1, clientId);
+        preparedStatement.setInt(2, instructorId);
+        preparedStatement.setInt(3, amount);
+        preparedStatement.setInt(4, difficulty);
+        preparedStatement.setDouble(5, price);
+    }
+
+    private Training.Builder createTraining(Integer clientId, ResultSet resultSet) throws SQLException {
+        final Instructor instructor = Instructor.getBuilder().id(resultSet.getInt(INSTRUCTOR_ID_LABEL))
+                .name(resultSet.getString(INSTRUCTOR_NAME_LABEL))
+                .url(resultSet.getString(INSTRUCTOR_URL_LABEL))
+                .info(resultSet.getString(INSTRUCTOR_INFO_LABEL)).build();
+
+        final Client client = Client.getBuilder().id(clientId).name(resultSet.getString(CLIENT_NAME_LABEL)).build();
+
+        return Training.getBuilder()
+                .id(resultSet.getInt(ID_LABEL))
+                .amount(resultSet.getInt(AMOUNT_LABEL))
+                .difficulty(resultSet.getInt(DIFFICULTY_LABEL))
+                .instructor(instructor)
+                .client(client)
+                .price(resultSet.getDouble(PRICE_LABEL));
     }
 
     private List<Training.Builder> getBuilders(Integer instructorId, String selectAllTrainingsByInstructorId) {
@@ -81,64 +157,6 @@ public final class TrainingDAOImpl implements TrainingDAO<Training> {
             LOGGER.error(exception.getMessage());
         }
         return builders;
-    }
-
-
-    private Training.Builder createTraining(Integer clientId, ResultSet resultSet) throws SQLException {
-        final Instructor instructor = Instructor.getBuilder().id(resultSet.getInt(INSTRUCTOR_ID_LABEL))
-                .name(resultSet.getString(INSTRUCTOR_NAME_LABEL))
-                .url(resultSet.getString(INSTRUCTOR_URL_LABEL))
-                .info(resultSet.getString(INSTRUCTOR_INFO_LABEL)).build();
-
-        final Client client = Client.getBuilder().id(clientId).name(resultSet.getString(CLIENT_NAME_LABEL)).build();
-
-        return Training.getBuilder()
-                .id(resultSet.getInt(ID_LABEL))
-                .amount(resultSet.getInt(AMOUNT_LABEL))
-                .difficulty(resultSet.getInt(DIFFICULTY_LABEL))
-                .instructor(instructor)
-                .client(client);
-    }
-
-    @Override
-    public Optional<Training.Builder> findByString(String string) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Training.Builder> findEntityById(Integer id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public boolean delete(Integer id) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(Training entity) {
-        return false;
-    }
-
-    @Override
-    public void create(Training entity) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_TRAINING)) {
-            configureStatement(entity, preparedStatement);
-            preparedStatement.executeUpdate();
-        } catch (SQLException exception) {
-            LOGGER.error(exception.getMessage());
-        }
-    }
-
-    @Override
-    public void update(Training entity) {
-    }
-
-    private void configureStatement(Training entity, PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setInt(1, entity.getClient().getId());
-        preparedStatement.setInt(2, entity.getInstructor().getId());
-        preparedStatement.setInt(3, entity.getAmount());
-        preparedStatement.setInt(3, entity.getDifficulty());
     }
 
 }

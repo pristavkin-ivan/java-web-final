@@ -1,5 +1,6 @@
 package com.epam.jwd.fitness_center.command.impl;
 
+import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
@@ -18,8 +19,8 @@ public enum LoginCommand implements Command {
     LOGIN_COMMAND;
 
     private static final String PAGE_KEY = "loginPage";
-
     private static final String BUNDLE_NAME = "pages";
+    private static final String ERROR_MESSAGE = "Incorrect login or password, try again!";
 
     private static final ClientService CLIENT_SERVICE = ClientServiceImpl.getInstance();
 
@@ -43,10 +44,10 @@ public enum LoginCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        final String login = String.valueOf(requestContext.getParameter("login"));
-        final String password = String.valueOf(requestContext.getParameter("password"));
+        final String login = String.valueOf(requestContext.getParameter(Attributes.LOGIN));
+        final String password = String.valueOf(requestContext.getParameter(Attributes.PASSWORD));
 
-        if (login.equals("null") || login.equals("") || password.equals("")) {
+        if (login.equals(Attributes.NULL) || login.equals("") || password.equals("")) {
             return RESPONSE_CONTEXT;
         }
 
@@ -54,7 +55,7 @@ public enum LoginCommand implements Command {
     }
 
     private ResponseContext login(RequestContext requestContext, String login, String password) {
-        if (!Boolean.parseBoolean(requestContext.getParameter("isInstructor"))) {
+        if (!Boolean.parseBoolean(requestContext.getParameter(Attributes.IS_INSTRUCTOR))) {
 
             if (loginClient(requestContext, login, password)) {
                 return DefaultCommand.DEFAULT_COMMAND.execute(requestContext);
@@ -66,7 +67,7 @@ public enum LoginCommand implements Command {
             }
         }
 
-        requestContext.setAttribute("error", "Incorrect login or password, try again!");
+        requestContext.setAttribute(Attributes.ERROR, ERROR_MESSAGE);
         return RESPONSE_CONTEXT;
     }
 
@@ -74,9 +75,9 @@ public enum LoginCommand implements Command {
         final Optional<ClientDTO> client = CLIENT_SERVICE.login(login, password);
 
         if (client.isPresent()) {
-            requestContext.setSessionAttribute("login", login);
-            requestContext.setSessionAttribute("id", client.get().getId());
-            requestContext.setSessionAttribute("balance", client.get().getBalance());
+            requestContext.setSessionAttribute(Attributes.LOGIN, login);
+            requestContext.setSessionAttribute(Attributes.ID, client.get().getId());
+            requestContext.setSessionAttribute(Attributes.BALANCE, client.get().getBalance());
             return true;
         }
         return false;
@@ -86,9 +87,9 @@ public enum LoginCommand implements Command {
         final Optional<InstructorDTO> instructor = INSTRUCTOR_SERVICE.login(login, password);
 
         if (instructor.isPresent()) {
-            requestContext.setSessionAttribute("isInstructor", true);
-            requestContext.setSessionAttribute("login", login);
-            requestContext.setSessionAttribute("id", instructor.get().getId());
+            requestContext.setSessionAttribute(Attributes.IS_INSTRUCTOR, true);
+            requestContext.setSessionAttribute(Attributes.LOGIN, login);
+            requestContext.setSessionAttribute(Attributes.ID, instructor.get().getId());
             return true;
         }
         return false;

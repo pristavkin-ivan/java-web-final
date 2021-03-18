@@ -14,8 +14,8 @@ public enum DTOManager {
     }
 
     public TrainingDTO createTrainingDTO(Integer id, String instructorName, String clientName, String instructorPhotoUrl, Integer amount
-            , Integer difficulty, Purposes purposes) {
-        return new TrainingDTO(id, instructorName, clientName, instructorPhotoUrl, amount, difficulty, purposes);
+            , Integer difficulty, Purposes purposes, Double price) {
+        return new TrainingDTO(id, instructorName, clientName, instructorPhotoUrl, amount, difficulty, purposes, price);
     }
 
 }

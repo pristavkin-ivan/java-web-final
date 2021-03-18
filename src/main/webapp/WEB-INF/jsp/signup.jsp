@@ -9,13 +9,27 @@
 <html>
 
 <head>
-    <title><fmt:message key="label.signup" bundle="${pageContent}"/></title>
+    <c:choose>
+
+        <c:when test="${sessionScope.login eq 'admin' and not empty sessionScope.isInstructor}">
+            <title><fmt:message key="title.newInstructor" bundle="${pageContent}"/></title>
+        </c:when>
+
+        <c:otherwise>
+            <title><fmt:message key="label.signup" bundle="${pageContent}"/></title>
+        </c:otherwise>
+
+    </c:choose>
     <style>
         <c:import url="${pageContext.request.contextPath}/WEB-INF/css/formsStyle.css"/>
     </style>
 </head>
 
 <body>
+
+<c:if test="${sessionScope.login eq 'admin' and not empty sessionScope.isInstructor}">
+    <c:import url="static/header.jsp" />
+</c:if>
 
 <main>
 <div id="form">
@@ -38,14 +52,24 @@
             <span><b><fmt:message key="label.password" bundle="${pageContent}"/></b> </span>
             <br>
             <input type="password" name="password" id = "password"/>
+            <c:choose>
 
-            <br>
-            <button type="submit"><fmt:message key="label.signup" bundle="${pageContent}"/></button>
+                <c:when test="${sessionScope.login eq 'admin' and not empty sessionScope.isInstructor}">
+                    <br>
+                    <button type="submit"><fmt:message key="button.add" bundle="${pageContent}"/></button>
+                </c:when>
 
-            <br>
-            <a href="${pageContext.request.contextPath}/go?command=login">
-                <fmt:message key="label.login" bundle="${pageContent}"/>
-            </a>
+                <c:otherwise>
+                    <br>
+                    <button type="submit"><fmt:message key="label.signup" bundle="${pageContent}"/></button>
+
+                    <br>
+                    <a href="${pageContext.request.contextPath}/go?command=login">
+                        <fmt:message key="label.login" bundle="${pageContent}"/>
+                    </a>
+                </c:otherwise>
+
+            </c:choose>
             <br>
             <p id="errorLabel">${error}</p>
 

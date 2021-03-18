@@ -22,11 +22,24 @@
 
 <body>
 
-<c:import url="../static/clientHeader.jsp" />
+<c:import url="../static/header.jsp" />
 
 <h1 style="text-align: center; color: blue"><fmt:message key="h1.instructors" bundle="${rb}"/></h1>
 
 <main>
+
+    <c:if test="${not empty sessionScope.isInstructor and  sessionScope.login eq 'admin'}">
+
+        <p style="text-align: right; margin-right: 20px">
+            <a href="/go?command=signup">
+                <b><fmt:message key="label.createInstructor" bundle="${rb}"/></b>
+            </a>
+        </p>
+
+    </c:if>
+
+<%--todo админу выводятся чек боксы и кнопка удаления--%>
+
         <c:if test="${not empty instructors}">
         <ul type="square">
             <c:forEach var="instructor" items="${instructors}">

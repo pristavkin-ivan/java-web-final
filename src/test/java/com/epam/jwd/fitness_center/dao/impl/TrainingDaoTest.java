@@ -43,7 +43,9 @@ public class TrainingDaoTest {
 
     @Test
     public void CreateTrainingTest_MustAddTrainingToDataBase_NotThrowSqlException() {
-        assertDoesNotThrow( () -> trainingDAO.create(training));
+        assertDoesNotThrow( () -> trainingDAO.createTraining(training.getClient().getId()
+                , training.getInstructor().getId(), training.getAmount(), training.getDifficulty()
+                , training.getPrice()));
     }
 
     @AfterAll

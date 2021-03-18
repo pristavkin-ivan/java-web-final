@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:import url="../static/localization.jsp"/>
+
 
 <fmt:setBundle basename="pagecontent" var="rb"/>
 
@@ -36,16 +36,33 @@
 
 <ul>
     <li><a href="${pageContext.request.contextPath}/go?command=default"><fmt:message key="title.home" bundle="${rb}"/></a></li>
-    <li>
-        <a href="${pageContext.request.contextPath}/go?command=show_profile">
-            <fmt:message key="title.profile" bundle="${rb}"/>
-        </a>
-    </li>
-    <li>
-        <a href="${pageContext.request.contextPath}/go?command=show_trainings">
-            <fmt:message key="title.trainings" bundle="${rb}"/>
-        </a>
-    </li>
+    <c:choose>
+
+        <c:when test="${sessionScope.login eq 'admin' and not empty sessionScope.isInstructor}">
+            <li>
+                <a href="${pageContext.request.contextPath}/go?command=show_all_trainings">
+                    <fmt:message key="title.orders" bundle="${rb}"/>
+                </a>
+            </li>
+        </c:when>
+
+        <c:otherwise>
+
+            <li>
+                <a href="${pageContext.request.contextPath}/go?command=show_profile">
+                    <fmt:message key="title.profile" bundle="${rb}"/>
+                </a>
+            </li>
+
+            <li>
+                <a href="${pageContext.request.contextPath}/go?command=show_trainings">
+                    <fmt:message key="title.myTrainings" bundle="${rb}"/>
+                </a>
+            </li>
+
+        </c:otherwise>
+
+    </c:choose>
     <li>
         <a href="${pageContext.request.contextPath}/go?command=show_instructors">
         <fmt:message key="title.instructors" bundle="${rb}"/>

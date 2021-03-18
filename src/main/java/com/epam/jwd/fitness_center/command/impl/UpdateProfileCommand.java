@@ -1,5 +1,6 @@
 package com.epam.jwd.fitness_center.command.impl;
 
+import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
@@ -21,7 +22,7 @@ public enum UpdateProfileCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        if (Objects.equals(requestContext.getSessionAttribute("isInstructor"), true)) {
+        if (Objects.equals(requestContext.getSessionAttribute(Attributes.IS_INSTRUCTOR), true)) {
             updateInstructor(requestContext);
         } else {
             updateClient(requestContext);
@@ -32,11 +33,11 @@ public enum UpdateProfileCommand implements Command {
     private void updateClient(RequestContext requestContext) {
         final Client.Builder builder = Client.getBuilder();
 
-        final Client client = builder.id((Integer) requestContext.getSessionAttribute("id"))
-                .login(requestContext.getParameter("login"))
-                .name(requestContext.getParameter("name"))
-                .height(Double.valueOf(requestContext.getParameter("height")))
-                .weight(Double.valueOf(requestContext.getParameter("weight")))
+        final Client client = builder.id((Integer) requestContext.getSessionAttribute(Attributes.ID))
+                .login(requestContext.getParameter(Attributes.LOGIN))
+                .name(requestContext.getParameter(Attributes.NAME))
+                .height(Double.valueOf(requestContext.getParameter(Attributes.HEIGHT)))
+                .weight(Double.valueOf(requestContext.getParameter(Attributes.WEIGHT)))
                 .build();
 
         CLIENT_SERVICE.updateProfile(client);
@@ -45,11 +46,11 @@ public enum UpdateProfileCommand implements Command {
     private void updateInstructor(RequestContext requestContext) {
         final Instructor.Builder builder = Instructor.getBuilder();
 
-        final Instructor instructor = builder.id((Integer) requestContext.getSessionAttribute("id"))
-                .login(requestContext.getParameter("login"))
-                .name(requestContext.getParameter("name"))
-                .url(requestContext.getParameter("photoUrl"))
-                .info(requestContext.getParameter("info"))
+        final Instructor instructor = builder.id((Integer) requestContext.getSessionAttribute(Attributes.ID))
+                .login(requestContext.getParameter(Attributes.LOGIN))
+                .name(requestContext.getParameter(Attributes.NAME))
+                .url(requestContext.getParameter(Attributes.PHOTO_URL))
+                .info(requestContext.getParameter(Attributes.INFO))
                 .build();
 
         INSTRUCTOR_SERVICE.updateProfile(instructor);

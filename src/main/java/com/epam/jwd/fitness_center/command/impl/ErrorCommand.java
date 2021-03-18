@@ -11,7 +11,6 @@ public enum ErrorCommand implements Command {
     ERROR_COMMAND;
 
     private final static String BUNDLE_NAME = "pages";
-
     private final static String PAGE_KEY = "errorPage";
 
     private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {

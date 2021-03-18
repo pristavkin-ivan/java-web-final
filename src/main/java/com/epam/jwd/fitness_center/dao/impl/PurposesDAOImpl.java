@@ -1,7 +1,6 @@
 package com.epam.jwd.fitness_center.dao.impl;
 
 import com.epam.jwd.fitness_center.dao.api.PurposesDao;
-import com.epam.jwd.fitness_center.model.entity.Entity;
 import com.epam.jwd.fitness_center.model.entity.EntityManager;
 import com.epam.jwd.fitness_center.model.entity.Equipment;
 import com.epam.jwd.fitness_center.model.entity.Exercise;
@@ -16,7 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public final class PurposesDAOImpl implements PurposesDao {
@@ -37,15 +35,16 @@ public final class PurposesDAOImpl implements PurposesDao {
     private static final String INSERT_PURPOSE = "insert into purposes(training_id, exercise_id, equipment_id, food_id)" +
             " values(?,?,?,?)";
 
-    private final static Logger LOGGER = LogManager.getLogger(ClientDAO.class);
-    private final String EXERCISE_NAME_LABEL = "exercise.e_name";
-    private final String EXERCISE_DIFFICULTY_LABEL = "exercise.e_difficulty";
-    private final String EXERCISE_REPETITIONS_LABEL = "exercise.e_repetitions";
-    private final String EQUIPMENT_NAME_LABEL = "equipment.e_name";
-    private final String EQUIPMENT_DIFFICULTY_LABEL = "equipment.e_difficulty";
-    private final String FOOD_NAME_LABEL = "food.f_name";
-    private final String FOOD_WEIGHT_LABEL = "food.f_weight";
-    private final String FOOD_CALORIES_LABEL = "food.f_calories";
+    private final static Logger LOGGER = LogManager.getLogger(ClientDAOImpl.class);
+    private final static String EXERCISE_NAME_LABEL = "exercise.e_name";
+    private final static String EXERCISE_DIFFICULTY_LABEL = "exercise.e_difficulty";
+    private final static String EXERCISE_REPETITIONS_LABEL = "exercise.e_repetitions";
+    private final static String EQUIPMENT_NAME_LABEL = "equipment.e_name";
+    private final static String EQUIPMENT_DIFFICULTY_LABEL = "equipment.e_difficulty";
+    private final static String FOOD_NAME_LABEL = "food.f_name";
+    private final static String FOOD_WEIGHT_LABEL = "food.f_weight";
+    private final static String FOOD_CALORIES_LABEL = "food.f_calories";
+    private final static String EMPTY_STRING = "";
 
     public PurposesDAOImpl(Connection connection) {
         this.connection = connection;
@@ -76,7 +75,8 @@ public final class PurposesDAOImpl implements PurposesDao {
 
     }
 
-    private void fillCollections(List<Exercise> exercises, List<Equipment> equipment, List<Food> foods, ResultSet resultSet) throws SQLException {
+    private void fillCollections(List<Exercise> exercises, List<Equipment> equipment, List<Food> foods
+            , ResultSet resultSet) throws SQLException {
         exercises.add(ENTITY_MANAGER.createExercise(resultSet.getString(EXERCISE_NAME_LABEL)
                 , resultSet.getInt(EXERCISE_DIFFICULTY_LABEL)
                 , resultSet.getInt(EXERCISE_REPETITIONS_LABEL)));
@@ -86,12 +86,13 @@ public final class PurposesDAOImpl implements PurposesDao {
                 , resultSet.getInt(FOOD_WEIGHT_LABEL), resultSet.getInt(FOOD_CALORIES_LABEL)));
     }
 
-    private Purposes createPurpose(Integer trainingId, List<Exercise> exercises, List<Equipment> equipment, List<Food> foods) {
-        exercises = exercises.stream().filter((val)-> !val.getName().equalsIgnoreCase(""))
+    private Purposes createPurpose(Integer trainingId, List<Exercise> exercises, List<Equipment> equipment
+            , List<Food> foods) {
+        exercises = exercises.stream().filter((val)-> !val.getName().equalsIgnoreCase(EMPTY_STRING))
                 .collect(Collectors.toList());
-        equipment = equipment.stream().filter((val)-> !val.getName().equalsIgnoreCase(""))
+        equipment = equipment.stream().filter((val)-> !val.getName().equalsIgnoreCase(EMPTY_STRING))
                 .collect(Collectors.toList());
-        foods = foods.stream().filter((val)-> !val.getName().equalsIgnoreCase(""))
+        foods = foods.stream().filter((val)-> !val.getName().equalsIgnoreCase(EMPTY_STRING))
                 .collect(Collectors.toList());
         return ENTITY_MANAGER.createPurposes(trainingId, exercises, equipment, foods);
     }

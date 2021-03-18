@@ -1,6 +1,6 @@
 package com.epam.jwd.fitness_center.dao.impl;
 
-import com.epam.jwd.fitness_center.dao.api.UserDAO;
+import com.epam.jwd.fitness_center.dao.api.ClientDAO;
 import com.epam.jwd.fitness_center.model.entity.Client;
 import com.epam.jwd.fitness_center.model.entity.EntityManager;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public final class ClientDAO implements UserDAO<Client> {
+public final class ClientDAOImpl implements ClientDAO<Client> {
 
     private final Connection connection;
 
@@ -27,8 +27,9 @@ public final class ClientDAO implements UserDAO<Client> {
     private static final String DELETE_CLIENT_BY_ID = "delete from Client where c_id =?";
     private static final String UPDATE_CLIENT = "update Client set c_login = ?,c_name = ?,c_height = ?" +
             ",c_weight = ? where c_id = ?";
+    private static final String UPDATE_BALANCE = "update Client set c_balance= ? where c_id = ?";
 
-    private final static Logger LOGGER = LogManager.getLogger(ClientDAO.class);
+    private final static Logger LOGGER = LogManager.getLogger(ClientDAOImpl.class);
 
     private static final String ID_LABEL = "c_id";
     private static final String LOGIN_LABEL = "c_login";
@@ -38,7 +39,7 @@ public final class ClientDAO implements UserDAO<Client> {
     private static final String WEIGHT_LABEL = "c_weight";
     private static final String BALANCE_LABEL = "c_balance";
 
-    public ClientDAO(Connection connection) {
+    public ClientDAOImpl(Connection connection) {
         this.connection = connection;
     }
 
@@ -61,7 +62,7 @@ public final class ClientDAO implements UserDAO<Client> {
     }
 
     @Override
-    public Optional<Client> findByString(String string) {
+    public Optional<Client> findByLogin(String string) {
         try(PreparedStatement statement = connection.prepareStatement(SELECT_CLIENT_BY_LOGIN)) {
             statement.setString(1, string);
 
@@ -139,6 +140,17 @@ public final class ClientDAO implements UserDAO<Client> {
     public void update(Client entity) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_CLIENT)) {
             configureUpdateStatement(entity, preparedStatement);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+    }
+
+    @Override
+    public void pay(Integer id, Integer newBalance) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BALANCE)) {
+            preparedStatement.setDouble(1, newBalance);
+            preparedStatement.setInt(2, id);
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
