@@ -5,6 +5,7 @@ import com.epam.jwd.fitness_center.dao.impl.ClientDAOImpl;
 import com.epam.jwd.fitness_center.exception.SignupException;
 import com.epam.jwd.fitness_center.model.dto.ClientDTO;
 import com.epam.jwd.fitness_center.model.dto.DTOManager;
+import com.epam.jwd.fitness_center.model.dto.InstructorDTO;
 import com.epam.jwd.fitness_center.pool.ConnectionPool;
 import com.epam.jwd.fitness_center.model.entity.Client;
 import com.epam.jwd.fitness_center.exception.ConnectionPoolException;
@@ -80,22 +81,23 @@ public final class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void signup(String login, String name, String password) throws SignupException {
+    public Optional<ClientDTO> signup(String login, String name, String password) throws SignupException {
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
             ClientDAO<Client> dao = new ClientDAOImpl(connection);
 
             if (dao.findByLogin(login).isPresent()) {
                 throw new SignupException(SIGNUP_EXCEPTION_MESSAGE);
             }
-            dao.create(Client.getBuilder()
+            return dao.create(Client.getBuilder()
                     .login(login)
                     .name(name)
                     .password(BCrypt.hashpw(password, BCrypt.gensalt()))
-                    .build());
+                    .build()).map(this::convertToDto);
 
         } catch (SQLException | ConnectionPoolException exception) {
             LOGGER.error(exception.getMessage());
         }
+        return Optional.empty();
     }
 
     @Override

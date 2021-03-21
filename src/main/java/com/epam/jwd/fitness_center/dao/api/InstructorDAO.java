@@ -12,6 +12,6 @@ public interface InstructorDAO<T extends Entity> {
     Optional<T> findEntityById(Integer id);
     boolean delete(Integer id);
     abstract boolean delete(T entity);
-    abstract boolean create(T entity);
+    abstract Optional<T> create(T entity);
     abstract void update(T entity);
 }

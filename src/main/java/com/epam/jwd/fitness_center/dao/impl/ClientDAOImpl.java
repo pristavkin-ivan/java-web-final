@@ -125,15 +125,15 @@ public final class ClientDAOImpl implements ClientDAO<Client> {
     }
 
     @Override
-    public boolean create(Client entity) {
+    public Optional<Client> create(Client entity) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CLIENT)) {
             configureStatement(entity, preparedStatement);
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
-            return false;
+            return Optional.empty();
         }
-        return true;
+        return findByLogin(entity.getLogin());
     }
 
     @Override

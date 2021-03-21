@@ -2,6 +2,7 @@ package com.epam.jwd.fitness_center.service.api;
 
 import com.epam.jwd.fitness_center.exception.SignupException;
 import com.epam.jwd.fitness_center.model.dto.ClientDTO;
+import com.epam.jwd.fitness_center.model.dto.InstructorDTO;
 import com.epam.jwd.fitness_center.model.entity.Client;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface ClientService {
 
     Optional<ClientDTO> login(String login, String password);
 
-    void signup(String login, String name, String password) throws SignupException;
+    Optional<ClientDTO> signup(String login, String name, String password) throws SignupException;
 
     void updateProfile(Client client);
 

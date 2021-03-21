@@ -8,6 +8,9 @@
 
 <html>
 <head>
+    <style>
+        <c:import url="${pageContext.request.contextPath}/WEB-INF/css/profile.css"/>
+    </style>
     <title><fmt:message key="title.newTraining" bundle="${pageContent}"/></title>
 </head>
 

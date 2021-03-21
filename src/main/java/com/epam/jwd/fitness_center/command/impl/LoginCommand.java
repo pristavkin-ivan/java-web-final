@@ -10,6 +10,7 @@ import com.epam.jwd.fitness_center.service.api.ClientService;
 import com.epam.jwd.fitness_center.service.api.InstructorService;
 import com.epam.jwd.fitness_center.service.impl.ClientServiceImpl;
 import com.epam.jwd.fitness_center.service.impl.InstructorServiceImpl;
+import com.epam.jwd.fitness_center.util.ParamParser;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -21,6 +22,7 @@ public enum LoginCommand implements Command {
     private static final String PAGE_KEY = "loginPage";
     private static final String BUNDLE_NAME = "pages";
     private static final String ERROR_MESSAGE = "Incorrect login or password, try again!";
+    private static final String COMMAND_KEY = "command.default";
 
     private static final ClientService CLIENT_SERVICE = ClientServiceImpl.getInstance();
 
@@ -30,6 +32,8 @@ public enum LoginCommand implements Command {
 
         private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
+        private boolean redirect = false;
+
         @Override
         public String getPage() {
             return resourceBundle.getString(PAGE_KEY);
@@ -37,15 +41,29 @@ public enum LoginCommand implements Command {
 
         @Override
         public boolean isRedirect() {
-            return false;
+            return redirect;
+        }
+
+        @Override
+        public void setRedirect(boolean redirect) {
+            this.redirect = redirect;
+        }
+
+        @Override
+        public String getCommand() {
+            return resourceBundle.getString(COMMAND_KEY);
         }
 
     };
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        final String login = String.valueOf(requestContext.getParameter(Attributes.LOGIN));
-        final String password = String.valueOf(requestContext.getParameter(Attributes.PASSWORD));
+        final String login = ParamParser
+                .reduceJsInjection(String.valueOf(requestContext.getParameter(Attributes.LOGIN)));
+        final String password = ParamParser
+                .reduceJsInjection(String.valueOf(requestContext.getParameter(Attributes.PASSWORD)));
+
+        RESPONSE_CONTEXT.setRedirect(false);
 
         if (login.equals(Attributes.NULL) || login.equals("") || password.equals("")) {
             return RESPONSE_CONTEXT;
@@ -58,12 +76,14 @@ public enum LoginCommand implements Command {
         if (!Boolean.parseBoolean(requestContext.getParameter(Attributes.IS_INSTRUCTOR))) {
 
             if (loginClient(requestContext, login, password)) {
-                return DefaultCommand.DEFAULT_COMMAND.execute(requestContext);
+                RESPONSE_CONTEXT.setRedirect(true);
+                return RESPONSE_CONTEXT;
             }
         } else {
 
             if (loginInstructor(requestContext, login, password)) {
-                return DefaultCommand.DEFAULT_COMMAND.execute(requestContext);
+                RESPONSE_CONTEXT.setRedirect(true);
+                return RESPONSE_CONTEXT;
             }
         }
 

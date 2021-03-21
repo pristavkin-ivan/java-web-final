@@ -18,7 +18,9 @@ public class Controller extends HttpServlet {
 
     private final static Logger CONTROLLER_LOGGER = LogManager.getLogger(Controller.class);
     private final static String COMMAND_PARAM = "command";
-    private final String ERROR_MESSAGE = "Page can't be forwarded!";
+    private final String ERROR_FORWARD_MESSAGE = "Page can't be forwarded!";
+    private final String ERROR_REDIRECT_MESSAGE = "Page can't be redirected!";
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
@@ -31,12 +33,16 @@ public class Controller extends HttpServlet {
         final ResponseContext response = command.execute(new RequestContextImpl(req));
 
         if (response.isRedirect()) {
-            // todo redirect
+            try {
+                resp.sendRedirect(response.getCommand());
+            } catch (IOException e) {
+                CONTROLLER_LOGGER.error(ERROR_REDIRECT_MESSAGE, e);
+            }
         } else {
             try {
                 req.getRequestDispatcher(response.getPage()).forward(req, resp);
             } catch (ServletException | IOException e) {
-                CONTROLLER_LOGGER.error(ERROR_MESSAGE, e);
+                CONTROLLER_LOGGER.error(ERROR_FORWARD_MESSAGE, e);
             }
         }
     }

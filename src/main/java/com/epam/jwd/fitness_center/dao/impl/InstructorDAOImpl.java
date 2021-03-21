@@ -125,16 +125,15 @@ public final class InstructorDAOImpl implements InstructorDAO<Instructor> {
     }
 
     @Override
-    public boolean create(Instructor entity) {
+    public Optional<Instructor> create(Instructor entity) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INSTRUCTOR)) {
             configureStatement(entity, preparedStatement);
             preparedStatement.executeUpdate();
-        } catch (
-                SQLException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
-            return false;
+            return Optional.empty();
         }
-        return true;
+        return findByLogin(entity.getLogin());
     }
 
     @Override

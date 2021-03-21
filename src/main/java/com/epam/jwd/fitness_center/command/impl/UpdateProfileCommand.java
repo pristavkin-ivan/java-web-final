@@ -10,8 +10,10 @@ import com.epam.jwd.fitness_center.service.api.ClientService;
 import com.epam.jwd.fitness_center.service.api.InstructorService;
 import com.epam.jwd.fitness_center.service.impl.ClientServiceImpl;
 import com.epam.jwd.fitness_center.service.impl.InstructorServiceImpl;
+import com.epam.jwd.fitness_center.util.ParamParser;
 
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 public enum UpdateProfileCommand implements Command {
     INSTANCE;
@@ -20,6 +22,37 @@ public enum UpdateProfileCommand implements Command {
 
     private final static ClientService CLIENT_SERVICE = ClientServiceImpl.getInstance();
 
+    private static final String BUNDLE_NAME = "pages";
+    private static final String COMMAND_KEY = "command.showProfile";
+
+    private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
+
+        private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
+
+        private boolean redirect = true;
+
+        @Override
+        public String getPage() {
+            return "";
+        }
+
+        @Override
+        public boolean isRedirect() {
+            return redirect;
+        }
+
+        @Override
+        public void setRedirect(boolean redirect) {
+            this.redirect = redirect;
+        }
+
+        @Override
+        public String getCommand() {
+            return resourceBundle.getString(COMMAND_KEY);
+        }
+
+    };
+
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         if (Objects.equals(requestContext.getSessionAttribute(Attributes.IS_INSTRUCTOR), true)) {
@@ -27,15 +60,15 @@ public enum UpdateProfileCommand implements Command {
         } else {
             updateClient(requestContext);
         }
-        return ShowProfileCommand.INSTANCE.execute(requestContext);
+        return RESPONSE_CONTEXT;
     }
 
     private void updateClient(RequestContext requestContext) {
         final Client.Builder builder = Client.getBuilder();
 
         final Client client = builder.id((Integer) requestContext.getSessionAttribute(Attributes.ID))
-                .login(requestContext.getParameter(Attributes.LOGIN))
-                .name(requestContext.getParameter(Attributes.NAME))
+                .login(ParamParser.reduceJsInjection(requestContext.getParameter(Attributes.LOGIN)))
+                .name(ParamParser.reduceJsInjection(requestContext.getParameter(Attributes.NAME)))
                 .height(Double.valueOf(requestContext.getParameter(Attributes.HEIGHT)))
                 .weight(Double.valueOf(requestContext.getParameter(Attributes.WEIGHT)))
                 .build();
@@ -47,10 +80,10 @@ public enum UpdateProfileCommand implements Command {
         final Instructor.Builder builder = Instructor.getBuilder();
 
         final Instructor instructor = builder.id((Integer) requestContext.getSessionAttribute(Attributes.ID))
-                .login(requestContext.getParameter(Attributes.LOGIN))
-                .name(requestContext.getParameter(Attributes.NAME))
-                .url(requestContext.getParameter(Attributes.PHOTO_URL))
-                .info(requestContext.getParameter(Attributes.INFO))
+                .login(ParamParser.reduceJsInjection(requestContext.getParameter(Attributes.LOGIN)))
+                .name(ParamParser.reduceJsInjection(requestContext.getParameter(Attributes.NAME)))
+                .url(ParamParser.reduceJsInjection(requestContext.getParameter(Attributes.PHOTO_URL)))
+                .info(ParamParser.reduceJsInjection(requestContext.getParameter(Attributes.INFO)))
                 .build();
 
         INSTRUCTOR_SERVICE.updateProfile(instructor);

@@ -54,7 +54,7 @@ public class InstructorDaoTest {
 
     @Test
     public void CreateInstructorTest_MustAddInstructorToDataBase_True() {
-        assertTrue(instructorDAO.create(instructor));
+        assertNotNull(instructorDAO.create(instructor).get());
     }
 
     @Test

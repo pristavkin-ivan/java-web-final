@@ -10,6 +10,7 @@ import com.epam.jwd.fitness_center.dao.impl.PurposesDAOImpl;
 import com.epam.jwd.fitness_center.dao.impl.TrainingDAOImpl;
 import com.epam.jwd.fitness_center.exception.ConnectionPoolException;
 import com.epam.jwd.fitness_center.exception.NoSuchInstructorException;
+import com.epam.jwd.fitness_center.exception.NoSuchTrainingsException;
 import com.epam.jwd.fitness_center.exception.NotEnoughMoneyException;
 import com.epam.jwd.fitness_center.model.dto.DTOManager;
 import com.epam.jwd.fitness_center.model.dto.TrainingDTO;
@@ -147,7 +148,7 @@ public final class TrainingServiceImpl implements TrainingService {
         if (balance < price) {
             throw new NotEnoughMoneyException(NOT_ENOUGH_MONEY);
         }
-        clientDAO.pay(clientId, (int) (balance-price));
+        clientDAO.pay(clientId, (int) (balance - price));
     }
 
     private Training buildTraining(Integer id, TrainingDAO<Training> trainingDAO, PurposesDao purposesDao) {
@@ -165,7 +166,9 @@ public final class TrainingServiceImpl implements TrainingService {
         return training;
     }
 
-    private List<Training> getTrainingsByClient(Integer clientId, TrainingDAO<Training> trainingDAO, PurposesDao purposesDao) {
+    private List<Training> getTrainingsByClient(Integer clientId, TrainingDAO<Training> trainingDAO
+            , PurposesDao purposesDao) {
+
         final List<Training.Builder> trainingBuilders = trainingDAO.findAllTrainingsByClientId(clientId);
 
         for (Training.Builder builder : trainingBuilders) {
@@ -178,6 +181,7 @@ public final class TrainingServiceImpl implements TrainingService {
 
     private List<Training> getTrainingsByInstructor(Integer instructorId, TrainingDAO<Training> trainingDAO
             , PurposesDao purposesDao) {
+
         final List<Training.Builder> trainingBuilders = trainingDAO.findAllTrainingsByInstructorId(instructorId);
 
         for (Training.Builder builder : trainingBuilders) {

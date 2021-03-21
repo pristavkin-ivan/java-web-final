@@ -53,7 +53,7 @@ public class ClientDaoTest {
 
     @Test
     public void CreateClientTest_MustAddClientToDataBase_True() {
-        assertTrue(clientDAO.create(client));
+        assertNotNull(clientDAO.create(client).get());
     }
 
     @Test

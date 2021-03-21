@@ -10,6 +10,7 @@ import com.epam.jwd.fitness_center.service.api.ClientService;
 import com.epam.jwd.fitness_center.service.api.TrainingService;
 import com.epam.jwd.fitness_center.service.impl.ClientServiceImpl;
 import com.epam.jwd.fitness_center.service.impl.TrainingServiceImpl;
+import com.epam.jwd.fitness_center.util.ParamParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,6 +22,7 @@ public enum CreateTrainingCommand implements Command {
     private static final double TRAINING_PRICE = 3.5;
     private final static String BUNDLE_NAME = "pages";
     private final static String PAGE_KEY = "createTrainingPage";
+    private static final String COMMAND_KEY = "command.showTrainings";
 
     private static final TrainingService TRAINING_SERVICE = TrainingServiceImpl.getInstance();
 
@@ -32,6 +34,8 @@ public enum CreateTrainingCommand implements Command {
 
         private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
+        private boolean redirect = false;
+
         @Override
         public String getPage() {
             return resourceBundle.getString(PAGE_KEY);
@@ -39,14 +43,24 @@ public enum CreateTrainingCommand implements Command {
 
         @Override
         public boolean isRedirect() {
-            return false;
+            return redirect;
+        }
+
+        @Override
+        public void setRedirect(boolean redirect) {
+            this.redirect = redirect;
+        }
+
+        @Override
+        public String getCommand() {
+            return resourceBundle.getString(COMMAND_KEY);
         }
 
     };
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        final String instructorName = requestContext.getParameter(Attributes.I_NAME);
+        final String instructorName = ParamParser.reduceJsInjection(requestContext.getParameter(Attributes.I_NAME));
 
         if (instructorName == null) {
             return RESPONSE_CONTEXT;
@@ -56,7 +70,8 @@ public enum CreateTrainingCommand implements Command {
         requestContext.setSessionAttribute(Attributes.BALANCE
                 , CLIENT_SERVICE.getClientById((Integer) requestContext.getSessionAttribute(Attributes.ID))
                         .get().getBalance());
-        return ShowTrainingsCommand.INSTANCE.execute(requestContext);
+        RESPONSE_CONTEXT.setRedirect(true);
+        return RESPONSE_CONTEXT;
     }
 
     private void createTraining(RequestContext requestContext, String instructorName) {

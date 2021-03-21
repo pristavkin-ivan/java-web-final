@@ -8,13 +8,17 @@
 
 <html>
 <head>
+    <style>
+        <c:import url="${pageContext.request.contextPath}/WEB-INF/css/profile.css"/>
+    </style>
     <title><fmt:message key="title.trainingDetails"/></title>
 </head>
 <body>
 
 <c:import url="../static/header.jsp" />
 
-<main>
+<main >
+    <div>
     <ul>
         <li><fmt:message key="label.orderNumber"/>${training.id}.</li>
         <c:choose>
@@ -54,6 +58,7 @@
         </c:otherwise>
 
     </c:choose>
+    </div>
 
 </main>
 

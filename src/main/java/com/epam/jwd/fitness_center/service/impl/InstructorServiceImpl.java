@@ -81,7 +81,7 @@ public final class InstructorServiceImpl implements InstructorService {
     }
 
     @Override
-    public void signup(String login, String name, String password) throws SignupException {
+    public Optional<InstructorDTO> signup(String login, String name, String password) throws SignupException {
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
             final InstructorDAO<Instructor> dao = new InstructorDAOImpl(connection);
 
@@ -89,11 +89,12 @@ public final class InstructorServiceImpl implements InstructorService {
                 throw new SignupException(SIGNUP_EXCEPTION_MESSAGE);
             }
 
-            dao.create(EntityManager.ENTITY_MANAGER.createInstructor(0, login, name
-                    , BCrypt.hashpw(password, BCrypt.gensalt()), null, null));
+            return dao.create(EntityManager.ENTITY_MANAGER.createInstructor(0, login, name
+                    , BCrypt.hashpw(password, BCrypt.gensalt()), null, null)).map(this::convertToDto);
         } catch (SQLException | ConnectionPoolException exception) {
             LOGGER.error(exception.getMessage());
         }
+        return Optional.empty();
     }
 
     @Override

@@ -6,4 +6,10 @@ public interface ResponseContext {
 
     boolean isRedirect();
 
+    default void setRedirect(boolean redirect) {}
+
+    default String getCommand() {
+        return "";
+    }
+
 }

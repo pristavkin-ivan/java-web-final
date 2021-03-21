@@ -1,6 +1,7 @@
 package com.epam.jwd.fitness_center.service.api;
 
 import com.epam.jwd.fitness_center.exception.NoSuchInstructorException;
+import com.epam.jwd.fitness_center.exception.NoSuchTrainingsException;
 import com.epam.jwd.fitness_center.exception.NotEnoughMoneyException;
 import com.epam.jwd.fitness_center.model.dto.TrainingDTO;
 

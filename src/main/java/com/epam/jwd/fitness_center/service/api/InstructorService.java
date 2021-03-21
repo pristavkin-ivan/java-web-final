@@ -15,7 +15,7 @@ public interface InstructorService {
 
     Optional<InstructorDTO> login(String login, String password);
 
-    void signup(String login, String name, String password) throws SignupException;
+    Optional<InstructorDTO> signup(String login, String name, String password) throws SignupException;
 
     void updateProfile(Instructor instructor);
 }

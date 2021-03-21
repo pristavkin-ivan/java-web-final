@@ -1,6 +1,7 @@
 package com.epam.jwd.fitness_center.service.impl;
 
 import com.epam.jwd.fitness_center.exception.ConnectionPoolException;
+import com.epam.jwd.fitness_center.exception.NoSuchTrainingsException;
 import com.epam.jwd.fitness_center.model.dto.TrainingDTO;
 import com.epam.jwd.fitness_center.pool.ConnectionPool;
 import org.junit.jupiter.api.AfterAll;
@@ -33,7 +34,9 @@ public class TrainingServiceTest {
 
     @Test
     public void getTrainingsTest_ReturnTrainingsDtoList_NotEmptyList() {
-        final List<TrainingDTO> trainingsDto = TrainingServiceImpl.getInstance().findTrainingsByClientId(18);
+        List<TrainingDTO> trainingsDto = null;
+
+        trainingsDto = TrainingServiceImpl.getInstance().findTrainingsByClientId(18);
 
         assertNotNull(trainingsDto);
         System.out.println(trainingsDto);
