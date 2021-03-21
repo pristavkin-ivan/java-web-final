@@ -20,4 +20,6 @@ public interface ClientService {
 
     void updateProfile(Client client);
 
+    void deleteProfile(Integer id);
+
 }

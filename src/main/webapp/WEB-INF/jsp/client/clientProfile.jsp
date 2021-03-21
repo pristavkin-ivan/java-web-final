@@ -18,7 +18,7 @@
 
 <c:import url="../static/header.jsp"/>
 
-<main>
+<h2>
 
     <h1><fmt:message key="title.profile" bundle="${pageContent}"/></h1>
 
@@ -51,10 +51,14 @@
             <button type="submit"><fmt:message key="label.change" bundle="${pageContent}"/></button>
 
             <br>
+            <h2 style="text-align: center"><a href="/go?command=delete_profile" style="color: red;">Delete profile</a></h2>
+
+            <br>
             <p id="errorLabel">${error}</p>
 
         </div>
     </form>
+
 
 </main>
 

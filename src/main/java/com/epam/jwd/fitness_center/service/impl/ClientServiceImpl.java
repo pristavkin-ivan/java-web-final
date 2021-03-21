@@ -111,6 +111,17 @@ public final class ClientServiceImpl implements ClientService {
         }
     }
 
+    @Override
+    public void deleteProfile(Integer id) {
+        try(final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
+            ClientDAO<Client> dao = new ClientDAOImpl(connection);
+
+            dao.delete(id);
+        } catch (SQLException | ConnectionPoolException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+    }
+
     public static ClientServiceImpl getInstance() {
         return CLIENT_SERVICE;
     }

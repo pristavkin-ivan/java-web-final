@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class PurposesDaoTest {
@@ -34,6 +35,11 @@ public class PurposesDaoTest {
         final Purposes purposes = purposesDao.findPurposesByTrainingId(1);
         assertNotNull(purposes);
         System.out.println(purposes);
+    }
+
+    @Test
+    public void DeletePurposesByTrainingId_MustDeleteAllPurposesById_True() {
+        assertTrue(purposesDao.delete(2));
     }
 
     @AfterAll

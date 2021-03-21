@@ -21,4 +21,6 @@ public interface Attributes {
     String INFO = "info";
     String HEIGHT = "height";
     String WEIGHT = "weight";
+    String DELETE_ID = "deleteId";
+    String ADMIN = "admin";
 }

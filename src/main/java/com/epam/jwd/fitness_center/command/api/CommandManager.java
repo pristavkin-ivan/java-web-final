@@ -2,6 +2,8 @@ package com.epam.jwd.fitness_center.command.api;
 
 import com.epam.jwd.fitness_center.command.impl.CreateTrainingCommand;
 import com.epam.jwd.fitness_center.command.impl.DefaultCommand;
+import com.epam.jwd.fitness_center.command.impl.DeleteProfileCommand;
+import com.epam.jwd.fitness_center.command.impl.DeleteTrainingCommand;
 import com.epam.jwd.fitness_center.command.impl.ErrorCommand;
 import com.epam.jwd.fitness_center.command.impl.InspectTraining;
 import com.epam.jwd.fitness_center.command.impl.LoginCommand;
@@ -19,7 +21,8 @@ public enum CommandManager {
     , SHOW_INSTRUCTORS(ShowInstructorsCommand.INSTANCE), SHOW_PROFILE(ShowProfileCommand.INSTANCE)
     , SHOW_TRAININGS(ShowTrainingsCommand.INSTANCE), CREATE_TRAINING(CreateTrainingCommand.INSTANCE)
     , UPDATE_PROFILE(UpdateProfileCommand.INSTANCE), INSPECT_TRAINING(InspectTraining.INSTANCE)
-    , SHOW_ALL_TRAININGS(ShowAllTrainingsCommand.INSTANCE);
+    , SHOW_ALL_TRAININGS(ShowAllTrainingsCommand.INSTANCE), DELETE_PROFILE(DeleteProfileCommand.INSTANCE)
+    , DELETE_TRAINING(DeleteTrainingCommand.INSTANCE);
 
     private final Command command;
 

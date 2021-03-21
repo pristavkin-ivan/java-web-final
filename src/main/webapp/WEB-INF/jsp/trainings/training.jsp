@@ -21,14 +21,12 @@
     <div>
     <ul>
         <li><fmt:message key="label.orderNumber"/>${training.id}.</li>
-        <c:choose>
-            <c:when test="${not empty sessionScope.isInstructor}">
-                <li><fmt:message key="label.client"/> ${training.clientName}.</li>
-            </c:when>
-            <c:otherwise>
-                <li><fmt:message key="label.instructor"/> ${training.instructorName}.</li>
-            </c:otherwise>
-        </c:choose>
+        <c:if test="${empty sessionScope.isInstructor or (not empty sessionScope.isInstructor and sessionScope.login == 'admin')}">
+            <li><fmt:message key="label.instructor"/> ${training.instructorName}.</li>
+        </c:if>
+        <c:if test="${not empty sessionScope.isInstructor}">
+            <li><fmt:message key="label.client"/> ${training.clientName}.</li>
+        </c:if>
         <li><fmt:message key="label.amount"/>${training.amount}.</li>
         <li><fmt:message key="label.price"/>${training.price}.</li>
 
@@ -56,8 +54,9 @@
             <p>${training.comment}</p>
 
         </c:otherwise>
-
     </c:choose>
+        <br>
+        <h2 style="text-align: center"><a href="/go?command=delete_training&deleteId=${training.id}" style="color: red;">Delete training</a></h2>
     </div>
 
 </main>

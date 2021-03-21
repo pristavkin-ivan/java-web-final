@@ -42,7 +42,6 @@ public final class TrainingDAOImpl implements TrainingDAO<Training> {
     private static final String INSERT_TRAINING = "insert into training(client_id, instructor_id, t_amount" +
             ", t_difficulty, t_price) values(?,?,?,?,?) ";
 
-    //todo продумать по какой
     private static final String DELETE_TRAINING = "delete from training where client_login =?";
     private static final String DELETE_TRAINING_BY_ID = "delete from training where t_id =?";
 
@@ -98,7 +97,14 @@ public final class TrainingDAOImpl implements TrainingDAO<Training> {
 
     @Override
     public boolean delete(Integer id) {
-        return false;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_TRAINING_BY_ID)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LOGGER.error(exception.getMessage());
+            return false;
+        }
+        return true;
     }
 
     @Override

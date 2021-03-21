@@ -18,4 +18,6 @@ public interface InstructorService {
     Optional<InstructorDTO> signup(String login, String name, String password) throws SignupException;
 
     void updateProfile(Instructor instructor);
+
+    void deleteProfile(Integer id);
 }

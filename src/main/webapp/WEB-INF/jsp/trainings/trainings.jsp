@@ -12,7 +12,7 @@
 <c:choose>
 
     <c:when test="${sessionScope.login eq 'admin' and not empty sessionScope.isInstructor}">
-        <title><fmt:message key="title.orders" />
+        <fmt:message key="title.orders" />
     </c:when>
 
     <c:otherwise>

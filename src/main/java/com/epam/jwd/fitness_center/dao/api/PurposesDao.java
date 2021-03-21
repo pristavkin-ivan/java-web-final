@@ -9,4 +9,6 @@ public interface PurposesDao {
     Purposes findPurposesByTrainingId(Integer trainingId);
 
     void addPurposes(List<Purposes> purposes, Integer trainingId);
+
+    boolean delete(Integer id);
 }

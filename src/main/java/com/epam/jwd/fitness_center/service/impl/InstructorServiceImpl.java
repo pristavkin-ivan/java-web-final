@@ -1,11 +1,14 @@
 package com.epam.jwd.fitness_center.service.impl;
 
+import com.epam.jwd.fitness_center.dao.api.ClientDAO;
 import com.epam.jwd.fitness_center.dao.api.InstructorDAO;
+import com.epam.jwd.fitness_center.dao.impl.ClientDAOImpl;
 import com.epam.jwd.fitness_center.dao.impl.InstructorDAOImpl;
 import com.epam.jwd.fitness_center.exception.ConnectionPoolException;
 import com.epam.jwd.fitness_center.exception.SignupException;
 import com.epam.jwd.fitness_center.model.dto.DTOManager;
 import com.epam.jwd.fitness_center.model.dto.InstructorDTO;
+import com.epam.jwd.fitness_center.model.entity.Client;
 import com.epam.jwd.fitness_center.model.entity.EntityManager;
 import com.epam.jwd.fitness_center.model.entity.Instructor;
 import com.epam.jwd.fitness_center.pool.ConnectionPool;
@@ -46,6 +49,17 @@ public final class InstructorServiceImpl implements InstructorService {
 
         assert instructors != null;
         return instructors.stream().skip(1).map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteProfile(Integer id) {
+        try(final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
+            InstructorDAO<Instructor> dao = new InstructorDAOImpl(connection);
+
+            dao.delete(id);
+        } catch (SQLException | ConnectionPoolException exception) {
+            LOGGER.error(exception.getMessage());
+        }
     }
 
     @Override

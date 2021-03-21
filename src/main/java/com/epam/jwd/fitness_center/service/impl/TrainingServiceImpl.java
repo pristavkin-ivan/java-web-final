@@ -139,6 +139,19 @@ public final class TrainingServiceImpl implements TrainingService {
         }
     }
 
+    @Override
+    public void deleteTraining(Integer id) {
+        try(final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
+            TrainingDAO<Training> dao = new TrainingDAOImpl(connection);
+            PurposesDao p_dao = new PurposesDAOImpl(connection);
+
+            dao.delete(id);
+            p_dao.delete(id);
+        } catch (SQLException | ConnectionPoolException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+    }
+
     private void validate(Integer clientId, Double price, ClientDAO<Client> clientDAO
             , Optional<Instructor> instructor) throws NoSuchInstructorException, NotEnoughMoneyException {
         if (!instructor.isPresent()) {

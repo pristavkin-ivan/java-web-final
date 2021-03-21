@@ -35,6 +35,8 @@ public final class PurposesDAOImpl implements PurposesDao {
     private static final String INSERT_PURPOSE = "insert into purposes(training_id, exercise_id, equipment_id, food_id)" +
             " values(?,?,?,?)";
 
+    private static final String DELETE_PURPOSES_BY_TRAINING_ID = "delete from purposes where training_id =?";
+
     private final static Logger LOGGER = LogManager.getLogger(ClientDAOImpl.class);
     private final static String EXERCISE_NAME_LABEL = "exercise.e_name";
     private final static String EXERCISE_DIFFICULTY_LABEL = "exercise.e_difficulty";
@@ -73,6 +75,18 @@ public final class PurposesDAOImpl implements PurposesDao {
     @Override
     public void addPurposes(List<Purposes> purposes, Integer trainingId) {
 
+    }
+
+    @Override
+    public boolean delete(Integer id) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PURPOSES_BY_TRAINING_ID)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LOGGER.error(exception.getMessage());
+            return false;
+        }
+        return true;
     }
 
     private void fillCollections(List<Exercise> exercises, List<Equipment> equipment, List<Food> foods

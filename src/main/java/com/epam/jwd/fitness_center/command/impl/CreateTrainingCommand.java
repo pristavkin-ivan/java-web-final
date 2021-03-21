@@ -60,9 +60,12 @@ public enum CreateTrainingCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        final String instructorName = ParamParser.reduceJsInjection(requestContext.getParameter(Attributes.I_NAME));
+        final String instructorName = ParamParser
+                .reduceJsInjection(String.valueOf(requestContext.getParameter(Attributes.I_NAME)));
 
-        if (instructorName == null) {
+        RESPONSE_CONTEXT.setRedirect(false);
+
+        if (instructorName.equals("") || instructorName.equals("null")) {
             return RESPONSE_CONTEXT;
         }
 

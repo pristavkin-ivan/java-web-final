@@ -21,5 +21,7 @@ public interface TrainingService {
     void createTraining(Integer clientId, String instructorName, Integer amount, Integer difficulty
             , Double price) throws NoSuchInstructorException, NotEnoughMoneyException;
 
+    void deleteTraining(Integer id);
+
 
 }

@@ -25,7 +25,7 @@ public final class InstructorDAOImpl implements InstructorDAO<Instructor> {
     private static final String SELECT_INSTRUCTOR_BY_NAME = "select * from instructor where i_name =?";
     private static final String INSERT_INSTRUCTOR = "insert into instructor(i_login, i_name, i_password) values(?,?,?)";
     private static final String DELETE_INSTRUCTOR = "delete from instructor where c_login =?";
-    private static final String DELETE_INSTRUCTOR_BY_ID = "delete from instructor where c_id =?";
+    private static final String DELETE_INSTRUCTOR_BY_ID = "delete from instructor where i_id =?";
     private static final String UPDATE_INSTRUCTOR = "update Instructor set i_login = ?,i_name = ?, i_url = ?" +
             ", i_info = ? where i_id = ?";
 
@@ -94,7 +94,7 @@ public final class InstructorDAOImpl implements InstructorDAO<Instructor> {
 
     @Override
     public boolean delete(Integer id) {
-        if(id.equals(6)) {
+        if (id.equals(6)) {
             return true;
         }
 
@@ -110,7 +110,7 @@ public final class InstructorDAOImpl implements InstructorDAO<Instructor> {
 
     @Override
     public boolean delete(Instructor entity) {
-        if(entity.getLogin().equals(ADMIN)) {
+        if (entity.getLogin().equals(ADMIN)) {
             return true;
         }
 

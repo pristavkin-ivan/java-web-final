@@ -38,14 +38,15 @@
 
     </c:if>
 
-<%--todo админу выводятся чек боксы и кнопка удаления--%>
-
         <c:if test="${not empty instructors}">
         <ul type="square">
             <c:forEach var="instructor" items="${instructors}">
             <li>
                 <span ><b>${instructor.name}</b></span><br><br>
                     <img style="text-align: center" src="${instructor.url}"/>
+                <c:if test="${not empty sessionScope.isInstructor and  sessionScope.login eq 'admin'}">
+                    <a href="/go?command=delete_profile&deleteId=${instructor.id}">Delete</a>
+                </c:if>
                 <span>${instructor.info}</span>
                     <br>
             </li>

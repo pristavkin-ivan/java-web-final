@@ -1,5 +1,6 @@
 package com.epam.jwd.fitness_center.command.impl;
 
+import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
@@ -10,11 +11,15 @@ import com.epam.jwd.fitness_center.service.impl.InstructorServiceImpl;
 
 import java.util.ResourceBundle;
 
-public enum LogoutCommand implements Command {
-    LOGOUT_COMMAND;
+public enum DeleteProfileCommand implements Command {
+    INSTANCE;
 
-    private static final String BUNDLE_NAME = "pages";
-    private static final String COMMAND_KEY = "command.login";
+    private static final ClientService CLIENT_SERVICE = ClientServiceImpl.getInstance();
+
+    private static final InstructorService INSTRUCTOR_SERVICE = InstructorServiceImpl.getInstance();
+
+    private final static String BUNDLE_NAME = "pages";
+    private final static String COMMAND_KEY = "command.showInstructors";
 
     private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
 
@@ -22,7 +27,7 @@ public enum LogoutCommand implements Command {
 
         @Override
         public String getPage() {
-            return "";
+            return null;
         }
 
         @Override
@@ -34,13 +39,25 @@ public enum LogoutCommand implements Command {
         public String getCommand() {
             return resourceBundle.getString(COMMAND_KEY);
         }
-
     };
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        requestContext.invalidateSession();
-        return RESPONSE_CONTEXT;
-    }
+        Integer id;
 
+        if (requestContext.getParameter(Attributes.DELETE_ID) != null) {
+            id = Integer.parseInt(requestContext.getParameter(Attributes.DELETE_ID));
+        } else {
+            id = (Integer) requestContext.getSessionAttribute(Attributes.ID);
+        }
+
+        if (requestContext.getSessionAttribute(Attributes.IS_INSTRUCTOR) != null) {
+            INSTRUCTOR_SERVICE.deleteProfile(id);
+            return RESPONSE_CONTEXT;
+        } else {
+            CLIENT_SERVICE.deleteProfile(id);
+        }
+
+        return LogoutCommand.LOGOUT_COMMAND.execute(requestContext);
+    }
 }
