@@ -152,6 +152,17 @@ public final class TrainingServiceImpl implements TrainingService {
         }
     }
 
+    @Override
+    public void leaveComment(Integer id, String comment) {
+        try(final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
+            TrainingDAO<Training> dao = new TrainingDAOImpl(connection);
+
+            dao.updateComment(id, comment);
+        } catch (SQLException | ConnectionPoolException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+    }
+
     private void validate(Integer clientId, Double price, ClientDAO<Client> clientDAO
             , Optional<Instructor> instructor) throws NoSuchInstructorException, NotEnoughMoneyException {
         if (!instructor.isPresent()) {
@@ -208,7 +219,8 @@ public final class TrainingServiceImpl implements TrainingService {
     private TrainingDTO convertToDto(Training training) {
         return DTOManager.DTO_MANAGER.createTrainingDTO(training.getId(), training.getInstructor().getName()
                 , training.getClient().getName(), training.getInstructor().getImgUrl()
-                , training.getAmount(), training.getDifficulty(), training.getPurposes(), training.getPrice());
+                , training.getAmount(), training.getDifficulty(), training.getPurposes(), training.getPrice()
+                , training.getComment());
     }
 
     public static TrainingServiceImpl getInstance() {

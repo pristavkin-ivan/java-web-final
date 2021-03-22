@@ -42,6 +42,8 @@ public final class TrainingDAOImpl implements TrainingDAO<Training> {
     private static final String INSERT_TRAINING = "insert into training(client_id, instructor_id, t_amount" +
             ", t_difficulty, t_price) values(?,?,?,?,?) ";
 
+    private static final String UPDATE_COMMENT = "update training set t_comment = ? where t_id = ? ";
+
     private static final String DELETE_TRAINING = "delete from training where client_login =?";
     private static final String DELETE_TRAINING_BY_ID = "delete from training where t_id =?";
 
@@ -59,6 +61,7 @@ public final class TrainingDAOImpl implements TrainingDAO<Training> {
     private static final String AMOUNT_LABEL = "t_amount";
     private static final String DIFFICULTY_LABEL = "t_difficulty";
     private static final String PRICE_LABEL = "t_price";
+    private static final String COMMENT_LABEL = "t_comment";
 
     public TrainingDAOImpl(Connection connection) {
         this.connection = connection;
@@ -121,6 +124,17 @@ public final class TrainingDAOImpl implements TrainingDAO<Training> {
     public void update(Training entity) {
     }
 
+    @Override
+    public void updateComment(Integer id, String comment) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_COMMENT)) {
+            preparedStatement.setString(1, comment);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+    }
+
     private void configureStatement(Integer clientId, Integer instructorId, Integer amount, Integer difficulty
             , Double price, PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setInt(1, clientId);
@@ -144,7 +158,8 @@ public final class TrainingDAOImpl implements TrainingDAO<Training> {
                 .difficulty(resultSet.getInt(DIFFICULTY_LABEL))
                 .instructor(instructor)
                 .client(client)
-                .price(resultSet.getDouble(PRICE_LABEL));
+                .price(resultSet.getDouble(PRICE_LABEL))
+                .comment(resultSet.getString(COMMENT_LABEL));
     }
 
     private List<Training.Builder> getBuilders(Integer instructorId, String selectAllTrainingsByInstructorId) {

@@ -48,6 +48,11 @@ public class TrainingDaoTest {
                 , training.getPrice()));
     }
 
+    @Test
+    public void InsertCommentTest_MustAddCommentToTraining_NotThrowSqlException() {
+        assertDoesNotThrow( () -> trainingDAO.updateComment(5, "Leaved comment..."));
+    }
+
     @AfterAll
     public static void closeConnection() {
         try {

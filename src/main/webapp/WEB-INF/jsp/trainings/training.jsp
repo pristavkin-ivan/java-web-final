@@ -42,9 +42,11 @@
             <form>
 
                 <textarea name="comment" id="comment">${training.comment}</textarea>
+                <input type="hidden" name="trainingId" value="${training.id}"/>
+                <input type="hidden" name="command" value="comment"/>
 
                 <br>
-                <button type="submit" ><fmt:message key="label.change"/></button>
+                <button type="submit"><fmt:message key="label.change"/></button>
 
             </form>
         </c:when>

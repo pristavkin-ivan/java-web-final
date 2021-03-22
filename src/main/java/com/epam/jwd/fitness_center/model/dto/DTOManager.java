@@ -13,9 +13,10 @@ public enum DTOManager {
         return new InstructorDTO(id, login, name, url, info);
     }
 
-    public TrainingDTO createTrainingDTO(Integer id, String instructorName, String clientName, String instructorPhotoUrl, Integer amount
-            , Integer difficulty, Purposes purposes, Double price) {
-        return new TrainingDTO(id, instructorName, clientName, instructorPhotoUrl, amount, difficulty, purposes, price);
+    public TrainingDTO createTrainingDTO(Integer id, String instructorName, String clientName, String instructorPhotoUrl
+            , Integer amount, Integer difficulty, Purposes purposes, Double price, String comment) {
+        return new TrainingDTO(id, instructorName, clientName, instructorPhotoUrl, amount, difficulty, purposes, price
+                , comment);
     }
 
 }

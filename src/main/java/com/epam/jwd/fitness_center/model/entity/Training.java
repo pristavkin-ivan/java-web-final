@@ -8,6 +8,8 @@ public final class Training implements Entity {
 
     private Double price;
 
+    private String comment;
+
     private Purposes purposes;
 
     private Client client;
@@ -15,7 +17,7 @@ public final class Training implements Entity {
     private Instructor instructor;
 
     Training(Integer id, Client client, Instructor instructor, Integer amount, Integer difficulty
-            , Purposes purposes, Double price) {
+            , Purposes purposes, Double price, String comment) {
         this.id = id;
         this.client = client;
         this.instructor = instructor;
@@ -23,6 +25,11 @@ public final class Training implements Entity {
         this.difficulty = difficulty;
         this.purposes = purposes;
         this.price = price;
+        this.comment = comment;
+    }
+
+    public String getComment() {
+        return comment;
     }
 
     public Double getPrice() {
@@ -76,6 +83,8 @@ public final class Training implements Entity {
 
         private Purposes purposes;
 
+        private String comment;
+
         private Client client;
 
         private Instructor instructor;
@@ -113,6 +122,11 @@ public final class Training implements Entity {
             return this;
         }
 
+        public Builder comment(String comment) {
+            this.comment = comment;
+            return this;
+        }
+
         public Builder purposes(Purposes purposes) {
             this.purposes = purposes;
             return this;
@@ -124,7 +138,7 @@ public final class Training implements Entity {
 
         public Training build() {
             return new Training(this.id, this.client, this.instructor, this.amount, this.difficulty
-                    , this.purposes, this.price);
+                    , this.purposes, this.price, this.comment);
         }
 
     }

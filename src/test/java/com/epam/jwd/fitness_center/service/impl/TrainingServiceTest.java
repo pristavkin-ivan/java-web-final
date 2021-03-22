@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TrainingServiceTest {
@@ -40,6 +41,11 @@ public class TrainingServiceTest {
 
         assertNotNull(trainingsDto);
         System.out.println(trainingsDto);
+    }
+
+    @Test
+    public void LeaveCommentTest_MustAddCommentToTraining_NotThrowException() {
+        assertDoesNotThrow( () -> TrainingServiceImpl.getInstance().leaveComment(7, "Leaved comment..."));
     }
 
     @AfterAll

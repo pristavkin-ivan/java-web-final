@@ -13,5 +13,7 @@ public interface TrainingDAO<T extends Entity> {
     Optional<Training.Builder> findEntityById(Integer id);
     boolean delete(Integer id);
     void createTraining(Integer clientId, Integer instructorId, Integer amount, Integer difficulty, Double price);
-    abstract void update(T entity);
+    void update(T entity);
+    void updateComment(Integer id, String comment);
+
 }

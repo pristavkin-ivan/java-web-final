@@ -10,8 +10,8 @@ public interface ClientDAO<T extends Entity> {
     Optional<T> findByLogin(String string);
     Optional<T> findEntityById(Integer id);
     boolean delete(Integer id);
-    abstract boolean delete(T entity);
-    abstract Optional<T> create(T entity);
-    abstract void update(T entity);
-    abstract void pay(Integer id, Integer newBalance);
+    boolean delete(T entity);
+    Optional<T> create(T entity);
+    void update(T entity);
+    void pay(Integer id, Integer newBalance);
 }

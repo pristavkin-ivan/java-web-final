@@ -23,4 +23,5 @@ public interface Attributes {
     String WEIGHT = "weight";
     String DELETE_ID = "deleteId";
     String ADMIN = "admin";
+    String COMMENT = "comment";
 }

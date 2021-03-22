@@ -23,5 +23,7 @@ public interface TrainingService {
 
     void deleteTraining(Integer id);
 
+    void leaveComment(Integer id, String comment);
+
 
 }
