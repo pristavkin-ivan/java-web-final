@@ -10,7 +10,6 @@ import com.epam.jwd.fitness_center.dao.impl.PurposesDAOImpl;
 import com.epam.jwd.fitness_center.dao.impl.TrainingDAOImpl;
 import com.epam.jwd.fitness_center.exception.ConnectionPoolException;
 import com.epam.jwd.fitness_center.exception.NoSuchInstructorException;
-import com.epam.jwd.fitness_center.exception.NoSuchTrainingsException;
 import com.epam.jwd.fitness_center.exception.NotEnoughMoneyException;
 import com.epam.jwd.fitness_center.model.dto.DTOManager;
 import com.epam.jwd.fitness_center.model.dto.TrainingDTO;
@@ -119,7 +118,8 @@ public final class TrainingServiceImpl implements TrainingService {
 
     @Override
     public void createTraining(Integer clientId, String instructorName, Integer amount, Integer difficulty
-            , Double price) throws NoSuchInstructorException, NotEnoughMoneyException {
+            , Double price, boolean isCredit) throws NoSuchInstructorException, NotEnoughMoneyException {
+
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
             connection.setAutoCommit(false);
 
@@ -129,8 +129,10 @@ public final class TrainingServiceImpl implements TrainingService {
 
             final Optional<Instructor> instructor = instructorDAO.findByName(instructorName);
 
-            validate(clientId, price, clientDAO, instructor);
+            price = price * getDiscount(clientId, clientDAO);
+            validate(clientId, price, isCredit, clientDAO, instructor);
             trainingDAO.createTraining(clientId, instructor.get().getId(), amount, difficulty, price);
+            clientDAO.increaseAmountOfTrainings(clientId, amount);
 
             connection.commit();
 
@@ -141,7 +143,7 @@ public final class TrainingServiceImpl implements TrainingService {
 
     @Override
     public void deleteTraining(Integer id) {
-        try(final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
+        try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
             TrainingDAO<Training> dao = new TrainingDAOImpl(connection);
             PurposesDao p_dao = new PurposesDAOImpl(connection);
 
@@ -154,7 +156,7 @@ public final class TrainingServiceImpl implements TrainingService {
 
     @Override
     public void leaveComment(Integer id, String comment) {
-        try(final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
+        try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
             TrainingDAO<Training> dao = new TrainingDAOImpl(connection);
 
             dao.updateComment(id, comment);
@@ -163,13 +165,18 @@ public final class TrainingServiceImpl implements TrainingService {
         }
     }
 
-    private void validate(Integer clientId, Double price, ClientDAO<Client> clientDAO
+    public Double getDiscount(Integer clientId, ClientDAO<Client> clientDAO) {
+        final Integer amountOfTrainings = clientDAO.findEntityById(clientId).get().getAmountOfTrainings();
+        return Discount.getDiscount(amountOfTrainings);
+    }
+
+    private void validate(Integer clientId, Double price, boolean isCredit, ClientDAO<Client> clientDAO
             , Optional<Instructor> instructor) throws NoSuchInstructorException, NotEnoughMoneyException {
         if (!instructor.isPresent()) {
             throw new NoSuchInstructorException(NO_SUCH_INSTRUCTOR);
         }
         final Double balance = clientDAO.findEntityById(clientId).get().getBalance();
-        if (balance < price) {
+        if (balance < price && !isCredit) {
             throw new NotEnoughMoneyException(NOT_ENOUGH_MONEY);
         }
         clientDAO.pay(clientId, (int) (balance - price));
@@ -225,6 +232,27 @@ public final class TrainingServiceImpl implements TrainingService {
 
     public static TrainingServiceImpl getInstance() {
         return TRAINING_SERVICE;
+    }
+
+    private static class Discount {
+
+        public static final Double NO_DISCOUNT = 1.0;
+
+        public static final Double DISCOUNT_10 = 0.9;
+
+        public static final Double DISCOUNT_20 = 0.8;
+
+        public static final Double DISCOUNT_30 = 0.7;
+
+        public static Double getDiscount(Integer amount) {
+            if (amount <= 20)
+                return NO_DISCOUNT;
+            if (amount <= 50)
+                return DISCOUNT_10;
+            if (amount <= 80)
+                return DISCOUNT_20;
+            return DISCOUNT_30;
+        }
     }
 
 }

@@ -24,4 +24,5 @@ public interface Attributes {
     String DELETE_ID = "deleteId";
     String ADMIN = "admin";
     String COMMENT = "comment";
+    String IS_CREDIT = "isCredit";
 }

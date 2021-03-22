@@ -1,4 +1,4 @@
-package com.epam.jwd.fitness_center.command.impl;
+package com.epam.jwd.fitness_center.command.impl.training;
 
 import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
@@ -8,19 +8,18 @@ import com.epam.jwd.fitness_center.model.dto.TrainingDTO;
 import com.epam.jwd.fitness_center.service.api.TrainingService;
 import com.epam.jwd.fitness_center.service.impl.TrainingServiceImpl;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-public enum ShowAllTrainingsCommand implements Command {
+public enum InspectTraining implements Command {
     INSTANCE;
 
-    private final static String BUNDLE_NAME = "pages";
-    private final static String PAGE_KEY = "trainingsPage";
+    private static final String PAGE_KEY = "trainingPage";
+    private static final String BUNDLE_NAME = "pages";
 
-    private final static TrainingService TRAINING_SERVICE = TrainingServiceImpl.getInstance();
+    private static final TrainingService TRAINING_SERVICE = TrainingServiceImpl.getInstance();
 
-    private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
+    private final static ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
 
         private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
@@ -33,14 +32,15 @@ public enum ShowAllTrainingsCommand implements Command {
         public boolean isRedirect() {
             return false;
         }
-
     };
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        List<TrainingDTO> trainings = TRAINING_SERVICE.findAll();
-        requestContext.setAttribute(Attributes.TRAININGS, trainings);
+        final Optional<TrainingDTO> optionalTrainingDTO
+                = TRAINING_SERVICE.findTrainingById(Integer.parseInt(requestContext.getParameter(Attributes.TRAINING_ID)));
+
+        optionalTrainingDTO.ifPresent(dto -> requestContext.setAttribute(Attributes.TRAINING, dto));
+
         return RESPONSE_CONTEXT;
     }
-
 }

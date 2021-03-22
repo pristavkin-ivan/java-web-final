@@ -47,6 +47,10 @@
             <button type="submit"><fmt:message key="label.pay" bundle="${pageContent}"/></button>
 
             <br>
+            <input type="checkbox" name="isCredit" value="true"/>
+            <fmt:message key="label.credit" bundle="${pageContent}"/>
+
+            <br>
             <p id="errorLabel">${error}</p>
 
         </div>

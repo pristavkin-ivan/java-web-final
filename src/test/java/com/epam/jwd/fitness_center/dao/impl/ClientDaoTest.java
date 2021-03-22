@@ -30,7 +30,7 @@ public class ClientDaoTest {
     static Connection connection;
 
     ClientDaoTest() {
-        client = EntityManager.ENTITY_MANAGER.createClient(0, TEST_LOGIN, TEST_NAME, TEST_PASS, 100.0
+        client = EntityManager.ENTITY_MANAGER.createClient(0,4, TEST_LOGIN, TEST_NAME, TEST_PASS, 100.0
                 , 100.0, 540.0);
         try {
             connection = DriverManager.getConnection(ApplicationListener.URL, ApplicationListener.USER
@@ -49,6 +49,11 @@ public class ClientDaoTest {
                 .height(150.0)
                 .weight(150.0)
                 .build()));
+    }
+
+    @Test
+    public void IncreaseAmountOfTrainingsTest_MustIncreaseTrainings_NotThrowSqlException() {
+        assertDoesNotThrow( () -> clientDAO.increaseAmountOfTrainings(35, 10));
     }
 
     @Test

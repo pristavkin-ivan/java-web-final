@@ -28,6 +28,8 @@ public final class ClientDAOImpl implements ClientDAO<Client> {
     private static final String UPDATE_CLIENT = "update Client set c_login = ?,c_name = ?,c_height = ?" +
             ",c_weight = ? where c_id = ?";
     private static final String UPDATE_BALANCE = "update Client set c_balance= ? where c_id = ?";
+    private static final String UPDATE_AMOUNT_OF_TRAININGS = "update Client set c_amount_of_trainings = " +
+            "c_amount_of_trainings + ? where c_id = ?";
 
     private final static Logger LOGGER = LogManager.getLogger(ClientDAOImpl.class);
 
@@ -38,6 +40,7 @@ public final class ClientDAOImpl implements ClientDAO<Client> {
     private static final String HEIGHT_LABEL = "c_height";
     private static final String WEIGHT_LABEL = "c_weight";
     private static final String BALANCE_LABEL = "c_balance";
+    private static final String TRAININGS_AMOUNT_LABEL = "c_amount_of_trainings";
 
     public ClientDAOImpl(Connection connection) {
         this.connection = connection;
@@ -51,6 +54,7 @@ public final class ClientDAOImpl implements ClientDAO<Client> {
              ResultSet resultSet = statement.executeQuery(SELECT_ALL_CLIENTS)) {
             while (resultSet.next()) {
                 clients.add(EntityManager.ENTITY_MANAGER.createClient(resultSet.getInt(ID_LABEL)
+                        , resultSet.getInt(TRAININGS_AMOUNT_LABEL)
                         , resultSet.getString(LOGIN_LABEL), resultSet.getString(NAME_LABEL)
                         , resultSet.getString(PASSWORD_LABEL), resultSet.getDouble(HEIGHT_LABEL)
                         , resultSet.getDouble(WEIGHT_LABEL), resultSet.getDouble(BALANCE_LABEL)));
@@ -69,13 +73,14 @@ public final class ClientDAOImpl implements ClientDAO<Client> {
             try(ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return Optional.of(EntityManager.ENTITY_MANAGER.createClient(resultSet.getInt(ID_LABEL)
+                            , resultSet.getInt(TRAININGS_AMOUNT_LABEL)
                             , resultSet.getString(LOGIN_LABEL), resultSet.getString(NAME_LABEL)
                             , resultSet.getString(PASSWORD_LABEL), resultSet.getDouble(HEIGHT_LABEL)
                             , resultSet.getDouble(WEIGHT_LABEL), resultSet.getDouble(BALANCE_LABEL)));
                 }
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            LOGGER.error(exception.getMessage());
         }
         return Optional.empty();
     }
@@ -89,6 +94,7 @@ public final class ClientDAOImpl implements ClientDAO<Client> {
 
                 if (resultSet.next()) {
                     return Optional.of(EntityManager.ENTITY_MANAGER.createClient(resultSet.getInt(ID_LABEL)
+                            , resultSet.getInt(TRAININGS_AMOUNT_LABEL)
                             , resultSet.getString(LOGIN_LABEL), resultSet.getString(NAME_LABEL)
                             , resultSet.getString(PASSWORD_LABEL), resultSet.getDouble(HEIGHT_LABEL)
                             , resultSet.getDouble(WEIGHT_LABEL), resultSet.getDouble(BALANCE_LABEL)));
@@ -150,6 +156,17 @@ public final class ClientDAOImpl implements ClientDAO<Client> {
     public void pay(Integer id, Integer newBalance) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BALANCE)) {
             preparedStatement.setDouble(1, newBalance);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+    }
+
+    @Override
+    public void increaseAmountOfTrainings(Integer id, Integer amountOfTrainings) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_AMOUNT_OF_TRAININGS)) {
+            preparedStatement.setInt(1, amountOfTrainings);
             preparedStatement.setInt(2, id);
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {

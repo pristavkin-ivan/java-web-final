@@ -4,20 +4,25 @@ import java.util.Objects;
 
 public class Client implements Entity {
 
-    private final Integer id;
+    private final Integer id, amountOfTrainings;
 
     private final String login, name, password;
 
     private final Double height, weight, balance;
 
-    Client(Integer id, String login, String name, String password, Double height, Double weight, Double balance) {
+    Client(Integer id, Integer amountOfTrainings, String login, String name, String password, Double height, Double weight, Double balance) {
         this.id = id;
+        this.amountOfTrainings = amountOfTrainings;
         this.login = login;
         this.name = name;
         this.password = password;
         this.height = height;
         this.weight = weight;
         this.balance = balance;
+    }
+
+    public Integer getAmountOfTrainings() {
+        return amountOfTrainings;
     }
 
     public Double getBalance() {
@@ -76,7 +81,7 @@ public class Client implements Entity {
     }
 
     public static class Builder {
-        private Integer id;
+        private Integer id, amountOfTrainings;
         private String login, name, password;
         private Double height, weight, balance;
 
@@ -85,6 +90,11 @@ public class Client implements Entity {
 
         public Builder id(Integer id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder amountOfTrainings(Integer amountOfTrainings) {
+            this.amountOfTrainings = amountOfTrainings;
             return this;
         }
 
@@ -119,7 +129,7 @@ public class Client implements Entity {
         }
 
         public Client build() {
-            return new Client(this.id, this.login, this.name, this.password, this.height, this.weight, this.balance);
+            return new Client(this.id, this.amountOfTrainings, this.login, this.name, this.password, this.height, this.weight, this.balance);
         }
 
     }

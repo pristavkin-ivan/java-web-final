@@ -1,20 +1,20 @@
 package com.epam.jwd.fitness_center.command.api;
 
-import com.epam.jwd.fitness_center.command.impl.CommentCommand;
-import com.epam.jwd.fitness_center.command.impl.CreateTrainingCommand;
-import com.epam.jwd.fitness_center.command.impl.DefaultCommand;
-import com.epam.jwd.fitness_center.command.impl.DeleteProfileCommand;
-import com.epam.jwd.fitness_center.command.impl.DeleteTrainingCommand;
+import com.epam.jwd.fitness_center.command.impl.training.CommentCommand;
+import com.epam.jwd.fitness_center.command.impl.training.CreateTrainingCommand;
+import com.epam.jwd.fitness_center.command.impl.user.DefaultCommand;
+import com.epam.jwd.fitness_center.command.impl.profile.DeleteProfileCommand;
+import com.epam.jwd.fitness_center.command.impl.training.DeleteTrainingCommand;
 import com.epam.jwd.fitness_center.command.impl.ErrorCommand;
-import com.epam.jwd.fitness_center.command.impl.InspectTraining;
-import com.epam.jwd.fitness_center.command.impl.LoginCommand;
-import com.epam.jwd.fitness_center.command.impl.LogoutCommand;
-import com.epam.jwd.fitness_center.command.impl.ShowAllTrainingsCommand;
-import com.epam.jwd.fitness_center.command.impl.ShowInstructorsCommand;
-import com.epam.jwd.fitness_center.command.impl.ShowTrainingsCommand;
-import com.epam.jwd.fitness_center.command.impl.SignupCommand;
-import com.epam.jwd.fitness_center.command.impl.ShowProfileCommand;
-import com.epam.jwd.fitness_center.command.impl.UpdateProfileCommand;
+import com.epam.jwd.fitness_center.command.impl.training.InspectTraining;
+import com.epam.jwd.fitness_center.command.impl.user.LoginCommand;
+import com.epam.jwd.fitness_center.command.impl.user.LogoutCommand;
+import com.epam.jwd.fitness_center.command.impl.training.ShowAllTrainingsCommand;
+import com.epam.jwd.fitness_center.command.impl.user.ShowInstructorsCommand;
+import com.epam.jwd.fitness_center.command.impl.training.ShowTrainingsCommand;
+import com.epam.jwd.fitness_center.command.impl.user.SignupCommand;
+import com.epam.jwd.fitness_center.command.impl.profile.ShowProfileCommand;
+import com.epam.jwd.fitness_center.command.impl.profile.UpdateProfileCommand;
 
 public enum CommandManager {
     DEFAULT(DefaultCommand.DEFAULT_COMMAND), LOGIN(LoginCommand.LOGIN_COMMAND), SIGNUP(SignupCommand.SIGNUP_COMMAND)

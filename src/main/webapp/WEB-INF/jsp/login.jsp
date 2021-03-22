@@ -34,7 +34,7 @@
                 <button type="submit"><fmt:message key="label.login" bundle="${rb}"/></button>
 
                 <br>
-                <input type="checkbox" name="isInstructor" value="true">
+                <input type="checkbox" name="isInstructor" value="true"/>
                 <fmt:message key="label.iAmInstructor" bundle="${rb}"/>
 
                 <br>

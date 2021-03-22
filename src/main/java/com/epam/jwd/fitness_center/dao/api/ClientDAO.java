@@ -14,4 +14,5 @@ public interface ClientDAO<T extends Entity> {
     Optional<T> create(T entity);
     void update(T entity);
     void pay(Integer id, Integer newBalance);
+    void increaseAmountOfTrainings(Integer id, Integer amountOfTrainings);
 }

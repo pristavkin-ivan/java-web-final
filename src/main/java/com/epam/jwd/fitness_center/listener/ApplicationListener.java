@@ -17,7 +17,7 @@ public final class ApplicationListener implements ServletContextListener {
     public final static String USER = "root";
     public final static String PASSWORD = "12345678L";
 
-    private final static Logger LOGGER = LogManager.getLogger(ApplicationListener.class);
+    private final static Logger LOGGER = LogManager.getLogger(ApplicationListener.class.getName());
     private final static String INIT_MESSAGE = "ServletContext and connection pool were initialized.";
     private final static String ERROR_MESSAGE = "Connection pool wasn't initialized.";
     private final static String DESTROY_MESSAGE = "ServletContext and connection pool were destroyed.";

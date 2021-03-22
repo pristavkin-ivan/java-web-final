@@ -1,4 +1,4 @@
-package com.epam.jwd.fitness_center.command.impl;
+package com.epam.jwd.fitness_center.command.impl.training;
 
 import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
@@ -73,7 +73,6 @@ public enum CreateTrainingCommand implements Command {
         requestContext.setSessionAttribute(Attributes.BALANCE
                 , CLIENT_SERVICE.getClientById((Integer) requestContext.getSessionAttribute(Attributes.ID))
                         .get().getBalance());
-        RESPONSE_CONTEXT.setRedirect(true);
         return RESPONSE_CONTEXT;
     }
 
@@ -81,13 +80,21 @@ public enum CreateTrainingCommand implements Command {
         final int amount = Integer.parseInt(requestContext.getParameter(Attributes.AMOUNT));
         final Integer difficulty = Integer.parseInt(requestContext.getParameter(Attributes.DIFFICULTY));
         final Double price = TRAINING_PRICE * amount;
+        final String credit = requestContext.getParameter(Attributes.IS_CREDIT);
+        boolean isCredit = false;
+
+        if (requestContext.getParameter(Attributes.IS_CREDIT) != null) {
+            isCredit = true;
+        }
 
         try {
             TRAINING_SERVICE.createTraining((Integer) requestContext.getSessionAttribute(Attributes.ID), instructorName
-                    , amount, difficulty, price);
+                    , amount, difficulty, price, isCredit);
+            RESPONSE_CONTEXT.setRedirect(true);
         } catch (NoSuchInstructorException | NotEnoughMoneyException e) {
             LOGGER.error(e);
             requestContext.setAttribute(Attributes.ERROR, e.getMessage());
+            RESPONSE_CONTEXT.setRedirect(false);
         }
     }
 }

@@ -1,9 +1,10 @@
-package com.epam.jwd.fitness_center.command.impl;
+package com.epam.jwd.fitness_center.command.impl.profile;
 
 import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
+import com.epam.jwd.fitness_center.command.impl.user.LogoutCommand;
 import com.epam.jwd.fitness_center.service.api.ClientService;
 import com.epam.jwd.fitness_center.service.api.InstructorService;
 import com.epam.jwd.fitness_center.service.impl.ClientServiceImpl;

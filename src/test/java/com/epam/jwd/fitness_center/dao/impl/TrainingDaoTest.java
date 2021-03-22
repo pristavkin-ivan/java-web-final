@@ -49,7 +49,7 @@ public class TrainingDaoTest {
     }
 
     @Test
-    public void InsertCommentTest_MustAddCommentToTraining_NotThrowSqlException() {
+    public void UpdateCommentTest_MustAddCommentToTraining_NotThrowSqlException() {
         assertDoesNotThrow( () -> trainingDAO.updateComment(5, "Leaved comment..."));
     }
 

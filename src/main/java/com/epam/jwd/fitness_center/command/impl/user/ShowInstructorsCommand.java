@@ -1,20 +1,20 @@
-package com.epam.jwd.fitness_center.command.impl;
+package com.epam.jwd.fitness_center.command.impl.user;
 
+import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
-import com.epam.jwd.fitness_center.service.api.ClientService;
 import com.epam.jwd.fitness_center.service.api.InstructorService;
-import com.epam.jwd.fitness_center.service.impl.ClientServiceImpl;
 import com.epam.jwd.fitness_center.service.impl.InstructorServiceImpl;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
-public enum LogoutCommand implements Command {
-    LOGOUT_COMMAND;
+public enum ShowInstructorsCommand implements Command {
+    INSTANCE;
 
-    private static final String BUNDLE_NAME = "pages";
-    private static final String COMMAND_KEY = "command.login";
+    private final static String BUNDLE_NAME = "pages";
+    private final static String PAGE_KEY = "instructorsPage";
 
     private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
 
@@ -22,25 +22,21 @@ public enum LogoutCommand implements Command {
 
         @Override
         public String getPage() {
-            return "";
+            return resourceBundle.getString(PAGE_KEY);
         }
 
         @Override
         public boolean isRedirect() {
-            return true;
-        }
-
-        @Override
-        public String getCommand() {
-            return resourceBundle.getString(COMMAND_KEY);
+            return false;
         }
 
     };
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        requestContext.invalidateSession();
+        final InstructorService service = InstructorServiceImpl.getInstance();
+
+        requestContext.setAttribute(Attributes.INSTRUCTORS, service.getAllInstructors());
         return RESPONSE_CONTEXT;
     }
-
 }

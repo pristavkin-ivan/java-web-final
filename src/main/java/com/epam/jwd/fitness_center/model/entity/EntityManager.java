@@ -5,9 +5,9 @@ import java.util.List;
 public enum EntityManager {
     ENTITY_MANAGER;
 
-    public Client createClient(Integer id, String login, String name, String password, Double height, Double weight
+    public Client createClient(Integer id, Integer amountOfTrainings, String login, String name, String password, Double height, Double weight
             , Double balance) {
-        return new Client(id, login, name, password, height, weight, balance);
+        return new Client(id, amountOfTrainings, login, name, password, height, weight, balance);
     }
 
     public Instructor createInstructor(Integer id, String login, String name, String password, String url
