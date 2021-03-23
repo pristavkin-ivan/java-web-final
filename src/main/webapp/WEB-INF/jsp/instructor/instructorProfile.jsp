@@ -24,7 +24,7 @@
 
     <form method="post" action="${pageContext.request.contextPath}/go">
 
-        <div>
+        <div style="padding: 100px">
             <input type="hidden" name="command" value="update_profile"/>
 
             <br>

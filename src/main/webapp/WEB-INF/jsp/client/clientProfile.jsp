@@ -18,13 +18,12 @@
 
 <c:import url="../static/header.jsp"/>
 
-<h2>
-
+<main>
     <h1><fmt:message key="title.profile" bundle="${pageContent}"/></h1>
 
     <form method="post" action="${pageContext.request.contextPath}/go">
 
-        <div>
+        <div >
             <input type="hidden" name="command" value="update_profile"/>
 
             <br>
@@ -55,10 +54,8 @@
 
             <br>
             <p id="errorLabel">${error}</p>
-
         </div>
     </form>
-
 
 </main>
 

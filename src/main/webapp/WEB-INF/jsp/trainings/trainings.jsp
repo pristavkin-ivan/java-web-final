@@ -8,6 +8,9 @@
 
 <html>
 <head>
+    <style>
+        <c:import url="${pageContext.request.contextPath}/WEB-INF/css/olStyle.css"/>
+    </style>
     <title>
 <c:choose>
 
@@ -38,7 +41,8 @@
     </c:if>
 
     <c:if test="${not empty trainings}">
-        <ul type="square">
+
+        <ol class="bullet">
             <c:forEach var="training" items="${trainings}">
                 <li>
                     <p>
@@ -58,7 +62,7 @@
                 </li>
                 <br>
             </c:forEach>
-        </ul>
+        </ol>
     </c:if>
 
 </main>

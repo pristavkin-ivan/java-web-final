@@ -1,6 +1,7 @@
 package com.epam.jwd.fitness_center.dao.impl;
 
 import com.epam.jwd.fitness_center.dao.api.PurposesDao;
+import com.epam.jwd.fitness_center.model.entity.Client;
 import com.epam.jwd.fitness_center.model.entity.EntityManager;
 import com.epam.jwd.fitness_center.model.entity.Equipment;
 import com.epam.jwd.fitness_center.model.entity.Exercise;
@@ -74,7 +75,11 @@ public final class PurposesDAOImpl implements PurposesDao {
 
     @Override
     public void addPurposes(List<Purposes> purposes, Integer trainingId) {
-
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PURPOSE)) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LOGGER.error(exception.getMessage());
+        }
     }
 
     @Override
@@ -87,6 +92,10 @@ public final class PurposesDAOImpl implements PurposesDao {
             return false;
         }
         return true;
+    }
+
+    private void configureInsertStatement(Purposes entity, PreparedStatement preparedStatement) throws SQLException {
+
     }
 
     private void fillCollections(List<Exercise> exercises, List<Equipment> equipment, List<Food> foods
