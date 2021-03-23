@@ -1,12 +1,11 @@
 package com.epam.jwd.fitness_center.dao.impl;
 
-import com.epam.jwd.fitness_center.dao.api.PurposesDao;
-import com.epam.jwd.fitness_center.model.entity.Client;
+import com.epam.jwd.fitness_center.dao.api.PurposesDAO;
 import com.epam.jwd.fitness_center.model.entity.EntityManager;
 import com.epam.jwd.fitness_center.model.entity.Equipment;
 import com.epam.jwd.fitness_center.model.entity.Exercise;
 import com.epam.jwd.fitness_center.model.entity.Food;
-import com.epam.jwd.fitness_center.model.entity.Purposes;
+import com.epam.jwd.fitness_center.model.entity.Purpose;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,18 +15,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public final class PurposesDAOImpl implements PurposesDao {
+public final class PurposesDAOImpl implements PurposesDAO {
 
     private final Connection connection;
 
     private final static EntityManager ENTITY_MANAGER = EntityManager.ENTITY_MANAGER;
 
-    private static final String SELECT_PURPOSE_BY_TRAINING = "select exercise.e_name, exercise.e_difficulty" +
-            ", exercise.e_repetitions, equipment.e_name, equipment.e_difficulty, food.f_name, food.f_weight" +
-            ", food.f_calories " +
-            "from Purposes " +
+    private static final String SELECT_PURPOSE_BY_TRAINING = "select * from Purposes " +
             "Join exercise on purposes.exercise_id = exercise.e_id " +
             "Join equipment on purposes.equipment_id = equipment.e_id " +
             "Join food on purposes.food_id = food.f_id " +
@@ -38,15 +33,21 @@ public final class PurposesDAOImpl implements PurposesDao {
 
     private static final String DELETE_PURPOSES_BY_TRAINING_ID = "delete from purposes where training_id =?";
 
-    private final static Logger LOGGER = LogManager.getLogger(ClientDAOImpl.class);
+    private static final String DELETE_PURPOSES_BY_ID = "delete from purposes where p_id =?";
+
+    private final static Logger LOGGER = LogManager.getLogger(PurposesDAOImpl.class);
+    private final static String ID_LABEL = "p_id";
     private final static String EXERCISE_NAME_LABEL = "exercise.e_name";
+    private final static String EXERCISE_ID_LABEL = "exercise.e_id";
     private final static String EXERCISE_DIFFICULTY_LABEL = "exercise.e_difficulty";
     private final static String EXERCISE_REPETITIONS_LABEL = "exercise.e_repetitions";
     private final static String EQUIPMENT_NAME_LABEL = "equipment.e_name";
     private final static String EQUIPMENT_DIFFICULTY_LABEL = "equipment.e_difficulty";
+    private final static String EQUIPMENT_ID_LABEL= "equipment.e_id";
     private final static String FOOD_NAME_LABEL = "food.f_name";
     private final static String FOOD_WEIGHT_LABEL = "food.f_weight";
     private final static String FOOD_CALORIES_LABEL = "food.f_calories";
+    private final static String FOOD_ID_LABEL= "food.f_id";
     private final static String EMPTY_STRING = "";
 
     public PurposesDAOImpl(Connection connection) {
@@ -54,27 +55,25 @@ public final class PurposesDAOImpl implements PurposesDao {
     }
 
     @Override
-    public Purposes findPurposesByTrainingId(Integer trainingId) {
-        List<Exercise> exercises = new ArrayList<>();
-        List<Equipment> equipment = new ArrayList<>();
-        List<Food> foods = new ArrayList<>();
+    public List<Purpose> findPurposesByTrainingId(Integer trainingId) {
+        final List<Purpose> purposes = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(SELECT_PURPOSE_BY_TRAINING)) {
             statement.setInt(1, trainingId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    fillCollections(exercises, equipment, foods, resultSet);
+                    purposes.add(createPurpose(trainingId, resultSet));
                 }
             }
         } catch (SQLException exception) {
             LOGGER.error(exception);
         }
-        return createPurpose(trainingId, exercises, equipment, foods);
+        return purposes;
     }
 
     @Override
-    public void addPurposes(List<Purposes> purposes, Integer trainingId) {
+    public void addPurpose(Purpose purpose, Integer trainingId) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PURPOSE)) {
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
@@ -83,9 +82,9 @@ public final class PurposesDAOImpl implements PurposesDao {
     }
 
     @Override
-    public boolean delete(Integer id) {
+    public boolean deleteByTrainingId(Integer trainingId) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PURPOSES_BY_TRAINING_ID)) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, trainingId);
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
@@ -94,29 +93,34 @@ public final class PurposesDAOImpl implements PurposesDao {
         return true;
     }
 
-    private void configureInsertStatement(Purposes entity, PreparedStatement preparedStatement) throws SQLException {
+    @Override
+    public void delete(Integer id) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PURPOSES_BY_ID)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+    }
+
+    private void configureInsertStatement(Purpose entity, PreparedStatement preparedStatement) throws SQLException {
 
     }
 
-    private void fillCollections(List<Exercise> exercises, List<Equipment> equipment, List<Food> foods
-            , ResultSet resultSet) throws SQLException {
-        exercises.add(ENTITY_MANAGER.createExercise(resultSet.getString(EXERCISE_NAME_LABEL)
-                , resultSet.getInt(EXERCISE_DIFFICULTY_LABEL)
-                , resultSet.getInt(EXERCISE_REPETITIONS_LABEL)));
-        equipment.add(ENTITY_MANAGER.createEquipment(resultSet.getString(EQUIPMENT_NAME_LABEL)
-                , resultSet.getInt(EQUIPMENT_DIFFICULTY_LABEL)));
-        foods.add(ENTITY_MANAGER.createFood(resultSet.getString(FOOD_NAME_LABEL)
-                , resultSet.getInt(FOOD_WEIGHT_LABEL), resultSet.getInt(FOOD_CALORIES_LABEL)));
+    private Purpose createPurpose(Integer trainingId, ResultSet resultSet) throws SQLException {
+        final Exercise exercise = ENTITY_MANAGER.createExercise(resultSet.getInt(EXERCISE_ID_LABEL)
+                , resultSet.getString(EXERCISE_NAME_LABEL), resultSet.getInt(EXERCISE_DIFFICULTY_LABEL)
+                , resultSet.getInt(EXERCISE_REPETITIONS_LABEL));
+
+        final Equipment equipment = ENTITY_MANAGER.createEquipment(resultSet.getInt(EQUIPMENT_ID_LABEL)
+                , resultSet.getString(EQUIPMENT_NAME_LABEL)
+                , resultSet.getInt(EQUIPMENT_DIFFICULTY_LABEL));
+
+        final Food food = ENTITY_MANAGER.createFood(resultSet.getInt(FOOD_ID_LABEL)
+                , resultSet.getString(FOOD_NAME_LABEL)
+                , resultSet.getInt(FOOD_WEIGHT_LABEL), resultSet.getInt(FOOD_CALORIES_LABEL));
+
+        return ENTITY_MANAGER.createPurposes(resultSet.getInt(ID_LABEL), trainingId, exercise, equipment, food);
     }
 
-    private Purposes createPurpose(Integer trainingId, List<Exercise> exercises, List<Equipment> equipment
-            , List<Food> foods) {
-        exercises = exercises.stream().filter((val)-> !val.getName().equalsIgnoreCase(EMPTY_STRING))
-                .collect(Collectors.toList());
-        equipment = equipment.stream().filter((val)-> !val.getName().equalsIgnoreCase(EMPTY_STRING))
-                .collect(Collectors.toList());
-        foods = foods.stream().filter((val)-> !val.getName().equalsIgnoreCase(EMPTY_STRING))
-                .collect(Collectors.toList());
-        return ENTITY_MANAGER.createPurposes(trainingId, exercises, equipment, foods);
-    }
 }

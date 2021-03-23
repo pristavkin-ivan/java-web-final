@@ -64,3 +64,18 @@
     counter-increment: li;
     content: counter(li);
 }
+
+.train {
+    list-style: none;
+    padding: 0;
+}
+.train li {
+    padding: 10px 30px;
+    background: linear-gradient(to left, #82aff3 0%, white, #82aff3);
+    border-bottom: 1px solid grey;
+    color: #506a6b;
+    font-size: 20px;
+    box-shadow: 0 5px 5px 0 rgba(0,0,0, .2);
+    margin-bottom: 5px;
+}
+.train li:last-child {border-bottom: none;}

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class InstructorDaoTest {
+public class InstructorDAOTest {
     private final static String TEST_LOGIN = "test_log";
 
     private final static String TEST_NAME = "Name Name";
@@ -28,7 +28,7 @@ public class InstructorDaoTest {
 
     static Connection connection;
 
-    InstructorDaoTest() {
+    InstructorDAOTest() {
         instructor = EntityManager.ENTITY_MANAGER.createInstructor(0, "login", "name", "pass"
                 ,  "dsafa", "asfdasd");
         try {

@@ -1,7 +1,7 @@
 package com.epam.jwd.fitness_center.service.impl;
 
 import com.epam.jwd.fitness_center.dao.api.ClientDAO;
-import com.epam.jwd.fitness_center.dao.api.PurposesDao;
+import com.epam.jwd.fitness_center.dao.api.PurposesDAO;
 import com.epam.jwd.fitness_center.dao.api.TrainingDAO;
 import com.epam.jwd.fitness_center.dao.api.InstructorDAO;
 import com.epam.jwd.fitness_center.dao.impl.ClientDAOImpl;
@@ -44,7 +44,7 @@ public final class TrainingServiceImpl implements TrainingService {
 
         try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
             TrainingDAO<Training> trainingDAO = new TrainingDAOImpl(connection);
-            PurposesDao purposesDao = new PurposesDAOImpl(connection);
+            PurposesDAO purposesDao = new PurposesDAOImpl(connection);
 
             final List<Training.Builder> trainingBuilders = trainingDAO.findAll();
 
@@ -69,7 +69,7 @@ public final class TrainingServiceImpl implements TrainingService {
 
         try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
             TrainingDAO<Training> trainingDAO = new TrainingDAOImpl(connection);
-            PurposesDao purposesDao = new PurposesDAOImpl(connection);
+            PurposesDAO purposesDao = new PurposesDAOImpl(connection);
 
             trainings = getTrainingsByClient(clientId, trainingDAO, purposesDao);
         } catch (SQLException | ConnectionPoolException exception) {
@@ -86,7 +86,7 @@ public final class TrainingServiceImpl implements TrainingService {
 
         try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
             TrainingDAO<Training> trainingDAO = new TrainingDAOImpl(connection);
-            PurposesDao purposesDao = new PurposesDAOImpl(connection);
+            PurposesDAO purposesDao = new PurposesDAOImpl(connection);
 
             trainings = getTrainingsByInstructor(instructorId, trainingDAO, purposesDao);
         } catch (SQLException | ConnectionPoolException exception) {
@@ -103,7 +103,7 @@ public final class TrainingServiceImpl implements TrainingService {
 
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
             TrainingDAO<Training> trainingDAO = new TrainingDAOImpl(connection);
-            PurposesDao purposesDao = new PurposesDAOImpl(connection);
+            PurposesDAO purposesDao = new PurposesDAOImpl(connection);
 
             training = buildTraining(id, trainingDAO, purposesDao);
             if (training != null) {
@@ -145,10 +145,10 @@ public final class TrainingServiceImpl implements TrainingService {
     public void deleteTraining(Integer id) {
         try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
             TrainingDAO<Training> dao = new TrainingDAOImpl(connection);
-            PurposesDao p_dao = new PurposesDAOImpl(connection);
+            PurposesDAO p_dao = new PurposesDAOImpl(connection);
 
             dao.delete(id);
-            p_dao.delete(id);
+            p_dao.deleteByTrainingId(id);
         } catch (SQLException | ConnectionPoolException exception) {
             LOGGER.error(exception.getMessage());
         }
@@ -182,7 +182,7 @@ public final class TrainingServiceImpl implements TrainingService {
         clientDAO.pay(clientId, (int) (balance - price));
     }
 
-    private Training buildTraining(Integer id, TrainingDAO<Training> trainingDAO, PurposesDao purposesDao) {
+    private Training buildTraining(Integer id, TrainingDAO<Training> trainingDAO, PurposesDAO purposesDao) {
         Training training = null;
         Training.Builder trainingBuilder;
         Optional<Training.Builder> trainingBuilderOptional;
@@ -198,7 +198,7 @@ public final class TrainingServiceImpl implements TrainingService {
     }
 
     private List<Training> getTrainingsByClient(Integer clientId, TrainingDAO<Training> trainingDAO
-            , PurposesDao purposesDao) {
+            , PurposesDAO purposesDao) {
 
         final List<Training.Builder> trainingBuilders = trainingDAO.findAllTrainingsByClientId(clientId);
 
@@ -211,7 +211,7 @@ public final class TrainingServiceImpl implements TrainingService {
     }
 
     private List<Training> getTrainingsByInstructor(Integer instructorId, TrainingDAO<Training> trainingDAO
-            , PurposesDao purposesDao) {
+            , PurposesDAO purposesDao) {
 
         final List<Training.Builder> trainingBuilders = trainingDAO.findAllTrainingsByInstructorId(instructorId);
 

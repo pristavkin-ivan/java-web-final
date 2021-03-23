@@ -8,7 +8,7 @@ main div {
 }
 
 input, span {
-    width: 300px;
+    width: 450px;
     height: 30px;
     border: 2px solid blue;
     border-radius: 10px;
@@ -17,7 +17,7 @@ input, span {
 
 
 textarea {
-    width: 300px;
+    width: 450px;
     height: 200px;
     border: 2px solid blue;
     border-radius: 10px;
@@ -59,4 +59,8 @@ button {
 
 #errorLabel {
     color: red;
+}
+
+td a {
+    margin:10px;
 }

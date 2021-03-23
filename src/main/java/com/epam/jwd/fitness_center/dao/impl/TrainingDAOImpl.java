@@ -55,7 +55,7 @@ public final class TrainingDAOImpl implements TrainingDAO<Training> {
     private static final String CLIENT_ID_LABEL = "client_id";
 
 
-    private final static Logger LOGGER = LogManager.getLogger(ClientDAOImpl.class);
+    private final static Logger LOGGER = LogManager.getLogger(TrainingDAOImpl.class);
 
     private static final String ID_LABEL = "t_id";
     private static final String AMOUNT_LABEL = "t_amount";

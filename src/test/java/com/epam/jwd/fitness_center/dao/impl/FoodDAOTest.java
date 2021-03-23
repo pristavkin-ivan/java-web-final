@@ -1,46 +1,41 @@
 package com.epam.jwd.fitness_center.dao.impl;
 
 import com.epam.jwd.fitness_center.listener.ApplicationListener;
-import com.epam.jwd.fitness_center.model.entity.Purposes;
-import com.epam.jwd.fitness_center.model.entity.Training;
+import com.epam.jwd.fitness_center.model.entity.Equipment;
+import com.epam.jwd.fitness_center.model.entity.Food;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+public class FoodDAOTest {
 
-public class PurposesDaoTest {
-
-    PurposesDAOImpl purposesDao;
+    FoodDAO foodDAO;
 
     static Connection connection;
 
-    PurposesDaoTest() {
+    FoodDAOTest() {
         try {
             connection = DriverManager.getConnection(ApplicationListener.URL, ApplicationListener.USER
                     , ApplicationListener.PASSWORD);
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
-        purposesDao = new PurposesDAOImpl(connection);
+        foodDAO = new FoodDAO(connection);
     }
 
     @Test
-    public void FindPurposesByTrainingIdTest_MustReturnCorrectPurposesFromDataBase_Purposes() {
-        final Purposes purposes = purposesDao.findPurposesByTrainingId(1);
-        assertNotNull(purposes);
-        System.out.println(purposes);
+    public void FindEntityByNameTest_MustSelectExerciseFromDataBase_Exercise() {
+        final Optional<Food> food = foodDAO.getEntityByName("Rise");
+        assertTrue(food.isPresent());
+        System.out.println(food.get());
     }
 
-    @Test
-    public void DeletePurposesByTrainingId_MustDeleteAllPurposesById_True() {
-        assertTrue(purposesDao.delete(2));
-    }
 
     @AfterAll
     public static void closeConnection() {

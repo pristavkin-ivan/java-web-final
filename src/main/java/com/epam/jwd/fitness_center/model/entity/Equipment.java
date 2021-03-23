@@ -4,11 +4,16 @@ public final class Equipment implements Entity {
 
     private final String name;
 
-    private final Integer difficulty;
+    private final Integer difficulty, id;
 
-    Equipment(String name, Integer difficulty) {
+    Equipment(Integer id, String name, Integer difficulty) {
+        this.id = id;
         this.name = name;
         this.difficulty = difficulty;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getName() {

@@ -32,12 +32,12 @@
             <br>
             <span><b><fmt:message key="label.amount" bundle="${pageContent}"/></b> </span>
             <br>
-            <input name="amount" type="number" min="1" />
+            <input name="amount" type="number" min="1" value="1" />
 
             <br>
             <span><b><fmt:message key="label.difficulty" bundle="${pageContent}"/></b> </span>
             <br>
-            <input name="difficulty" type="number" min="1" max="3" />
+            <input name="difficulty" type="number" min="1" max="3" value="1" />
 
             <br>
             <span><b><fmt:message key="label.price" bundle="${pageContent}"/></b> </span>

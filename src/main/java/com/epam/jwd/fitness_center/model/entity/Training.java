@@ -10,14 +10,14 @@ public final class Training implements Entity {
 
     private String comment;
 
-    private Purposes purposes;
+    private List<Purpose> purposes;
 
     private Client client;
 
     private Instructor instructor;
 
     Training(Integer id, Client client, Instructor instructor, Integer amount, Integer difficulty
-            , Purposes purposes, Double price, String comment) {
+            , List<Purpose> purposes, Double price, String comment) {
         this.id = id;
         this.client = client;
         this.instructor = instructor;
@@ -48,7 +48,7 @@ public final class Training implements Entity {
         return difficulty;
     }
 
-    public Purposes getPurposes() {
+    public List<Purpose> getPurposes() {
         return purposes;
     }
 
@@ -81,7 +81,7 @@ public final class Training implements Entity {
 
         private Double price;
 
-        private Purposes purposes;
+        private List<Purpose> purposes;
 
         private String comment;
 
@@ -127,7 +127,7 @@ public final class Training implements Entity {
             return this;
         }
 
-        public Builder purposes(Purposes purposes) {
+        public Builder purposes(List<Purpose> purposes) {
             this.purposes = purposes;
             return this;
         }

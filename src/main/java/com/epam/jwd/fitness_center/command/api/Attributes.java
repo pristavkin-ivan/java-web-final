@@ -10,6 +10,7 @@ public interface Attributes {
     String LOCALIZATION = "localization";
     String LOGIN = "login";
     String TRAINING_ID = "trainingId";
+    String PURPOSE_ID = "purposeId";
     String TRAINING = "training";
     String IS_INSTRUCTOR = "isInstructor";
     String NULL = "null";

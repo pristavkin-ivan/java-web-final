@@ -1,6 +1,8 @@
 package com.epam.jwd.fitness_center.model.dto;
 
-import com.epam.jwd.fitness_center.model.entity.Purposes;
+import com.epam.jwd.fitness_center.model.entity.Purpose;
+
+import java.util.List;
 
 public class TrainingDTO implements DTO {
 
@@ -10,10 +12,10 @@ public class TrainingDTO implements DTO {
 
     private final Double price;
 
-    private final Purposes purposes;
+    private final List<Purpose> purposes;
 
     TrainingDTO(Integer id, String instructorName, String clientName, String instructorPhotoUrl, Integer amount
-            , Integer difficulty, Purposes purposes, Double price, String comment) {
+            , Integer difficulty, List<Purpose> purposes, Double price, String comment) {
         this.id = id;
         this.instructorName = instructorName;
         this.clientName = clientName;
@@ -24,8 +26,6 @@ public class TrainingDTO implements DTO {
         this.price = price;
         this.comment = comment;
     }
-
-
 
     public String getClientName() {
         return clientName;
@@ -59,7 +59,7 @@ public class TrainingDTO implements DTO {
         return difficulty;
     }
 
-    public Purposes getPurposes() {
+    public List<Purpose> getPurposes() {
         return purposes;
     }
 

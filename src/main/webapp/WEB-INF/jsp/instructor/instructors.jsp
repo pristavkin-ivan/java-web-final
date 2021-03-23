@@ -52,7 +52,7 @@
                     <td><img src="${instructor.url}"/></td>
                     <td>
                         <c:if test="${not empty sessionScope.isInstructor and  sessionScope.login eq 'admin'}">
-                            <a href="/go?command=delete_profile&deleteId=${instructor.id}">Delete</a>
+                            <a style="color: red" href="/go?command=delete_profile&deleteId=${instructor.id}">Delete</a>
                         </c:if>
                         <span>${instructor.info}</span>
                     </td>

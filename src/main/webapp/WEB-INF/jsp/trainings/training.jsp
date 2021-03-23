@@ -10,6 +10,8 @@
 <head>
     <style>
         <c:import url="${pageContext.request.contextPath}/WEB-INF/css/profile.css"/>
+        <c:import url="${pageContext.request.contextPath}/WEB-INF/css/olStyle.css"/>
+        <c:import url="${pageContext.request.contextPath}/WEB-INF/css/table.css"/>
     </style>
     <title><fmt:message key="title.trainingDetails"/></title>
 </head>
@@ -19,7 +21,7 @@
 
 <main >
     <div>
-    <ul>
+    <ul class="train">
         <li><fmt:message key="label.orderNumber"/>${training.id}.</li>
         <c:if test="${empty sessionScope.isInstructor or (not empty sessionScope.isInstructor and sessionScope.login == 'admin')}">
             <li><fmt:message key="label.instructor"/> ${training.instructorName}.</li>
@@ -29,6 +31,30 @@
         </c:if>
         <li><fmt:message key="label.amount"/>${training.amount}.</li>
         <li><fmt:message key="label.price"/>${training.price}.</li>
+
+        <table style="text-align: center; width: 100%">
+            <tr>
+                <th><fmt:message key="label.exercise"/></th>
+                <th><fmt:message key="label.equipment"/></th>
+                <th><fmt:message key="label.food"/></th>
+            </tr>
+            <c:forEach var="purpose" items="${training.purposes}">
+                <tr>
+                    <td>${purpose.exercise.name}</td>
+                    <td>${purpose.equipment.name}</td>
+                    <td>${purpose.food.name}
+                        <a style="color: red" href="/go?command=delete_purpose&purposeId=${purpose.id}&trainingId=${training.id}">
+                            <fmt:message key="label.delete"/>
+                        </a>
+                        <a style="color: #2d62bf" href="/go?command=update_purpose&purposeId=${purpose.id}&trainingId=${training.id}">
+                            <fmt:message key="label.update"/>
+                        </a>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+        <a style="color: green" href="/go?command=create_purpose&trainingId=${training.id}"><fmt:message key="button.add"/></a>
+
 
     </ul>
     <br>

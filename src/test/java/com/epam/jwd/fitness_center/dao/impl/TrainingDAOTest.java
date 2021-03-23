@@ -1,7 +1,6 @@
 package com.epam.jwd.fitness_center.dao.impl;
 
 import com.epam.jwd.fitness_center.listener.ApplicationListener;
-import com.epam.jwd.fitness_center.model.entity.Purposes;
 import com.epam.jwd.fitness_center.model.entity.Training;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
@@ -11,19 +10,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class TrainingDaoTest {
+public class TrainingDAOTest {
     Training training;
 
     TrainingDAOImpl trainingDAO;
 
     static Connection connection;
 
-    TrainingDaoTest() {
+    TrainingDAOTest() {
         try {
             connection = DriverManager.getConnection(ApplicationListener.URL, ApplicationListener.USER
                     , ApplicationListener.PASSWORD);

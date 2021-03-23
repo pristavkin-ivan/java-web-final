@@ -4,12 +4,17 @@ public final class Exercise implements Entity {
 
     private final String name;
 
-    private final Integer difficulty, repetitions;
+    private final Integer difficulty, repetitions, id;
 
-    Exercise(String name, Integer difficulty, Integer repetitions) {
+    Exercise(Integer id, String name, Integer difficulty, Integer repetitions) {
+        this.id = id;
         this.name = name;
         this.difficulty = difficulty;
         this.repetitions = repetitions;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getName() {

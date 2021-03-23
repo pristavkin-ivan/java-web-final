@@ -4,12 +4,17 @@ public class Food implements Entity {
 
     private final String name;
 
-    private final Integer weight, calories;
+    private final Integer weight, calories, id;
 
-    Food(String name, Integer weight, Integer calories) {
+    Food(Integer id, String name, Integer weight, Integer calories) {
+        this.id = id;
         this.name = name;
         this.weight = weight;
         this.calories = calories;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getName() {

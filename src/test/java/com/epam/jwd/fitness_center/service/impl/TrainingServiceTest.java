@@ -35,7 +35,7 @@ public class TrainingServiceTest {
 
     @Test
     public void getTrainingsTest_ReturnTrainingsDtoList_NotEmptyList() {
-        List<TrainingDTO> trainingsDto = null;
+        List<TrainingDTO> trainingsDto;
 
         trainingsDto = TrainingServiceImpl.getInstance().findTrainingsByClientId(18);
 

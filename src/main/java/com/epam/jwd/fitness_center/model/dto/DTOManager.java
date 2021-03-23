@@ -1,6 +1,8 @@
 package com.epam.jwd.fitness_center.model.dto;
 
-import com.epam.jwd.fitness_center.model.entity.Purposes;
+import com.epam.jwd.fitness_center.model.entity.Purpose;
+
+import java.util.List;
 
 public enum DTOManager {
     DTO_MANAGER;
@@ -14,7 +16,7 @@ public enum DTOManager {
     }
 
     public TrainingDTO createTrainingDTO(Integer id, String instructorName, String clientName, String instructorPhotoUrl
-            , Integer amount, Integer difficulty, Purposes purposes, Double price, String comment) {
+            , Integer amount, Integer difficulty, List<Purpose> purposes, Double price, String comment) {
         return new TrainingDTO(id, instructorName, clientName, instructorPhotoUrl, amount, difficulty, purposes, price
                 , comment);
     }
