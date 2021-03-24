@@ -73,8 +73,9 @@ public final class PurposesDAOImpl implements PurposesDAO {
     }
 
     @Override
-    public void addPurpose(Purpose purpose, Integer trainingId) {
+    public void addPurpose(Integer trainingId, Integer exerciseId, Integer equipmentId, Integer foodId) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PURPOSE)) {
+            configureInsertStatement(trainingId, exerciseId, equipmentId, foodId, preparedStatement);
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
@@ -103,8 +104,13 @@ public final class PurposesDAOImpl implements PurposesDAO {
         }
     }
 
-    private void configureInsertStatement(Purpose entity, PreparedStatement preparedStatement) throws SQLException {
+    private void configureInsertStatement(Integer trainingId, Integer exerciseId, Integer equipmentId
+            , Integer foodId, PreparedStatement statement) throws SQLException {
 
+        statement.setInt(1, trainingId);
+        statement.setInt(2, exerciseId);
+        statement.setInt(3, equipmentId);
+        statement.setInt(4, foodId);
     }
 
     private Purpose createPurpose(Integer trainingId, ResultSet resultSet) throws SQLException {

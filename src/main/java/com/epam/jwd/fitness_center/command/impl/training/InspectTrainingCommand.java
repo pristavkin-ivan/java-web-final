@@ -11,7 +11,7 @@ import com.epam.jwd.fitness_center.service.impl.TrainingServiceImpl;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public enum InspectTraining implements Command {
+public enum InspectTrainingCommand implements Command {
     INSTANCE;
 
     private static final String PAGE_KEY = "trainingPage";
@@ -36,8 +36,14 @@ public enum InspectTraining implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        String trainingId = String.valueOf(requestContext.getParameter(Attributes.TRAINING_ID));
+
+        if (trainingId.equals(Attributes.NULL) || trainingId.equals("")) {
+            trainingId = String.valueOf(requestContext.getSessionAttribute(Attributes.TRAINING_ID));
+        }
+
         final Optional<TrainingDTO> optionalTrainingDTO
-                = TRAINING_SERVICE.findTrainingById(Integer.parseInt(requestContext.getParameter(Attributes.TRAINING_ID)));
+                = TRAINING_SERVICE.findTrainingById(Integer.parseInt(trainingId));
 
         optionalTrainingDTO.ifPresent(dto -> requestContext.setAttribute(Attributes.TRAINING, dto));
 

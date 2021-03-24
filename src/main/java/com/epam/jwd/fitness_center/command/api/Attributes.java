@@ -26,4 +26,10 @@ public interface Attributes {
     String ADMIN = "admin";
     String COMMENT = "comment";
     String IS_CREDIT = "isCredit";
+    String EXERCISE = "exercise";
+    String EQUIPMENT = "equipment";
+    String FOOD = "food";
+    String EXERCISES = "exercises";
+    String EQUIPMENTS = "equipments";
+    String FOODS = "foods";
 }

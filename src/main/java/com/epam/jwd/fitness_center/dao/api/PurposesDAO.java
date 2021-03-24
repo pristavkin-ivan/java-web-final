@@ -8,7 +8,7 @@ public interface PurposesDAO {
 
     List<Purpose> findPurposesByTrainingId(Integer trainingId);
 
-    void addPurpose(Purpose purpose, Integer trainingId);
+    void addPurpose(Integer trainingId, Integer exerciseId, Integer equipmentId, Integer foodId);
 
     boolean deleteByTrainingId(Integer trainingId);
 

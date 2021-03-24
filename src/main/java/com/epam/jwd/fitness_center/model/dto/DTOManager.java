@@ -21,4 +21,16 @@ public enum DTOManager {
                 , comment);
     }
 
+    public ExerciseDTO createExerciseDTO(String name, Integer difficulty, Integer repetitions) {
+        return new ExerciseDTO(name, difficulty, repetitions);
+    }
+
+    public EquipmentDTO createEquipmentDTO(String name, Integer difficulty) {
+        return new EquipmentDTO(name, difficulty);
+    }
+
+    public FoodDTO createFoodDTO(String name, Integer calories) {
+        return new FoodDTO(name, calories);
+    }
+
 }
