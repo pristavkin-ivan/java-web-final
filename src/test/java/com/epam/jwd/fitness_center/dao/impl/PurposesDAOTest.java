@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -40,6 +41,21 @@ public class PurposesDAOTest {
     @Test
     public void DeletePurposesByTrainingId_MustDeleteAllPurposesById_True() {
         assertTrue(purposesDao.deleteByTrainingId(2));
+    }
+
+    @Test
+    public void UpdatePurpose_MustUpdatePurpose_NotThrowSqlException() {
+        assertDoesNotThrow( () -> purposesDao.update(9, 3, 1, 3));
+    }
+
+    @Test
+    public void AddPurpose_MustInsertPurposeToDataBase_NotThrowSqlException() {
+        assertDoesNotThrow( () -> purposesDao.addPurpose(3, 2, 2 , 2));
+    }
+
+    @Test
+    public void DeletePurpose_MustDeletePurposeFromDataBase_NotThrowSqlException() {
+        assertDoesNotThrow( () -> purposesDao.delete(27));
     }
 
     @AfterAll

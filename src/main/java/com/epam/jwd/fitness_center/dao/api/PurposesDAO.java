@@ -13,4 +13,6 @@ public interface PurposesDAO {
     boolean deleteByTrainingId(Integer trainingId);
 
     void delete(Integer id);
+
+    void update(Integer purposeId, Integer exerciseId, Integer equipmentId, Integer foodId);
 }

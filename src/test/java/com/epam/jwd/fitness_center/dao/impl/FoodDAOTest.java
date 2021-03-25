@@ -36,6 +36,11 @@ public class FoodDAOTest {
         System.out.println(food.get());
     }
 
+    @Test
+    public void FindAllTest_MustSelectAllFoodFromDataBase_ListOfFood() {
+        assertTrue(foodDAO.findAll().size() > 0);
+    }
+
 
     @AfterAll
     public static void closeConnection() {

@@ -53,7 +53,9 @@
                 </tr>
             </c:forEach>
         </table>
+        <c:if test="${not empty sessionScope.isInstructor}">
         <a style="color: green" href="/go?command=create_purpose&trainingId=${training.id}"><fmt:message key="button.add"/></a>
+        </c:if>
 
 
     </ul>

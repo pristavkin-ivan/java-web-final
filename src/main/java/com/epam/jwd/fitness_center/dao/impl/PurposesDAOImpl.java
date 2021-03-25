@@ -31,6 +31,9 @@ public final class PurposesDAOImpl implements PurposesDAO {
     private static final String INSERT_PURPOSE = "insert into purposes(training_id, exercise_id, equipment_id, food_id)" +
             " values(?,?,?,?)";
 
+    private static final String UPDATE_PURPOSE = "update purposes set exercise_id = ?, equipment_id = ?, " +
+            "food_id = ? where p_id = ? ";
+
     private static final String DELETE_PURPOSES_BY_TRAINING_ID = "delete from purposes where training_id =?";
 
     private static final String DELETE_PURPOSES_BY_ID = "delete from purposes where p_id =?";
@@ -104,6 +107,16 @@ public final class PurposesDAOImpl implements PurposesDAO {
         }
     }
 
+    @Override
+    public void update(Integer purposeId, Integer exerciseId, Integer equipmentId, Integer foodId) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PURPOSE)) {
+            configureUpdateStatement(purposeId, exerciseId, equipmentId, foodId, preparedStatement);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+    }
+
     private void configureInsertStatement(Integer trainingId, Integer exerciseId, Integer equipmentId
             , Integer foodId, PreparedStatement statement) throws SQLException {
 
@@ -111,6 +124,15 @@ public final class PurposesDAOImpl implements PurposesDAO {
         statement.setInt(2, exerciseId);
         statement.setInt(3, equipmentId);
         statement.setInt(4, foodId);
+    }
+
+    private void configureUpdateStatement(Integer purposeId, Integer exerciseId, Integer equipmentId
+            , Integer foodId, PreparedStatement statement) throws SQLException {
+
+        statement.setInt(1, exerciseId);
+        statement.setInt(2, equipmentId);
+        statement.setInt(3, foodId);
+        statement.setInt(4, purposeId);
     }
 
     private Purpose createPurpose(Integer trainingId, ResultSet resultSet) throws SQLException {

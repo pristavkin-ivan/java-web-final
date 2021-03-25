@@ -40,6 +40,10 @@ public class ExerciseDAOTest {
         System.out.println(burpee.get());
     }
 
+    @Test
+    public void FindAllTest_MustSelectAllExercisesFromDataBase_ListOfExercises() {
+        assertTrue(exerciseDAO.findAll().size() > 0);
+    }
 
     @AfterAll
     public static void closeConnection() {

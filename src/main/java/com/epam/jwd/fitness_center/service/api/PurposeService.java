@@ -16,6 +16,8 @@ public interface PurposeService {
 
     void createPurpose(Integer trainingId, String exercise, String equipment, String food) throws NoSuchPurposeException;
 
+    void updatePurpose(Integer purposeId, String exercise, String equipment, String food) throws NoSuchPurposeException;
+
     List<ExerciseDTO> getAllExercises();
 
     List<EquipmentDTO> getAllEquipment();

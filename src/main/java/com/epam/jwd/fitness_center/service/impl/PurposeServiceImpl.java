@@ -66,6 +66,20 @@ public final class PurposeServiceImpl implements PurposeService {
     }
 
     @Override
+    public void updatePurpose(Integer purposeId, String exercise, String equipment, String food) throws NoSuchPurposeException {
+        try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
+            final DAO<Exercise> exerciseDAO = new ExerciseDAO(connection);
+            final DAO<Equipment> equipmentDAO = new EquipmentDAO(connection);
+            final DAO<Food> foodDAO = new FoodDAO(connection);
+            final PurposesDAO purposesDAO = new PurposesDAOImpl(connection);
+
+           updatePurpose(purposeId, exercise, equipment, food, exerciseDAO, equipmentDAO, foodDAO, purposesDAO);
+        } catch (SQLException | ConnectionPoolException exception) {
+            LOGGER.error(exception.getMessage());
+        }
+    }
+
+    @Override
     public List<ExerciseDTO> getAllExercises() {
         List<Exercise> exercises = null;
 
@@ -126,6 +140,21 @@ public final class PurposeServiceImpl implements PurposeService {
         foodId = foodDAO
                 .getEntityByName(food).orElseThrow(() -> new NoSuchPurposeException(NO_SUCH_FOOD)).getId();
         purposesDAO.addPurpose(trainingId, exerciseId, equipmentId, foodId);
+    }
+
+    private void updatePurpose(Integer purposeId, String exercise, String equipment, String food
+            , DAO<Exercise> exerciseDAO, DAO<Equipment> equipmentDAO, DAO<Food> foodDAO
+            , PurposesDAO purposesDAO) throws NoSuchPurposeException {
+
+        Integer exerciseId, equipmentId, foodId;
+
+        exerciseId = exerciseDAO
+                .getEntityByName(exercise).orElseThrow(() -> new NoSuchPurposeException(NO_SUCH_EXERCISE)).getId();
+        equipmentId = equipmentDAO
+                .getEntityByName(equipment).orElseThrow(() -> new NoSuchPurposeException(NO_SUCH_EQUIPMENT)).getId();
+        foodId = foodDAO
+                .getEntityByName(food).orElseThrow(() -> new NoSuchPurposeException(NO_SUCH_FOOD)).getId();
+        purposesDAO.update(purposeId, exerciseId, equipmentId, foodId);
     }
 
     public static PurposeServiceImpl getInstance() {

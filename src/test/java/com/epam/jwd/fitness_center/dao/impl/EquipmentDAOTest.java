@@ -36,6 +36,11 @@ public class EquipmentDAOTest {
         System.out.println(equipment.get());
     }
 
+    @Test
+    public void FindAllTest_MustSelectAllEquipmentFromDataBase_ListOfEquipment() {
+        assertTrue(equipmentDAO.findAll().size() > 0);
+    }
+
 
     @AfterAll
     public static void closeConnection() {
