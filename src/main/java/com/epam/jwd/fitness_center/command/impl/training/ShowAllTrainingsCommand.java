@@ -18,7 +18,7 @@ public enum ShowAllTrainingsCommand implements Command {
     private final static String BUNDLE_NAME = "pages";
     private final static String PAGE_KEY = "trainingsPage";
 
-    private final static TrainingService TRAINING_SERVICE = TrainingServiceImpl.getInstance();
+    private final static TrainingService<TrainingDTO> TRAINING_SERVICE = TrainingServiceImpl.getInstance();
 
     private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
 

@@ -4,7 +4,6 @@ import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
 
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public enum ErrorCommand implements Command {

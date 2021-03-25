@@ -4,13 +4,14 @@ import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
+import com.epam.jwd.fitness_center.model.dto.ClientDTO;
+import com.epam.jwd.fitness_center.model.dto.TrainingDTO;
 import com.epam.jwd.fitness_center.service.api.ClientService;
 import com.epam.jwd.fitness_center.service.api.TrainingService;
 import com.epam.jwd.fitness_center.service.impl.ClientServiceImpl;
 import com.epam.jwd.fitness_center.service.impl.TrainingServiceImpl;
 import com.epam.jwd.fitness_center.util.ParamParser;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 
 import java.util.ResourceBundle;
 
@@ -20,11 +21,9 @@ public enum CommentCommand implements Command {
     private final static String BUNDLE_NAME = "pages";
     private static final String COMMAND_KEY = "command.showTrainings";
 
-    private static final TrainingService TRAINING_SERVICE = TrainingServiceImpl.getInstance();
+    private static final TrainingService<TrainingDTO> TRAINING_SERVICE = TrainingServiceImpl.getInstance();
 
-    private static final ClientService CLIENT_SERVICE = ClientServiceImpl.getInstance();
-
-    private static final Logger LOGGER = LogManager.getLogger(CreateTrainingCommand.class);
+    private static final ClientService<ClientDTO> CLIENT_SERVICE = ClientServiceImpl.getInstance();
 
     private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
 

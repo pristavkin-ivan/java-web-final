@@ -4,10 +4,7 @@ import com.epam.jwd.fitness_center.dao.api.ClientDAO;
 import com.epam.jwd.fitness_center.dao.api.PurposesDAO;
 import com.epam.jwd.fitness_center.dao.api.TrainingDAO;
 import com.epam.jwd.fitness_center.dao.api.InstructorDAO;
-import com.epam.jwd.fitness_center.dao.impl.ClientDAOImpl;
-import com.epam.jwd.fitness_center.dao.impl.InstructorDAOImpl;
-import com.epam.jwd.fitness_center.dao.impl.PurposesDAOImpl;
-import com.epam.jwd.fitness_center.dao.impl.TrainingDAOImpl;
+import com.epam.jwd.fitness_center.dao.impl.DAOManager;
 import com.epam.jwd.fitness_center.exception.ConnectionPoolException;
 import com.epam.jwd.fitness_center.exception.NoSuchInstructorException;
 import com.epam.jwd.fitness_center.exception.NotEnoughMoneyException;
@@ -15,6 +12,7 @@ import com.epam.jwd.fitness_center.model.dto.DTOManager;
 import com.epam.jwd.fitness_center.model.dto.TrainingDTO;
 import com.epam.jwd.fitness_center.model.entity.Client;
 import com.epam.jwd.fitness_center.model.entity.Instructor;
+import com.epam.jwd.fitness_center.model.entity.Purpose;
 import com.epam.jwd.fitness_center.model.entity.Training;
 import com.epam.jwd.fitness_center.pool.ConnectionPool;
 import com.epam.jwd.fitness_center.service.api.TrainingService;
@@ -27,11 +25,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public final class TrainingServiceImpl implements TrainingService {
+public final class TrainingServiceImpl implements TrainingService<TrainingDTO> {
 
     private static final TrainingServiceImpl TRAINING_SERVICE = new TrainingServiceImpl();
 
     private static final Logger LOGGER = LogManager.getLogger(ClientServiceImpl.class);
+
+    private final static DAOManager DAO_MANAGER = DAOManager.INSTANCE;
+
     private static final String NO_SUCH_INSTRUCTOR = "Such Instructor is not exist!";
     private static final String NOT_ENOUGH_MONEY = "Not enough money!";
 
@@ -43,8 +44,8 @@ public final class TrainingServiceImpl implements TrainingService {
         List<Training> trainings = null;
 
         try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            TrainingDAO<Training> trainingDAO = new TrainingDAOImpl(connection);
-            PurposesDAO purposesDao = new PurposesDAOImpl(connection);
+            TrainingDAO<Training> trainingDAO = DAO_MANAGER.createTrainingDAO(connection);
+            PurposesDAO<Purpose> purposesDao = DAO_MANAGER.createPurposesDAO(connection);
 
             final List<Training.Builder> trainingBuilders = trainingDAO.findAll();
 
@@ -68,8 +69,8 @@ public final class TrainingServiceImpl implements TrainingService {
         List<Training> trainings = null;
 
         try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            TrainingDAO<Training> trainingDAO = new TrainingDAOImpl(connection);
-            PurposesDAO purposesDao = new PurposesDAOImpl(connection);
+            TrainingDAO<Training> trainingDAO = DAO_MANAGER.createTrainingDAO(connection);
+            PurposesDAO<Purpose> purposesDao = DAO_MANAGER.createPurposesDAO(connection);
 
             trainings = getTrainingsByClient(clientId, trainingDAO, purposesDao);
         } catch (SQLException | ConnectionPoolException exception) {
@@ -85,8 +86,8 @@ public final class TrainingServiceImpl implements TrainingService {
         List<Training> trainings = null;
 
         try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            TrainingDAO<Training> trainingDAO = new TrainingDAOImpl(connection);
-            PurposesDAO purposesDao = new PurposesDAOImpl(connection);
+            TrainingDAO<Training> trainingDAO = DAO_MANAGER.createTrainingDAO(connection);
+            PurposesDAO<Purpose> purposesDao = DAO_MANAGER.createPurposesDAO(connection);
 
             trainings = getTrainingsByInstructor(instructorId, trainingDAO, purposesDao);
         } catch (SQLException | ConnectionPoolException exception) {
@@ -102,8 +103,8 @@ public final class TrainingServiceImpl implements TrainingService {
         Training training;
 
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            TrainingDAO<Training> trainingDAO = new TrainingDAOImpl(connection);
-            PurposesDAO purposesDao = new PurposesDAOImpl(connection);
+            TrainingDAO<Training> trainingDAO = DAO_MANAGER.createTrainingDAO(connection);
+            PurposesDAO<Purpose> purposesDao = DAO_MANAGER.createPurposesDAO(connection);
 
             training = buildTraining(id, trainingDAO, purposesDao);
             if (training != null) {
@@ -123,9 +124,9 @@ public final class TrainingServiceImpl implements TrainingService {
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
             connection.setAutoCommit(false);
 
-            TrainingDAO<Training> trainingDAO = new TrainingDAOImpl(connection);
-            InstructorDAO<Instructor> instructorDAO = new InstructorDAOImpl(connection);
-            ClientDAO<Client> clientDAO = new ClientDAOImpl(connection);
+            TrainingDAO<Training> trainingDAO = DAO_MANAGER.createTrainingDAO(connection);
+            InstructorDAO<Instructor> instructorDAO = DAO_MANAGER.createInstructorDAO(connection);
+            ClientDAO<Client> clientDAO = DAO_MANAGER.createClientDAO(connection);
 
             final Optional<Instructor> instructor = instructorDAO.findByName(instructorName);
 
@@ -144,8 +145,8 @@ public final class TrainingServiceImpl implements TrainingService {
     @Override
     public void deleteTraining(Integer id) {
         try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            TrainingDAO<Training> dao = new TrainingDAOImpl(connection);
-            PurposesDAO p_dao = new PurposesDAOImpl(connection);
+            TrainingDAO<Training> dao = DAO_MANAGER.createTrainingDAO(connection);
+            PurposesDAO<Purpose> p_dao = DAO_MANAGER.createPurposesDAO(connection);
 
             dao.delete(id);
             p_dao.deleteByTrainingId(id);
@@ -157,7 +158,7 @@ public final class TrainingServiceImpl implements TrainingService {
     @Override
     public void leaveComment(Integer id, String comment) {
         try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            TrainingDAO<Training> dao = new TrainingDAOImpl(connection);
+            TrainingDAO<Training> dao = DAO_MANAGER.createTrainingDAO(connection);
 
             dao.updateComment(id, comment);
         } catch (SQLException | ConnectionPoolException exception) {
@@ -182,7 +183,7 @@ public final class TrainingServiceImpl implements TrainingService {
         clientDAO.pay(clientId, (int) (balance - price));
     }
 
-    private Training buildTraining(Integer id, TrainingDAO<Training> trainingDAO, PurposesDAO purposesDao) {
+    private Training buildTraining(Integer id, TrainingDAO<Training> trainingDAO, PurposesDAO<Purpose> purposesDao) {
         Training training = null;
         Training.Builder trainingBuilder;
         Optional<Training.Builder> trainingBuilderOptional;
@@ -198,7 +199,7 @@ public final class TrainingServiceImpl implements TrainingService {
     }
 
     private List<Training> getTrainingsByClient(Integer clientId, TrainingDAO<Training> trainingDAO
-            , PurposesDAO purposesDao) {
+            , PurposesDAO<Purpose> purposesDao) {
 
         final List<Training.Builder> trainingBuilders = trainingDAO.findAllTrainingsByClientId(clientId);
 
@@ -211,7 +212,7 @@ public final class TrainingServiceImpl implements TrainingService {
     }
 
     private List<Training> getTrainingsByInstructor(Integer instructorId, TrainingDAO<Training> trainingDAO
-            , PurposesDAO purposesDao) {
+            , PurposesDAO<Purpose> purposesDao) {
 
         final List<Training.Builder> trainingBuilders = trainingDAO.findAllTrainingsByInstructorId(instructorId);
 

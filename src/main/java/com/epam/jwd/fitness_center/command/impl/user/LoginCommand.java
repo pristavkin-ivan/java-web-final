@@ -12,7 +12,6 @@ import com.epam.jwd.fitness_center.service.impl.ClientServiceImpl;
 import com.epam.jwd.fitness_center.service.impl.InstructorServiceImpl;
 import com.epam.jwd.fitness_center.util.ParamParser;
 
-import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -24,9 +23,9 @@ public enum LoginCommand implements Command {
     private static final String ERROR_MESSAGE = "Incorrect login or password, try again!";
     private static final String COMMAND_KEY = "command.default";
 
-    private static final ClientService CLIENT_SERVICE = ClientServiceImpl.getInstance();
+    private static final ClientService<ClientDTO> CLIENT_SERVICE = ClientServiceImpl.getInstance();
 
-    private static final InstructorService INSTRUCTOR_SERVICE = InstructorServiceImpl.getInstance();
+    private static final InstructorService<InstructorDTO> INSTRUCTOR_SERVICE = InstructorServiceImpl.getInstance();
 
     private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
 

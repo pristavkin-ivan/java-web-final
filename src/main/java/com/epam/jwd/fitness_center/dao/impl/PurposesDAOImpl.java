@@ -16,7 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class PurposesDAOImpl implements PurposesDAO {
+public final class PurposesDAOImpl implements PurposesDAO<Purpose> {
 
     private final Connection connection;
 
@@ -51,9 +51,8 @@ public final class PurposesDAOImpl implements PurposesDAO {
     private final static String FOOD_WEIGHT_LABEL = "food.f_weight";
     private final static String FOOD_CALORIES_LABEL = "food.f_calories";
     private final static String FOOD_ID_LABEL= "food.f_id";
-    private final static String EMPTY_STRING = "";
 
-    public PurposesDAOImpl(Connection connection) {
+    PurposesDAOImpl(Connection connection) {
         this.connection = connection;
     }
 

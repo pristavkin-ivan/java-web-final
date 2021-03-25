@@ -2,9 +2,7 @@ package com.epam.jwd.fitness_center.dao.impl;
 
 import com.epam.jwd.fitness_center.dao.api.DAO;
 import com.epam.jwd.fitness_center.model.entity.EntityManager;
-import com.epam.jwd.fitness_center.model.entity.Equipment;
 import com.epam.jwd.fitness_center.model.entity.Food;
-import com.epam.jwd.fitness_center.model.entity.Training;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,7 +31,7 @@ public class FoodDAO implements DAO<Food> {
     private final static String WEIGHT_LABEL = "f_weight";
     private final static String CALORIES_LABEL = "f_calories";
 
-    public FoodDAO(Connection connection) {
+    FoodDAO(Connection connection) {
         this.connection = connection;
     }
 

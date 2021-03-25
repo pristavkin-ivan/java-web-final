@@ -5,6 +5,8 @@ import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
 import com.epam.jwd.fitness_center.command.impl.user.LogoutCommand;
+import com.epam.jwd.fitness_center.model.dto.ClientDTO;
+import com.epam.jwd.fitness_center.model.dto.InstructorDTO;
 import com.epam.jwd.fitness_center.service.api.ClientService;
 import com.epam.jwd.fitness_center.service.api.InstructorService;
 import com.epam.jwd.fitness_center.service.impl.ClientServiceImpl;
@@ -15,9 +17,9 @@ import java.util.ResourceBundle;
 public enum DeleteProfileCommand implements Command {
     INSTANCE;
 
-    private static final ClientService CLIENT_SERVICE = ClientServiceImpl.getInstance();
+    private static final ClientService<ClientDTO> CLIENT_SERVICE = ClientServiceImpl.getInstance();
 
-    private static final InstructorService INSTRUCTOR_SERVICE = InstructorServiceImpl.getInstance();
+    private static final InstructorService<InstructorDTO> INSTRUCTOR_SERVICE = InstructorServiceImpl.getInstance();
 
     private final static String BUNDLE_NAME = "pages";
     private final static String COMMAND_KEY = "command.showInstructors";

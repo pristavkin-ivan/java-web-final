@@ -3,7 +3,6 @@ package com.epam.jwd.fitness_center.dao.impl;
 import com.epam.jwd.fitness_center.dao.api.DAO;
 import com.epam.jwd.fitness_center.model.entity.EntityManager;
 import com.epam.jwd.fitness_center.model.entity.Exercise;
-import com.epam.jwd.fitness_center.model.entity.Food;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,7 +31,7 @@ public final class ExerciseDAO implements DAO<Exercise> {
     private final static String DIFFICULTY_LABEL = "e_difficulty";
     private final static String REPETITIONS_LABEL = "e_repetitions";
 
-    public ExerciseDAO(Connection connection) {
+    ExerciseDAO(Connection connection) {
         this.connection = connection;
     }
 

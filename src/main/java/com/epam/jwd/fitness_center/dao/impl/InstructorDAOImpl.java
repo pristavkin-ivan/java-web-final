@@ -37,9 +37,9 @@ public final class InstructorDAOImpl implements InstructorDAO<Instructor> {
     private static final String PASSWORD_LABEL = "i_password";
     private static final String URL_LABEL = "i_url";
     private static final String INFO_LABEL = "i_info";
-    private final String ADMIN = "admin";
+    private static final String ADMIN = "admin";
 
-    public InstructorDAOImpl(Connection connection) {
+    InstructorDAOImpl(Connection connection) {
         this.connection = connection;
     }
 

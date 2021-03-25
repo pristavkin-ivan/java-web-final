@@ -6,6 +6,8 @@ import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
 import com.epam.jwd.fitness_center.exception.NoSuchInstructorException;
 import com.epam.jwd.fitness_center.exception.NotEnoughMoneyException;
+import com.epam.jwd.fitness_center.model.dto.ClientDTO;
+import com.epam.jwd.fitness_center.model.dto.TrainingDTO;
 import com.epam.jwd.fitness_center.service.api.ClientService;
 import com.epam.jwd.fitness_center.service.api.TrainingService;
 import com.epam.jwd.fitness_center.service.impl.ClientServiceImpl;
@@ -24,9 +26,9 @@ public enum CreateTrainingCommand implements Command {
     private final static String PAGE_KEY = "createTrainingPage";
     private static final String COMMAND_KEY = "command.showTrainings";
 
-    private static final TrainingService TRAINING_SERVICE = TrainingServiceImpl.getInstance();
+    private static final TrainingService<TrainingDTO> TRAINING_SERVICE = TrainingServiceImpl.getInstance();
 
-    private static final ClientService CLIENT_SERVICE = ClientServiceImpl.getInstance();
+    private static final ClientService<ClientDTO> CLIENT_SERVICE = ClientServiceImpl.getInstance();
 
     private static final Logger LOGGER = LogManager.getLogger(CreateTrainingCommand.class);
 

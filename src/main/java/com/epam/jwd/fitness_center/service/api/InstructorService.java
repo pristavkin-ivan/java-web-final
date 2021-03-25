@@ -7,15 +7,15 @@ import com.epam.jwd.fitness_center.model.entity.Instructor;
 import java.util.List;
 import java.util.Optional;
 
-public interface InstructorService {
+public interface InstructorService<T extends InstructorDTO> {
 
-    List<InstructorDTO> getAllInstructors();
+    List<T> getAllInstructors();
 
-    Optional<InstructorDTO> getInstructorById(Integer id);
+    Optional<T> getInstructorById(Integer id);
 
-    Optional<InstructorDTO> login(String login, String password);
+    Optional<T> login(String login, String password);
 
-    Optional<InstructorDTO> signup(String login, String name, String password) throws SignupException;
+    Optional<T> signup(String login, String name, String password) throws SignupException;
 
     void updateProfile(Instructor instructor);
 

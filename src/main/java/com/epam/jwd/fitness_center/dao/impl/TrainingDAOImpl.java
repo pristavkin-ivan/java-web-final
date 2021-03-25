@@ -44,7 +44,6 @@ public final class TrainingDAOImpl implements TrainingDAO<Training> {
 
     private static final String UPDATE_COMMENT = "update training set t_comment = ? where t_id = ? ";
 
-    private static final String DELETE_TRAINING = "delete from training where client_login =?";
     private static final String DELETE_TRAINING_BY_ID = "delete from training where t_id =?";
 
     private static final String INSTRUCTOR_ID_LABEL = "instructor.i_id";
@@ -63,7 +62,7 @@ public final class TrainingDAOImpl implements TrainingDAO<Training> {
     private static final String PRICE_LABEL = "t_price";
     private static final String COMMENT_LABEL = "t_comment";
 
-    public TrainingDAOImpl(Connection connection) {
+    TrainingDAOImpl(Connection connection) {
         this.connection = connection;
     }
 

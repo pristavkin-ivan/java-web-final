@@ -2,21 +2,18 @@ package com.epam.jwd.fitness_center.service.impl;
 
 import com.epam.jwd.fitness_center.dao.api.DAO;
 import com.epam.jwd.fitness_center.dao.api.PurposesDAO;
-import com.epam.jwd.fitness_center.dao.impl.EquipmentDAO;
-import com.epam.jwd.fitness_center.dao.impl.ExerciseDAO;
-import com.epam.jwd.fitness_center.dao.impl.FoodDAO;
+import com.epam.jwd.fitness_center.dao.impl.DAOManager;
 import com.epam.jwd.fitness_center.dao.impl.PurposesDAOImpl;
 import com.epam.jwd.fitness_center.exception.ConnectionPoolException;
 import com.epam.jwd.fitness_center.exception.NoSuchPurposeException;
-import com.epam.jwd.fitness_center.model.dto.ClientDTO;
 import com.epam.jwd.fitness_center.model.dto.DTOManager;
 import com.epam.jwd.fitness_center.model.dto.EquipmentDTO;
 import com.epam.jwd.fitness_center.model.dto.ExerciseDTO;
 import com.epam.jwd.fitness_center.model.dto.FoodDTO;
-import com.epam.jwd.fitness_center.model.entity.Client;
 import com.epam.jwd.fitness_center.model.entity.Equipment;
 import com.epam.jwd.fitness_center.model.entity.Exercise;
 import com.epam.jwd.fitness_center.model.entity.Food;
+import com.epam.jwd.fitness_center.model.entity.Purpose;
 import com.epam.jwd.fitness_center.pool.ConnectionPool;
 import com.epam.jwd.fitness_center.service.api.PurposeService;
 import org.apache.logging.log4j.LogManager;
@@ -33,6 +30,8 @@ public final class PurposeServiceImpl implements PurposeService {
 
     private final static PurposeServiceImpl SERVICE = new PurposeServiceImpl();
 
+    private final static DAOManager DAO_MANAGER = DAOManager.INSTANCE;
+
     private final static String NO_SUCH_EXERCISE = "Error: no such exercise!";
     private final static String NO_SUCH_EQUIPMENT = "Error: no such equipment!";
     private final static String NO_SUCH_FOOD = "Error: no such food!";
@@ -43,7 +42,7 @@ public final class PurposeServiceImpl implements PurposeService {
     @Override
     public void deletePurpose(Integer id) {
         try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            final PurposesDAO purposesDAO = new PurposesDAOImpl(connection);
+            final PurposesDAO<Purpose> purposesDAO = DAO_MANAGER.createPurposesDAO(connection);
 
             purposesDAO.delete(id);
         } catch (SQLException | ConnectionPoolException exception) {
@@ -54,10 +53,10 @@ public final class PurposeServiceImpl implements PurposeService {
     @Override
     public void createPurpose(Integer trainingId, String exercise, String equipment, String food) throws NoSuchPurposeException {
         try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            final DAO<Exercise> exerciseDAO = new ExerciseDAO(connection);
-            final DAO<Equipment> equipmentDAO = new EquipmentDAO(connection);
-            final DAO<Food> foodDAO = new FoodDAO(connection);
-            final PurposesDAO purposesDAO = new PurposesDAOImpl(connection);
+            final DAO<Exercise> exerciseDAO = DAO_MANAGER.createExerciseDAO(connection);
+            final DAO<Equipment> equipmentDAO = DAO_MANAGER.createEquipmentDAO(connection);
+            final DAO<Food> foodDAO = DAO_MANAGER.createFoodDAO(connection);
+            final PurposesDAO<Purpose> purposesDAO = DAO_MANAGER.createPurposesDAO(connection);
 
             makePurpose(trainingId, exercise, equipment, food, exerciseDAO, equipmentDAO, foodDAO, purposesDAO);
         } catch (SQLException | ConnectionPoolException exception) {
@@ -68,10 +67,10 @@ public final class PurposeServiceImpl implements PurposeService {
     @Override
     public void updatePurpose(Integer purposeId, String exercise, String equipment, String food) throws NoSuchPurposeException {
         try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            final DAO<Exercise> exerciseDAO = new ExerciseDAO(connection);
-            final DAO<Equipment> equipmentDAO = new EquipmentDAO(connection);
-            final DAO<Food> foodDAO = new FoodDAO(connection);
-            final PurposesDAO purposesDAO = new PurposesDAOImpl(connection);
+            final DAO<Exercise> exerciseDAO = DAO_MANAGER.createExerciseDAO(connection);
+            final DAO<Equipment> equipmentDAO = DAO_MANAGER.createEquipmentDAO(connection);
+            final DAO<Food> foodDAO = DAO_MANAGER.createFoodDAO(connection);
+            final PurposesDAO<Purpose> purposesDAO = DAO_MANAGER.createPurposesDAO(connection);
 
            updatePurpose(purposeId, exercise, equipment, food, exerciseDAO, equipmentDAO, foodDAO, purposesDAO);
         } catch (SQLException | ConnectionPoolException exception) {
@@ -84,7 +83,7 @@ public final class PurposeServiceImpl implements PurposeService {
         List<Exercise> exercises = null;
 
         try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            final DAO<Exercise> exerciseDAO = new ExerciseDAO(connection);
+            final DAO<Exercise> exerciseDAO = DAO_MANAGER.createExerciseDAO(connection);
 
             exercises = exerciseDAO.findAll();
         } catch (SQLException | ConnectionPoolException exception) {
@@ -100,7 +99,7 @@ public final class PurposeServiceImpl implements PurposeService {
         List<Equipment> equipment = null;
 
         try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            final DAO<Equipment> equipmentDAO = new EquipmentDAO(connection);
+            final DAO<Equipment> equipmentDAO = DAO_MANAGER.createEquipmentDAO(connection);
 
             equipment = equipmentDAO.findAll();
         } catch (SQLException | ConnectionPoolException exception) {
@@ -116,7 +115,7 @@ public final class PurposeServiceImpl implements PurposeService {
         List<Food> food = null;
 
         try (final Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
-            final DAO<Food> foodDAO = new FoodDAO(connection);
+            final DAO<Food> foodDAO = DAO_MANAGER.createFoodDAO(connection);
 
             food = foodDAO.findAll();
         } catch (SQLException | ConnectionPoolException exception) {
@@ -129,7 +128,7 @@ public final class PurposeServiceImpl implements PurposeService {
 
     private void makePurpose(Integer trainingId, String exercise, String equipment, String food
             , DAO<Exercise> exerciseDAO, DAO<Equipment> equipmentDAO, DAO<Food> foodDAO
-            , PurposesDAO purposesDAO) throws NoSuchPurposeException {
+            , PurposesDAO<Purpose> purposesDAO) throws NoSuchPurposeException {
 
         Integer exerciseId, equipmentId, foodId;
 
@@ -144,7 +143,7 @@ public final class PurposeServiceImpl implements PurposeService {
 
     private void updatePurpose(Integer purposeId, String exercise, String equipment, String food
             , DAO<Exercise> exerciseDAO, DAO<Equipment> equipmentDAO, DAO<Food> foodDAO
-            , PurposesDAO purposesDAO) throws NoSuchPurposeException {
+            , PurposesDAO<Purpose> purposesDAO) throws NoSuchPurposeException {
 
         Integer exerciseId, equipmentId, foodId;
 

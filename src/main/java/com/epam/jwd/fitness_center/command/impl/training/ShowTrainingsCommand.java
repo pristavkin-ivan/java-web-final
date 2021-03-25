@@ -4,7 +4,6 @@ import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
-import com.epam.jwd.fitness_center.exception.NoSuchTrainingsException;
 import com.epam.jwd.fitness_center.model.dto.TrainingDTO;
 import com.epam.jwd.fitness_center.service.api.TrainingService;
 import com.epam.jwd.fitness_center.service.impl.TrainingServiceImpl;
@@ -21,7 +20,7 @@ public enum ShowTrainingsCommand implements Command {
     private final static String ERROR_COMMAND_KEY = "command.error";
 
 
-    private final static TrainingService TRAINING_SERVICE = TrainingServiceImpl.getInstance();
+    private final static TrainingService<TrainingDTO> TRAINING_SERVICE = TrainingServiceImpl.getInstance();
 
     private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
 
@@ -48,7 +47,7 @@ public enum ShowTrainingsCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        List<TrainingDTO> trainings = null;
+        List<TrainingDTO> trainings;
         final Integer id = (Integer) requestContext.getSessionAttribute(Attributes.ID);
 
         if (Objects.equals(requestContext.getSessionAttribute(Attributes.IS_INSTRUCTOR), true)) {

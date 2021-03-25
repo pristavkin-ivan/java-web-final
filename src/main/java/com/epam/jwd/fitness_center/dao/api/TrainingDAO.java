@@ -1,12 +1,11 @@
 package com.epam.jwd.fitness_center.dao.api;
 
-import com.epam.jwd.fitness_center.model.entity.Entity;
 import com.epam.jwd.fitness_center.model.entity.Training;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface TrainingDAO<T extends Entity> {
+public interface TrainingDAO<T extends Training> {
     List<Training.Builder> findAll();
     List<Training.Builder> findAllTrainingsByClientId(Integer clientId);
     List<Training.Builder> findAllTrainingsByInstructorId(Integer instructorId);

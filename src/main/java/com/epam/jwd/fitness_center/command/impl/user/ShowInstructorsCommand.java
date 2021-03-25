@@ -4,10 +4,10 @@ import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
+import com.epam.jwd.fitness_center.model.dto.InstructorDTO;
 import com.epam.jwd.fitness_center.service.api.InstructorService;
 import com.epam.jwd.fitness_center.service.impl.InstructorServiceImpl;
 
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public enum ShowInstructorsCommand implements Command {
@@ -34,7 +34,7 @@ public enum ShowInstructorsCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        final InstructorService service = InstructorServiceImpl.getInstance();
+        final InstructorService<InstructorDTO> service = InstructorServiceImpl.getInstance();
 
         requestContext.setAttribute(Attributes.INSTRUCTORS, service.getAllInstructors());
         return RESPONSE_CONTEXT;

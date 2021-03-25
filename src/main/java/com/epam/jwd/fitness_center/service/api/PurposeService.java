@@ -4,9 +4,6 @@ import com.epam.jwd.fitness_center.exception.NoSuchPurposeException;
 import com.epam.jwd.fitness_center.model.dto.EquipmentDTO;
 import com.epam.jwd.fitness_center.model.dto.ExerciseDTO;
 import com.epam.jwd.fitness_center.model.dto.FoodDTO;
-import com.epam.jwd.fitness_center.model.entity.Equipment;
-import com.epam.jwd.fitness_center.model.entity.Exercise;
-import com.epam.jwd.fitness_center.model.entity.Food;
 
 import java.util.List;
 

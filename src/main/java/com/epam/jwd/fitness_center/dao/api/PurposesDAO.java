@@ -4,9 +4,9 @@ import com.epam.jwd.fitness_center.model.entity.Purpose;
 
 import java.util.List;
 
-public interface PurposesDAO {
+public interface PurposesDAO<T extends Purpose> {
 
-    List<Purpose> findPurposesByTrainingId(Integer trainingId);
+    List<T> findPurposesByTrainingId(Integer trainingId);
 
     void addPurpose(Integer trainingId, Integer exerciseId, Integer equipmentId, Integer foodId);
 

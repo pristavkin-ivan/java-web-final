@@ -18,6 +18,10 @@ import java.util.ResourceBundle;
 public enum ShowProfileCommand implements Command {
     INSTANCE;
 
+    private final static InstructorService<InstructorDTO> INSTRUCTOR_SERVICE = InstructorServiceImpl.getInstance();
+
+    private final static ClientService<ClientDTO> CLIENT_SERVICE = ClientServiceImpl.getInstance();
+
     private final static String BUNDLE_NAME = "pages";
     private final static String CLIENT_PAGE_KEY = "clientProfilePage";
     private final static String INSTRUCTOR_PAGE_KEY = "instructorProfilePage";
@@ -53,10 +57,6 @@ public enum ShowProfileCommand implements Command {
         }
 
     };
-
-    private final static InstructorService INSTRUCTOR_SERVICE = InstructorServiceImpl.getInstance();
-
-    private final static ClientService CLIENT_SERVICE = ClientServiceImpl.getInstance();
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {

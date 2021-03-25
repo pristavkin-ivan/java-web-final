@@ -4,6 +4,7 @@ import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
+import com.epam.jwd.fitness_center.model.dto.TrainingDTO;
 import com.epam.jwd.fitness_center.service.api.TrainingService;
 import com.epam.jwd.fitness_center.service.impl.TrainingServiceImpl;
 
@@ -16,7 +17,7 @@ public enum DeleteTrainingCommand implements Command {
     private final static String COMMAND_KEY = "command.showTrainings";
     private final static String ADMIN_COMMAND_KEY = "command.showAllTrainings";
 
-    private final static TrainingService TRAINING_SERVICE = TrainingServiceImpl.getInstance();
+    private final static TrainingService<TrainingDTO> TRAINING_SERVICE = TrainingServiceImpl.getInstance();
 
     private static final ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
 

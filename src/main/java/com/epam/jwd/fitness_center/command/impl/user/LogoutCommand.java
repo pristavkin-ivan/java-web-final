@@ -3,10 +3,6 @@ package com.epam.jwd.fitness_center.command.impl.user;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
-import com.epam.jwd.fitness_center.service.api.ClientService;
-import com.epam.jwd.fitness_center.service.api.InstructorService;
-import com.epam.jwd.fitness_center.service.impl.ClientServiceImpl;
-import com.epam.jwd.fitness_center.service.impl.InstructorServiceImpl;
 
 import java.util.ResourceBundle;
 

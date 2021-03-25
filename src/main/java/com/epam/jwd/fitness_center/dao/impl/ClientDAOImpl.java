@@ -42,7 +42,7 @@ public final class ClientDAOImpl implements ClientDAO<Client> {
     private static final String BALANCE_LABEL = "c_balance";
     private static final String TRAININGS_AMOUNT_LABEL = "c_amount_of_trainings";
 
-    public ClientDAOImpl(Connection connection) {
+    ClientDAOImpl(Connection connection) {
         this.connection = connection;
     }
 

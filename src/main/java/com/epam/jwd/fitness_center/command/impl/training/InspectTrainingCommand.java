@@ -17,7 +17,7 @@ public enum InspectTrainingCommand implements Command {
     private static final String PAGE_KEY = "trainingPage";
     private static final String BUNDLE_NAME = "pages";
 
-    private static final TrainingService TRAINING_SERVICE = TrainingServiceImpl.getInstance();
+    private static final TrainingService<TrainingDTO> TRAINING_SERVICE = TrainingServiceImpl.getInstance();
 
     private final static ResponseContext RESPONSE_CONTEXT = new ResponseContext() {
 

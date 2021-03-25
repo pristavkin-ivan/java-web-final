@@ -4,6 +4,8 @@ import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
+import com.epam.jwd.fitness_center.model.dto.ClientDTO;
+import com.epam.jwd.fitness_center.model.dto.InstructorDTO;
 import com.epam.jwd.fitness_center.model.entity.Client;
 import com.epam.jwd.fitness_center.model.entity.Instructor;
 import com.epam.jwd.fitness_center.service.api.ClientService;
@@ -18,9 +20,9 @@ import java.util.ResourceBundle;
 public enum UpdateProfileCommand implements Command {
     INSTANCE;
 
-    private final static InstructorService INSTRUCTOR_SERVICE = InstructorServiceImpl.getInstance();
+    private final static InstructorService<InstructorDTO> INSTRUCTOR_SERVICE = InstructorServiceImpl.getInstance();
 
-    private final static ClientService CLIENT_SERVICE = ClientServiceImpl.getInstance();
+    private final static ClientService<ClientDTO> CLIENT_SERVICE = ClientServiceImpl.getInstance();
 
     private static final String BUNDLE_NAME = "pages";
     private static final String COMMAND_KEY = "command.showProfile";

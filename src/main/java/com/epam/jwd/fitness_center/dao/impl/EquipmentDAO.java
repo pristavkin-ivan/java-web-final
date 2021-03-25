@@ -3,7 +3,6 @@ package com.epam.jwd.fitness_center.dao.impl;
 import com.epam.jwd.fitness_center.dao.api.DAO;
 import com.epam.jwd.fitness_center.model.entity.EntityManager;
 import com.epam.jwd.fitness_center.model.entity.Equipment;
-import com.epam.jwd.fitness_center.model.entity.Exercise;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,7 +30,7 @@ public class EquipmentDAO implements DAO<Equipment> {
     private final static String NAME_LABEL = "e_name";
     private final static String DIFFICULTY_LABEL = "e_difficulty";
 
-    public EquipmentDAO(Connection connection) {
+    EquipmentDAO(Connection connection) {
         this.connection = connection;
     }
 
