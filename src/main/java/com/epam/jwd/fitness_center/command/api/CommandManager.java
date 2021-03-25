@@ -19,6 +19,9 @@ import com.epam.jwd.fitness_center.command.impl.user.SignupCommand;
 import com.epam.jwd.fitness_center.command.impl.profile.ShowProfileCommand;
 import com.epam.jwd.fitness_center.command.impl.profile.UpdateProfileCommand;
 
+/**
+ * Command's manager. Stores all commands and retrieves them by name.
+ */
 public enum CommandManager {
     DEFAULT(DefaultCommand.DEFAULT_COMMAND), LOGIN(LoginCommand.LOGIN_COMMAND), SIGNUP(SignupCommand.SIGNUP_COMMAND)
     , ERROR(ErrorCommand.ERROR_COMMAND), LOGOUT(LogoutCommand.LOGOUT_COMMAND)
@@ -36,6 +39,12 @@ public enum CommandManager {
         this.command = command;
     }
 
+    /**
+     * Factory Method that get appropriate Command implementation by Command's name
+     *
+     * @param command_name
+     * @return Command implementation
+     */
     static Command of(String command_name) {
         for (CommandManager commandManager : values()) {
             if (commandManager.name().equalsIgnoreCase(command_name)) {

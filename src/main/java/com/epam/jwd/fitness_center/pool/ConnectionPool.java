@@ -45,7 +45,6 @@ public final class ConnectionPool implements Pool {
 
     @Override
     public void returnConnection(Connection connection) throws ConnectionPoolException {
-        //todo check connection on fake?
         lock.lock();
         if (CONNECTION_STACK.size() <= MAX_CONNECTIONS) {
             CONNECTION_STACK.push((ProxyConnection) connection);

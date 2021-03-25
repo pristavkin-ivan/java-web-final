@@ -1,5 +1,8 @@
 package com.epam.jwd.fitness_center.command.api;
 
+/**
+ * This interface stores attribute and params literals
+ */
 public interface Attributes {
     String I_NAME = "instructorName";
     String AMOUNT = "amount";
