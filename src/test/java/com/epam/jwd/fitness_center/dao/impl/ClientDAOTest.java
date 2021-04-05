@@ -18,10 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ClientDAOTest {
 
     private final static String TEST_LOGIN = "test_log";
-
     private final static String TEST_NAME = "Name Name";
-
     private final static String TEST_PASS = "tes14Pass";
+    private final static String LOGIN_V = "vane4k";
 
     Client client;
 
@@ -62,7 +61,7 @@ public class ClientDAOTest {
     }
 
     @Test
-    public void InsertBalanceTest_MustInsertBalanceToDataBase_NotThrowSqlException() {
+    public void PayTest_MustUpdateClientBalance_NotThrowSqlException() {
         clientDAO.pay(18, 500);
     }
 
@@ -84,6 +83,11 @@ public class ClientDAOTest {
     @Test
     public void FindClientByIdTest_MustReturnCorrectClientFromDataBase_Client() {
         assertEquals(3, clientDAO.findEntityById(3).get().getId());
+    }
+
+    @Test
+    public void FindClientByLoginTest_MustReturnCorrectClientFromDataBase_Client() {
+        assertEquals(18, clientDAO.findByLogin(LOGIN_V).get().getId());
     }
 
     @AfterAll

@@ -35,7 +35,7 @@ public final class InstructorServiceImpl implements InstructorService<Instructor
     }
 
     @Override
-    public List<InstructorDTO> getAllInstructors() {
+    public List<InstructorDTO> findAllInstructors() {
         List<Instructor> instructors = null;
 
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
@@ -62,7 +62,7 @@ public final class InstructorServiceImpl implements InstructorService<Instructor
     }
 
     @Override
-    public Optional<InstructorDTO> getInstructorById(Integer id) {
+    public Optional<InstructorDTO> findInstructorById(Integer id) {
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
             InstructorDAO<Instructor> dao = DAO_MANAGER.createInstructorDAO(connection);
 

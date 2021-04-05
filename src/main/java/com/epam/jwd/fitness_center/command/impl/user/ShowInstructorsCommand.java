@@ -36,7 +36,7 @@ public enum ShowInstructorsCommand implements Command {
     public ResponseContext execute(RequestContext requestContext) {
         final InstructorService<InstructorDTO> service = InstructorServiceImpl.getInstance();
 
-        requestContext.setAttribute(Attributes.INSTRUCTORS, service.getAllInstructors());
+        requestContext.setAttribute(Attributes.INSTRUCTORS, service.findAllInstructors());
         return RESPONSE_CONTEXT;
     }
 }

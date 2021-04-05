@@ -62,14 +62,14 @@ public enum ShowProfileCommand implements Command {
     public ResponseContext execute(RequestContext requestContext) {
         if (Objects.equals(requestContext.getSessionAttribute(Attributes.IS_INSTRUCTOR), true)) {
             final Optional<InstructorDTO> instructor
-                    = INSTRUCTOR_SERVICE.getInstructorById((Integer) requestContext.getSessionAttribute(Attributes.ID));
+                    = INSTRUCTOR_SERVICE.findInstructorById((Integer) requestContext.getSessionAttribute(Attributes.ID));
 
             configureInstructorProfileAttributes(requestContext, instructor);
             return INSTRUCTOR_RESPONSE_CONTEXT;
         }
 
         final Optional<ClientDTO> client
-                = CLIENT_SERVICE.getClientById((Integer) requestContext.getSessionAttribute(Attributes.ID));
+                = CLIENT_SERVICE.findClientById((Integer) requestContext.getSessionAttribute(Attributes.ID));
 
         configureClientProfileAttributes(requestContext, client);
         return CLIENT_RESPONSE_CONTEXT;

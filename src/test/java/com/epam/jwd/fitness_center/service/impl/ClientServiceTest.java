@@ -1,7 +1,7 @@
 package com.epam.jwd.fitness_center.service.impl;
 
 import com.epam.jwd.fitness_center.exception.ConnectionPoolException;
-import com.epam.jwd.fitness_center.model.entity.Instructor;
+import com.epam.jwd.fitness_center.model.entity.Client;
 import com.epam.jwd.fitness_center.pool.ConnectionPool;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,10 +10,9 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class InstructorServiceTest {
+public class ClientServiceTest {
 
     public final static String URL = "jdbc:mysql://localhost:3306/fitnessCenterDB?serverTimezone=Europe/Moscow";
 
@@ -21,12 +20,9 @@ public class InstructorServiceTest {
 
     public final static String PASSWORD = "12345678L";
 
-    private static final String ADMIN = "admin";
+    private static final String TEST = "test";
 
-    private final InstructorServiceImpl instructorService = InstructorServiceImpl.getInstance();
-
-    private final static String PASS = "admin";
-    private final static String S_LOGIN = "swarts";
+    private final ClientServiceImpl clientService = ClientServiceImpl.getInstance();
 
     @BeforeAll
     static void initConnectionPool() {
@@ -38,44 +34,44 @@ public class InstructorServiceTest {
     }
 
     @Test
-    public void SignUpInstructorTest_MustCreateInstructor_NotThrowSignUpException() {
-        assertDoesNotThrow( () -> instructorService.signup(ADMIN,ADMIN, ADMIN));
+    public void SignUpClientTest_MustCreateClient_NotThrowSignUpException() {
+        assertDoesNotThrow(() -> clientService.signup(TEST, TEST, TEST));
     }
 
     @Test
-    public void FindAllInstructorsTest_MustRetrieveAllSavedInstructors_NotEmptyList() {
-        assertTrue(instructorService.findAllInstructors().size() > 0);
+    public void FindAllClientsTest_MustRetrieveAllSavedClients_NotEmptyList() {
+        assertTrue(clientService.findAllClients().size() > 0);
     }
 
     @Test
-    public void FindInstructorByIdTest_MustRetrieveAppropriateInstructor_NotEmptyOptional() {
-        assertTrue(instructorService.findInstructorById(8).isPresent());
+    public void FindClientByIdTest_MustRetrieveAppropriateClient_NotEmptyOptional() {
+        assertTrue(clientService.findClientById(18).isPresent());
     }
 
     @Test
     public void LogInTest_MustAuthorizeInstructor_NotEmptyOptional() {
-        assertTrue(instructorService.login(S_LOGIN, PASS).isPresent());
+        assertTrue(clientService.login(TEST, TEST).isPresent());
     }
 
     @Test
-    public void UpdateProfileTest_MustUpdateInstructor() {
-       instructorService.updateProfile(Instructor.getBuilder()
-               .id(13)
-               .name("volodya")
-               .login("instr")
-               .info("info pro volodyu")
-               .build());
+    public void UpdateProfileTest_MustUpdateClient() {
+        clientService.updateProfile(Client.getBuilder()
+                .id(38)
+                .name("15")
+                .login(TEST)
+                .weight(0.0)
+                .height(0.0)
+                .build());
     }
 
     @Test
     public void DeleteProfileTest_MustDeleteInstructor() {
-        instructorService.deleteProfile(13);
+        clientService.deleteProfile(38);
     }
 
     @AfterAll
     static void destroyConnectionPool() {
         ConnectionPool.getConnectionPool().destroyConnectionPool();
     }
-
 
 }

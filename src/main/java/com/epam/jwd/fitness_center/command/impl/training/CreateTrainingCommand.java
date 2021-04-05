@@ -73,7 +73,7 @@ public enum CreateTrainingCommand implements Command {
 
         createTraining(requestContext, instructorName);
         requestContext.setSessionAttribute(Attributes.BALANCE
-                , CLIENT_SERVICE.getClientById((Integer) requestContext.getSessionAttribute(Attributes.ID))
+                , CLIENT_SERVICE.findClientById((Integer) requestContext.getSessionAttribute(Attributes.ID))
                         .get().getBalance());
         return RESPONSE_CONTEXT;
     }

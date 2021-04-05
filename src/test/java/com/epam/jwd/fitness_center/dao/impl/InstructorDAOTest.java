@@ -16,11 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class InstructorDAOTest {
-    private final static String TEST_LOGIN = "test_log";
 
-    private final static String TEST_NAME = "Name Name";
-
-    private final static String TEST_PASS = "tes14Pass";
+    private final static String LOGIN_S = "swarts";
+    private final static String NAME_S = "Arnold Schwarzenegger";
 
     Instructor instructor;
 
@@ -75,6 +73,16 @@ public class InstructorDAOTest {
     @Test
     public void FindInstructorByIdTest_MustReturnCorrectInstructorFromDataBase_Instructor() {
         assertEquals(3, instructorDAO.findEntityById(3).get().getId());
+    }
+
+    @Test
+    public void FindInstructorByLoginTest_MustReturnCorrectInstructorFromDataBase_Instructor() {
+        assertEquals(7, instructorDAO.findByLogin(LOGIN_S).get().getId());
+    }
+
+    @Test
+    public void FindInstructorByNameTest_MustReturnCorrectInstructorFromDataBase_Instructor() {
+        assertEquals(7, instructorDAO.findByName(NAME_S).get().getId());
     }
 
     @AfterAll

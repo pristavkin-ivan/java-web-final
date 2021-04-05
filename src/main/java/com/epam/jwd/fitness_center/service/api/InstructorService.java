@@ -17,7 +17,7 @@ public interface InstructorService<T extends InstructorDTO> {
      *
      * @return List of instructor's DTO
      */
-    List<T> getAllInstructors();
+    List<T> findAllInstructors();
 
     /**
      * Method that searches for instructor with appropriate id.
@@ -25,7 +25,7 @@ public interface InstructorService<T extends InstructorDTO> {
      * @param id
      * @return Optional of instructorDTO
      */
-    Optional<T> getInstructorById(Integer id);
+    Optional<T> findInstructorById(Integer id);
 
     /**
      * Method that authorizes the instructor.

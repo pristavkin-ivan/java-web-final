@@ -44,6 +44,9 @@ public final class TrainingDAOImpl implements TrainingDAO<Training> {
 
     private static final String UPDATE_COMMENT = "update training set t_comment = ? where t_id = ? ";
 
+    private static final String UPDATE_TRAINING = "update training set client_id = ?, instructor_id = ?, t_amount = ?, " +
+            "t_difficulty = ?, t_price = ? where t_id = ? ";
+
     private static final String DELETE_TRAINING_BY_ID = "delete from training where t_id =?";
 
     private static final String INSTRUCTOR_ID_LABEL = "instructor.i_id";
@@ -121,6 +124,14 @@ public final class TrainingDAOImpl implements TrainingDAO<Training> {
 
     @Override
     public void update(Training entity) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_TRAINING)) {
+            configureStatement(entity.getClient().getId(), entity.getInstructor().getId(), entity.getAmount()
+                    , entity.getDifficulty(), entity.getPrice(), preparedStatement);
+            preparedStatement.setInt(6, entity.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LOGGER.error(exception.getMessage());
+        }
     }
 
     @Override

@@ -17,7 +17,7 @@ public interface ClientService<T extends ClientDTO> {
      *
      * @return List of client's DTO
      */
-    List<T> getAllClients();
+    List<T> findAllClients();
 
     /**
      * Method that searches for client with appropriate id.
@@ -25,7 +25,7 @@ public interface ClientService<T extends ClientDTO> {
      * @param id
      * @return Optional of clientDTO
      */
-    Optional<T> getClientById(Integer id);
+    Optional<T> findClientById(Integer id);
 
     /**
      * Method that authorizes the client.

@@ -34,7 +34,7 @@ public final class ClientServiceImpl implements ClientService<ClientDTO> {
     }
 
     @Override
-    public List<ClientDTO> getAllClients() {
+    public List<ClientDTO> findAllClients() {
         List<Client> clients = null;
 
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
@@ -50,7 +50,7 @@ public final class ClientServiceImpl implements ClientService<ClientDTO> {
     }
 
     @Override
-    public Optional<ClientDTO> getClientById(Integer id) {
+    public Optional<ClientDTO> findClientById(Integer id) {
         try (Connection connection = ConnectionPool.getConnectionPool().getConnection()) {
             ClientDAO<Client> dao = DAO_MANAGER.createClientDAO(connection);
 

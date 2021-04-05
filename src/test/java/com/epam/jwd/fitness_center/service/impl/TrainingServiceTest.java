@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TrainingServiceTest {
 
@@ -23,6 +24,7 @@ public class TrainingServiceTest {
     public final static String PASSWORD = "12345678L";
 
     private static final String ADMIN = "admin";
+    private final TrainingServiceImpl trainingService = TrainingServiceImpl.getInstance();
 
     @BeforeAll
     static void initConnectionPool() {
@@ -34,18 +36,34 @@ public class TrainingServiceTest {
     }
 
     @Test
-    public void getTrainingsTest_ReturnTrainingsDtoList_NotEmptyList() {
-        List<TrainingDTO> trainingsDto;
+    public void FindAllTrainingsTest_MustRetrieveAllSavedTrainings_NotEmptyList() {
+        assertTrue(trainingService.findAll().size() > 0);
+    }
 
-        trainingsDto = TrainingServiceImpl.getInstance().findTrainingsByClientId(18);
+    @Test
+    public void FindAllTrainingsByClientIdTest_MustRetrieveAllSavedTrainingsWithAppropriateClientId_NotEmptyList() {
+        assertTrue(trainingService.findTrainingsByClientId(18).size() > 0);
+    }
 
-        assertNotNull(trainingsDto);
-        System.out.println(trainingsDto);
+    @Test
+    public void FindAllTrainingsByInstructorIdTest_MustRetrieveAllSavedTrainingsWithAppropriateInstructorId_NotEmptyList() {
+        assertTrue(trainingService.findTrainingsByInstructorId(7).size() > 0);
+    }
+
+    @Test
+    public void CreateTrainingTest_MustSaveNewTraining_NotThrowException() {
+        assertDoesNotThrow( () -> trainingService.createTraining(35, "Arnold Schwarzenegger"
+                , 10, 1, 10.0, false));
+    }
+
+    @Test
+    public void DeleteTrainingTest_MustDeleteTraining_NotException() {
+        assertDoesNotThrow( () -> trainingService.deleteTraining(34));
     }
 
     @Test
     public void LeaveCommentTest_MustAddCommentToTraining_NotThrowException() {
-        assertDoesNotThrow( () -> TrainingServiceImpl.getInstance().leaveComment(7, "Leaved comment..."));
+        assertDoesNotThrow( () -> trainingService.leaveComment(7, "Leaved comment..."));
     }
 
     @AfterAll
