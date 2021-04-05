@@ -82,7 +82,6 @@ public enum CreateTrainingCommand implements Command {
         final int amount = Integer.parseInt(requestContext.getParameter(Attributes.AMOUNT));
         final Integer difficulty = Integer.parseInt(requestContext.getParameter(Attributes.DIFFICULTY));
         final Double price = TRAINING_PRICE * amount;
-        final String credit = requestContext.getParameter(Attributes.IS_CREDIT);
         boolean isCredit = false;
 
         if (requestContext.getParameter(Attributes.IS_CREDIT) != null) {

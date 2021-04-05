@@ -1,6 +1,7 @@
 package com.epam.jwd.fitness_center.service.impl;
 
 import com.epam.jwd.fitness_center.exception.ConnectionPoolException;
+import com.epam.jwd.fitness_center.exception.SignupException;
 import com.epam.jwd.fitness_center.model.entity.Client;
 import com.epam.jwd.fitness_center.pool.ConnectionPool;
 import org.junit.jupiter.api.AfterAll;
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ClientServiceTest {
@@ -21,6 +24,10 @@ public class ClientServiceTest {
     public final static String PASSWORD = "12345678L";
 
     private static final String TEST = "test";
+
+    private static final String LOG = "vane4k";
+    private static final String PASS = "12345678";
+    private static final String INC_PASS = "incpass";
 
     private final ClientServiceImpl clientService = ClientServiceImpl.getInstance();
 
@@ -34,8 +41,13 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void SignUpClientTest_MustCreateClient_NotThrowSignUpException() {
+    public void SignUpClientTest_MustCreateClientIfParamsAreCorrect_NotThrowSignUpException() {
         assertDoesNotThrow(() -> clientService.signup(TEST, TEST, TEST));
+    }
+
+    @Test
+    public void SignUpClientTest_MustThrowExceptionIfParamsAreIncorrect_ThrowSignUpException() {
+        assertThrows(SignupException.class, () -> clientService.signup("vane4k", TEST, TEST));
     }
 
     @Test
@@ -44,13 +56,23 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void FindClientByIdTest_MustRetrieveAppropriateClient_NotEmptyOptional() {
+    public void FindClientByIdTest_MustRetrieveAppropriateClientIfExist_NotEmptyOptional() {
         assertTrue(clientService.findClientById(18).isPresent());
     }
 
     @Test
-    public void LogInTest_MustAuthorizeInstructor_NotEmptyOptional() {
-        assertTrue(clientService.login(TEST, TEST).isPresent());
+    public void FindClientByIdTest_MustReturnEmptyOptionalIfClientIsNotExist_EmptyOptional() {
+        assertFalse(clientService.findClientById(110).isPresent());
+    }
+
+    @Test
+    public void LogInTest_MustAuthorizeClientIfLoginIsExistAndPasswordIsCorrect_NotEmptyOptional() {
+        assertTrue(clientService.login(LOG, PASS).isPresent());
+    }
+
+    @Test
+    public void LogInTest_MustNotAuthorizeClientIfLoginIsNotExistOrPasswordIsNotCorrect_EmptyOptional() {
+        assertFalse(clientService.login(LOG, INC_PASS).isPresent());
     }
 
     @Test

@@ -1,7 +1,10 @@
 package com.epam.jwd.fitness_center.service.impl;
 
 import com.epam.jwd.fitness_center.exception.ConnectionPoolException;
+import com.epam.jwd.fitness_center.exception.NoSuchInstructorException;
 import com.epam.jwd.fitness_center.exception.NoSuchTrainingsException;
+import com.epam.jwd.fitness_center.exception.NotEnoughMoneyException;
+import com.epam.jwd.fitness_center.exception.SignupException;
 import com.epam.jwd.fitness_center.model.dto.TrainingDTO;
 import com.epam.jwd.fitness_center.pool.ConnectionPool;
 import org.junit.jupiter.api.AfterAll;
@@ -13,6 +16,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TrainingServiceTest {
@@ -54,6 +58,18 @@ public class TrainingServiceTest {
     public void CreateTrainingTest_MustSaveNewTraining_NotThrowException() {
         assertDoesNotThrow( () -> trainingService.createTraining(35, "Arnold Schwarzenegger"
                 , 10, 1, 10.0, false));
+    }
+
+    @Test
+    public void CreateTrainingTest_MustThrowNoSuchInstructorException_ThrowsNoSuchInstructorException() {
+        assertThrows(NoSuchInstructorException.class, () -> trainingService.createTraining(35
+                , "dummyInstr", 10, 1, 10.0, false));
+    }
+
+    @Test
+    public void CreateTrainingTest_MustThrowNoEnoughMoneyException_ThrowsNoEnoughMoneyException() {
+        assertThrows(NotEnoughMoneyException.class, () -> trainingService.createTraining(35
+                , "Arnold Schwarzenegger", 10, 1, 10000.0, false));
     }
 
     @Test

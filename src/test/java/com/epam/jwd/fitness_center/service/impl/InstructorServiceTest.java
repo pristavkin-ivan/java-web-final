@@ -1,6 +1,7 @@
 package com.epam.jwd.fitness_center.service.impl;
 
 import com.epam.jwd.fitness_center.exception.ConnectionPoolException;
+import com.epam.jwd.fitness_center.exception.SignupException;
 import com.epam.jwd.fitness_center.model.entity.Instructor;
 import com.epam.jwd.fitness_center.pool.ConnectionPool;
 import org.junit.jupiter.api.AfterAll;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class InstructorServiceTest {
@@ -22,10 +24,12 @@ public class InstructorServiceTest {
     public final static String PASSWORD = "12345678L";
 
     private static final String ADMIN = "admin";
+    private static final String TEST = "test";
 
     private final InstructorServiceImpl instructorService = InstructorServiceImpl.getInstance();
 
     private final static String PASS = "admin";
+    private final static String INC_PASS = "incpass";
     private final static String S_LOGIN = "swarts";
 
     @BeforeAll
@@ -43,18 +47,33 @@ public class InstructorServiceTest {
     }
 
     @Test
+    public void SignUpInstructorTest_MustThrowExceptionIfParamsAreIncorrect_ThrowSignUpException() {
+        assertThrows(SignupException.class, () -> instructorService.signup(ADMIN, TEST, TEST));
+    }
+
+    @Test
     public void FindAllInstructorsTest_MustRetrieveAllSavedInstructors_NotEmptyList() {
         assertTrue(instructorService.findAllInstructors().size() > 0);
     }
 
     @Test
-    public void FindInstructorByIdTest_MustRetrieveAppropriateInstructor_NotEmptyOptional() {
+    public void FindInstructorByIdTest_MustRetrieveAppropriateInstructorIfInstructorIsExist_NotEmptyOptional() {
         assertTrue(instructorService.findInstructorById(8).isPresent());
     }
 
     @Test
-    public void LogInTest_MustAuthorizeInstructor_NotEmptyOptional() {
+    public void FindInstructorByIdTest_MustReturnEmptyOptionalIfInstructorIsNotExist_EmptyOptional() {
+        assertFalse(instructorService.findInstructorById(110).isPresent());
+    }
+
+    @Test
+    public void LogInTest_MustAuthorizeInstructorIfInstructorIsExist_NotEmptyOptional() {
         assertTrue(instructorService.login(S_LOGIN, PASS).isPresent());
+    }
+
+    @Test
+    public void LogInTest_MustNotAuthorizeInstructorIfInstructorIsNotExistOrPasswordIsIncorrect_EmptyOptional() {
+        assertFalse(instructorService.login(S_LOGIN, INC_PASS).isPresent());
     }
 
     @Test

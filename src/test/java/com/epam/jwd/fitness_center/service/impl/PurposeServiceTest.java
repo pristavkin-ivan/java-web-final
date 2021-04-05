@@ -1,6 +1,8 @@
 package com.epam.jwd.fitness_center.service.impl;
 
 import com.epam.jwd.fitness_center.exception.ConnectionPoolException;
+import com.epam.jwd.fitness_center.exception.NoSuchPurposeException;
+import com.epam.jwd.fitness_center.exception.NotEnoughMoneyException;
 import com.epam.jwd.fitness_center.model.entity.Client;
 import com.epam.jwd.fitness_center.pool.ConnectionPool;
 import org.junit.jupiter.api.AfterAll;
@@ -10,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PurposeServiceTest {
@@ -38,8 +41,20 @@ public class PurposeServiceTest {
     }
 
     @Test
+    public void CreatePurposeTest_MustThrowNoSuchPurposeException_NotThrowNoSuchPurposeException() {
+        assertThrows(NoSuchPurposeException.class
+                , () -> purposeService.createPurpose(31, "??", "", "banana"));
+    }
+
+    @Test
     public void UpdatePurposeTest_MustUpdatePurpose_NotThrowException() {
         assertDoesNotThrow( () -> purposeService.updatePurpose(33, "", "", "banana"));
+    }
+
+    @Test
+    public void UpdatePurposeTest_MustThrowNoSuchPurposeException_NotThrowNoSuchPurposeException() {
+        assertThrows(NoSuchPurposeException.class
+                , () ->  purposeService.updatePurpose(33, "", "??", "banana"));
     }
 
     @Test
