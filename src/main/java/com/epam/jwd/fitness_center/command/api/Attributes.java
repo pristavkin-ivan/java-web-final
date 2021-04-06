@@ -35,4 +35,10 @@ public interface Attributes {
     String EXERCISES = "exercises";
     String EQUIPMENTS = "equipments";
     String FOODS = "foods";
+    String LOSS = "loss";
+    String GAIN = "gain";
+    String NORMAL = "normal";
+    String GENDER = "gender";
+    String MALE = "male";
+    String FEMALE = "female";
 }

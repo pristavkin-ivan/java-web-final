@@ -68,6 +68,11 @@
         <fmt:message key="title.instructors" bundle="${rb}"/>
         </a>
     </li>
+    <li>
+        <a href="${pageContext.request.contextPath}/go?command=calculate_calories">
+            <fmt:message key="title.calculator" bundle="${rb}"/>
+        </a>
+    </li>
     <li><a href="${pageContext.request.contextPath}/go?command=logout"><fmt:message key="nav.logout" bundle="${rb}"/></a></li>
     <c:if test="${empty sessionScope.isInstructor}">
     <li style="text-align: right; margin-right: 15px; margin-top: 15px; float:right; color: #e5e7e7">

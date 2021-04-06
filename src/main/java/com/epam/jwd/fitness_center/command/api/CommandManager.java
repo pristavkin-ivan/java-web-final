@@ -1,6 +1,7 @@
 package com.epam.jwd.fitness_center.command.api;
 
-import com.epam.jwd.fitness_center.command.impl.LocalizationCommand;
+import com.epam.jwd.fitness_center.command.impl.common.CalculateCaloriesCommand;
+import com.epam.jwd.fitness_center.command.impl.common.LocalizationCommand;
 import com.epam.jwd.fitness_center.command.impl.purpose.CreatePurposeCommand;
 import com.epam.jwd.fitness_center.command.impl.purpose.DeletePurposeCommand;
 import com.epam.jwd.fitness_center.command.impl.purpose.UpdatePurposeCommand;
@@ -9,7 +10,7 @@ import com.epam.jwd.fitness_center.command.impl.training.CreateTrainingCommand;
 import com.epam.jwd.fitness_center.command.impl.user.DefaultCommand;
 import com.epam.jwd.fitness_center.command.impl.profile.DeleteProfileCommand;
 import com.epam.jwd.fitness_center.command.impl.training.DeleteTrainingCommand;
-import com.epam.jwd.fitness_center.command.impl.ErrorCommand;
+import com.epam.jwd.fitness_center.command.impl.common.ErrorCommand;
 import com.epam.jwd.fitness_center.command.impl.training.InspectTrainingCommand;
 import com.epam.jwd.fitness_center.command.impl.user.LoginCommand;
 import com.epam.jwd.fitness_center.command.impl.user.LogoutCommand;
@@ -32,7 +33,8 @@ public enum CommandManager {
     , SHOW_ALL_TRAININGS(ShowAllTrainingsCommand.INSTANCE), DELETE_PROFILE(DeleteProfileCommand.INSTANCE)
     , DELETE_TRAINING(DeleteTrainingCommand.INSTANCE), COMMENT(CommentCommand.INSTANCE)
     , DELETE_PURPOSE(DeletePurposeCommand.INSTANCE), CREATE_PURPOSE(CreatePurposeCommand.INSTANCE)
-    , UPDATE_PURPOSE(UpdatePurposeCommand.INSTANCE), LOCALIZE(LocalizationCommand.INSTANCE);
+    , UPDATE_PURPOSE(UpdatePurposeCommand.INSTANCE), LOCALIZE(LocalizationCommand.INSTANCE)
+    , CALCULATE_CALORIES(CalculateCaloriesCommand.INSTANCE);
 
     private final Command command;
 

@@ -1,4 +1,4 @@
-package com.epam.jwd.fitness_center.command.impl;
+package com.epam.jwd.fitness_center.command.impl.common;
 
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;

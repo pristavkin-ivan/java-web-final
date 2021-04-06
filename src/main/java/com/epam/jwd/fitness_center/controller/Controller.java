@@ -2,7 +2,7 @@ package com.epam.jwd.fitness_center.controller;
 
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
-import com.epam.jwd.fitness_center.command.impl.RequestContextImpl;
+import com.epam.jwd.fitness_center.command.impl.common.RequestContextImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
