@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="customTags" prefix="ctg"%>
 
@@ -41,11 +41,9 @@
             <span style="text-align: right;right: 0; margin-left: 40px"><ctg:get-time/></span>
         </p>
         <ul>
-            <b>
-            <li><a href="/go?localization=en">EN</a></li>
-            <li><a href="/go?localization=ru">RU</a></li>
-            <li><a href="/go?localization=be">BE</a></li>
-            </b>
+            <li><b><a href="/go?command=localize&localization=en_US">EN</a></b></li>
+            <li><b><a href="/go?command=localize&localization=ru_RU">RU</a></b></li>
+            <li><b><a href="/go?command=localize&localization=be_BY">BY</a></b></li>
         </ul>
 
     </footer>

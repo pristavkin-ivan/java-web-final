@@ -10,7 +10,6 @@ import java.util.ResourceBundle;
 public enum DefaultCommand implements Command {
     DEFAULT_COMMAND;
 
-    private static final String EN = "en";
     private final static String BUNDLE_NAME = "pages";
     private final static String PAGE_KEY = "mainPage";
 
@@ -32,20 +31,10 @@ public enum DefaultCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        String localization = requestContext.getParameter(Attributes.LOCALIZATION);
-
         if (requestContext.getSessionAttribute(Attributes.LOGIN) == null) {
-            if (localization == null) {
-                localization = EN;
-            }
-
-            requestContext.setSessionAttribute(Attributes.LOCALIZATION, localization);
             return LoginCommand.LOGIN_COMMAND.execute(requestContext);
         }
 
-        if (localization != null) {
-            requestContext.setSessionAttribute(Attributes.LOCALIZATION, localization);
-        }
         return RESPONSE_CONTEXT;
     }
 

@@ -21,7 +21,6 @@ public class Controller extends HttpServlet {
     private final String ERROR_FORWARD_MESSAGE = "Page can't be forwarded!";
     private final String ERROR_REDIRECT_MESSAGE = "Page can't be redirected!";
 
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         command(req, resp);
@@ -32,6 +31,18 @@ public class Controller extends HttpServlet {
         final Command command = Command.of(name);
         final ResponseContext response = command.execute(new RequestContextImpl(req));
 
+        setCookie(resp, response);
+        respond(req, resp, response);
+    }
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response) {
+        doPost(request, response);
+    }
+
+    public void destroy() {
+    }
+
+    private void respond(HttpServletRequest req, HttpServletResponse resp, ResponseContext response) {
         if (response.isRedirect()) {
             try {
                 resp.sendRedirect(response.getCommand());
@@ -47,10 +58,10 @@ public class Controller extends HttpServlet {
         }
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) {
-        doPost(request, response);
+    private void setCookie(HttpServletResponse resp, ResponseContext response) {
+        if (response.getCookie() != null) {
+            resp.addCookie(response.getCookie());
+        }
     }
 
-    public void destroy() {
-    }
 }

@@ -1,5 +1,7 @@
 package com.epam.jwd.fitness_center.command.api;
 
+import javax.servlet.http.Cookie;
+
 /**
  * Interface of response's context.
  */
@@ -34,5 +36,20 @@ public interface ResponseContext {
     default String getCommand() {
         return "";
     }
+
+    /**
+     * Retrieves cookie from response context
+     *
+     * @return Cookie
+     */
+    default Cookie getCookie() {
+        return null;
+    }
+
+    /**
+     * Set cookie in response context
+     * @param cookie
+     */
+    default void setCookie(Cookie cookie){}
 
 }
