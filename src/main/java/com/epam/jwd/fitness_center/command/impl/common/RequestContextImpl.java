@@ -2,6 +2,7 @@ package com.epam.jwd.fitness_center.command.impl.common;
 
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -44,5 +45,10 @@ public class RequestContextImpl implements RequestContext {
     @Override
     public String getParameter(String name) {
         return request.getParameter(name);
+    }
+
+    @Override
+    public Cookie[] getCookies() {
+        return request.getCookies();
     }
 }

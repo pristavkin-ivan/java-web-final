@@ -2,34 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-
-
 <fmt:setBundle basename="pagecontent" var="rb"/>
 
 <style>
-    header ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: #5970de;
-    }
-
-    header li {
-        float: left;
-    }
-
-    header li a {
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-    }
-
-    header li a:hover {
-        background-color: #111111;
-    }
+    <c:import url="${pageContext.request.contextPath}/WEB-INF/css/headerAndFooter.css"/>
 </style>
 
 <header style="margin-bottom: 5px">

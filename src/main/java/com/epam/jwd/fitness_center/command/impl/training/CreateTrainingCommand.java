@@ -9,13 +9,18 @@ import com.epam.jwd.fitness_center.exception.NotEnoughMoneyException;
 import com.epam.jwd.fitness_center.model.dto.ClientDTO;
 import com.epam.jwd.fitness_center.model.dto.TrainingDTO;
 import com.epam.jwd.fitness_center.service.api.ClientService;
+import com.epam.jwd.fitness_center.service.api.CurrencyService;
 import com.epam.jwd.fitness_center.service.api.TrainingService;
 import com.epam.jwd.fitness_center.service.impl.ClientServiceImpl;
+import com.epam.jwd.fitness_center.service.impl.CurrencyServiceImpl;
 import com.epam.jwd.fitness_center.service.impl.TrainingServiceImpl;
 import com.epam.jwd.fitness_center.util.ParamParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.servlet.http.Cookie;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public enum CreateTrainingCommand implements Command {
@@ -29,6 +34,8 @@ public enum CreateTrainingCommand implements Command {
     private static final TrainingService<TrainingDTO> TRAINING_SERVICE = TrainingServiceImpl.getInstance();
 
     private static final ClientService<ClientDTO> CLIENT_SERVICE = ClientServiceImpl.getInstance();
+
+    private static final CurrencyService CURRENCY_SERVICE = CurrencyServiceImpl.INSTANCE;
 
     private static final Logger LOGGER = LogManager.getLogger(CreateTrainingCommand.class);
 
@@ -59,6 +66,7 @@ public enum CreateTrainingCommand implements Command {
         }
 
     };
+    private final static String US = "en_US";
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
@@ -72,10 +80,19 @@ public enum CreateTrainingCommand implements Command {
         }
 
         createTraining(requestContext, instructorName);
-        requestContext.setSessionAttribute(Attributes.BALANCE
-                , CLIENT_SERVICE.findClientById((Integer) requestContext.getSessionAttribute(Attributes.ID))
-                        .get().getBalance());
+        setBalance(requestContext);
         return RESPONSE_CONTEXT;
+    }
+
+    public void setBalance(RequestContext requestContext) {
+        final Double dollarBalance = CLIENT_SERVICE.findClientById((Integer) requestContext.getSessionAttribute(Attributes.ID))
+                .get().getBalance();
+        final Optional<Cookie> cookie = Arrays.stream(requestContext.getCookies())
+                .filter((val) -> val.getName().equals(Attributes.LOCALE))
+                .findAny();
+
+        requestContext.setSessionAttribute(Attributes.BALANCE
+                , CURRENCY_SERVICE.convert(cookie.orElse(new Cookie(Attributes.LOCALE, US)), dollarBalance));
     }
 
     private void createTraining(RequestContext requestContext, String instructorName) {

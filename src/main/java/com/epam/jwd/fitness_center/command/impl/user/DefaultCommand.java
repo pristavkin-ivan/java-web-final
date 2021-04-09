@@ -4,6 +4,7 @@ import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
+import com.epam.jwd.fitness_center.command.impl.training.CreateTrainingCommand;
 
 import java.util.ResourceBundle;
 
@@ -34,7 +35,7 @@ public enum DefaultCommand implements Command {
         if (requestContext.getSessionAttribute(Attributes.LOGIN) == null) {
             return LoginCommand.LOGIN_COMMAND.execute(requestContext);
         }
-
+        CreateTrainingCommand.INSTANCE.setBalance(requestContext);
         return RESPONSE_CONTEXT;
     }
 

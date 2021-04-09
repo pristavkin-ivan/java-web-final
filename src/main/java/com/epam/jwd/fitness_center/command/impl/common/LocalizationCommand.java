@@ -4,6 +4,7 @@ import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.command.api.Command;
 import com.epam.jwd.fitness_center.command.api.RequestContext;
 import com.epam.jwd.fitness_center.command.api.ResponseContext;
+import com.epam.jwd.fitness_center.command.impl.training.CreateTrainingCommand;
 
 import javax.servlet.http.Cookie;
 import java.util.ResourceBundle;

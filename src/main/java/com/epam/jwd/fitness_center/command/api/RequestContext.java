@@ -1,5 +1,7 @@
 package com.epam.jwd.fitness_center.command.api;
 
+import javax.servlet.http.Cookie;
+
 /**
  * Interface of request's context.
  */
@@ -49,5 +51,12 @@ public interface RequestContext {
      * @return request's parameter
      */
     String getParameter(String name);
+
+    /**
+     * Retrieves all request's cookies
+     *
+     * @return array of Cookies
+     */
+    Cookie[] getCookies();
 
 }

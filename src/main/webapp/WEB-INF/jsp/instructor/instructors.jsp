@@ -14,10 +14,6 @@
     </title>
     <style>
         <c:import url="${pageContext.request.contextPath}/WEB-INF/css/table.css"/>
-        main {
-            margin: 0 10%;
-            background-color: #cee3fa;
-        }
     </style>
 </head>
 

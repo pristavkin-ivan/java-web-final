@@ -40,7 +40,6 @@ public enum CalculateCaloriesCommand implements Command {
         final String height = requestContext.getParameter(Attributes.HEIGHT);
         final String weight = requestContext.getParameter(Attributes.WEIGHT);
 
-
         if (height == null || weight == null) {
             return RESPONSE_CONTEXT;
         }

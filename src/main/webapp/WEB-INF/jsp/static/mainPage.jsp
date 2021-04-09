@@ -11,19 +11,7 @@
 <html>
 
 <style>
-    body {
-        background: url(https://st2.depositphotos.com/4211323/8902/v/950/depositphotos_89029172-stock-illustration-vintage-strongman-ancient-athlete-retro.jpg) no-repeat center top;
-    }
-    main div {
-        position: fixed;
-        bottom: 0;
-        width: 98%;
-        text-align: center;
-        margin-bottom: 70px;
-    }
-    p {
-        margin: 20px;
-    }
+    <c:import url="${pageContext.request.contextPath}/WEB-INF/css/mainPage.css"/>
 </style>
 
 <head>

@@ -23,6 +23,7 @@ public enum SignupCommand implements Command {
 
     private static final String PAGE_KEY = "signupPage";
     private static final String W_MESSAGE = "\nTry another login.";
+    private static final String EMPTY_FIELD_MESSAGE = "\nSome fields are empty!.";
     private static final String BUNDLE_NAME = "pages";
     private static final String COMMAND_KEY = "command.default";
     private static final String ADMIN_COMMAND_KEY = "command.showInstructors";
@@ -101,6 +102,7 @@ public enum SignupCommand implements Command {
         ADMIN_RESPONSE.setRedirect(false);
 
         if (login.equals(Attributes.NULL) || login.equals("") || password.equals("") || name.equals("")) {
+            requestContext.setAttribute(Attributes.ERROR, EMPTY_FIELD_MESSAGE);
             return RESPONSE_CONTEXT;
         }
 

@@ -36,3 +36,8 @@ h1::after {
     width: 15%;
     transform: translateX(-50%);
 }
+
+main {
+    margin: 0 10%;
+    background-color: #cee3fa;
+}

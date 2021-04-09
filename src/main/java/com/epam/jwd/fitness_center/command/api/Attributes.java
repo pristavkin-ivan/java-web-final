@@ -41,4 +41,5 @@ public interface Attributes {
     String GENDER = "gender";
     String MALE = "male";
     String FEMALE = "female";
+    String LOCALE = "locale";
 }
