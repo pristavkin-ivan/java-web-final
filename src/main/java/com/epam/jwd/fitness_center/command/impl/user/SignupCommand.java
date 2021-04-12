@@ -106,7 +106,8 @@ public enum SignupCommand implements Command {
             return RESPONSE_CONTEXT;
         }
 
-        if (ADMIN.equals(requestContext.getSessionAttribute(Attributes.LOGIN))) {
+        if (ADMIN.equals(requestContext.getSessionAttribute(Attributes.LOGIN))
+                && requestContext.getSessionAttribute(Attributes.IS_INSTRUCTOR) != null) {
             return addInstructor(requestContext, login, password, name);
         }
 

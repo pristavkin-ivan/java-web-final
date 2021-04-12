@@ -1,5 +1,6 @@
 package com.epam.jwd.fitness_center.dao.impl;
 
+import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.listener.ApplicationListener;
 import com.epam.jwd.fitness_center.model.entity.Purpose;
 import org.junit.jupiter.api.AfterAll;
@@ -9,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -21,10 +23,14 @@ public class PurposesDAOTest {
 
     static Connection connection;
 
+    private static final String DATABASE = "database";
+
+    private final static ResourceBundle DATABASE_BUNDLE = ResourceBundle.getBundle(DATABASE);
+
     PurposesDAOTest() {
         try {
-            connection = DriverManager.getConnection(ApplicationListener.URL, ApplicationListener.USER
-                    , ApplicationListener.PASSWORD);
+            connection = DriverManager.getConnection(DATABASE_BUNDLE.getString(Attributes.URL)
+                    , DATABASE_BUNDLE.getString(Attributes.USER), DATABASE_BUNDLE.getString(Attributes.PASSWORD));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

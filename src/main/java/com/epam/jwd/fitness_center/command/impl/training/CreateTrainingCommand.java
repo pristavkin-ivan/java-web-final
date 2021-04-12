@@ -85,11 +85,17 @@ public enum CreateTrainingCommand implements Command {
     }
 
     public void setBalance(RequestContext requestContext) {
-        final Double dollarBalance = CLIENT_SERVICE.findClientById((Integer) requestContext.getSessionAttribute(Attributes.ID))
-                .get().getBalance();
+        final Optional<ClientDTO> optionalClientDTO = CLIENT_SERVICE.findClientById((Integer) requestContext.getSessionAttribute(Attributes.ID));
         final Optional<Cookie> cookie = Arrays.stream(requestContext.getCookies())
                 .filter((val) -> val.getName().equals(Attributes.LOCALE))
                 .findAny();
+        Double dollarBalance;
+
+        if (optionalClientDTO.isPresent()) {
+            dollarBalance = optionalClientDTO.get().getBalance();
+        } else {
+            dollarBalance = 0.0;
+        }
 
         requestContext.setSessionAttribute(Attributes.BALANCE
                 , CURRENCY_SERVICE.convert(cookie.orElse(new Cookie(Attributes.LOCALE, US)), dollarBalance));

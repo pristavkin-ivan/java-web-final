@@ -27,13 +27,16 @@
 
 <body>
 
+<script src=<c:url value="/js/formValidation.js"/>></script>
+
 <c:if test="${sessionScope.login eq 'admin' and not empty sessionScope.isInstructor}">
     <c:import url="static/header.jsp" />
 </c:if>
 
 <main>
 <div id="form">
-    <form method="post" action="${pageContext.request.contextPath}/go">
+
+    <form method="post" action="${pageContext.request.contextPath}/go" class="formWithValidation">
 
         <div>
             <input type="hidden" name="command" value="signup"/>
@@ -41,17 +44,17 @@
             <br>
             <span><b><fmt:message key="label.name" bundle="${pageContent}"/></b> </span>
             <br>
-            <input type="text" name="name" id="name"/>
+            <input type="text" name="name" id="name" class="name"/>
 
             <br>
             <span><b><fmt:message key="label.login" bundle="${pageContent}"/></b> </span>
             <br>
-            <input type="text" name="login" id="login"/>
+            <input type="text" name="login" id="login" class="login"/>
 
             <br>
             <span><b><fmt:message key="label.password" bundle="${pageContent}"/></b> </span>
             <br>
-            <input type="password" name="password" id = "password"/>
+            <input type="password" name="password" id = "password" class="password"/>
             <c:choose>
 
                 <c:when test="${sessionScope.login eq 'admin' and not empty sessionScope.isInstructor}">
@@ -61,7 +64,7 @@
 
                 <c:otherwise>
                     <br>
-                    <button type="submit"><fmt:message key="label.signup" bundle="${pageContent}"/></button>
+                    <button type="submit" class="submitButton"><fmt:message key="label.signup" bundle="${pageContent}"/></button>
 
                     <br>
                     <a href="${pageContext.request.contextPath}/go?command=login">

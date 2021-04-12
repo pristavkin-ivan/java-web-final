@@ -1,5 +1,6 @@
 package com.epam.jwd.fitness_center.service.impl;
 
+import com.epam.jwd.fitness_center.command.api.Attributes;
 import com.epam.jwd.fitness_center.exception.ConnectionPoolException;
 import com.epam.jwd.fitness_center.exception.SignupException;
 import com.epam.jwd.fitness_center.model.entity.Client;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -17,16 +19,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ClientServiceTest {
 
-    public final static String URL = "jdbc:mysql://localhost:3306/fitnessCenterDB?serverTimezone=Europe/Moscow";
+    private static final String DATABASE = "database";
 
-    public final static String USER = "root";
-
-    public final static String PASSWORD = "12345678L";
+    private final static ResourceBundle DATABASE_BUNDLE = ResourceBundle.getBundle(DATABASE);
 
     private static final String TEST = "test";
 
     private static final String LOG = "vane4k";
+
     private static final String PASS = "12345678";
+
     private static final String INC_PASS = "incpass";
 
     private final ClientServiceImpl clientService = ClientServiceImpl.getInstance();
@@ -34,7 +36,8 @@ public class ClientServiceTest {
     @BeforeAll
     static void initConnectionPool() {
         try {
-            ConnectionPool.getConnectionPool().init(URL, USER, PASSWORD);
+            ConnectionPool.getConnectionPool().init(DATABASE_BUNDLE.getString(Attributes.URL)
+                    , DATABASE_BUNDLE.getString(Attributes.USER), DATABASE_BUNDLE.getString(Attributes.PASSWORD));
         } catch (SQLException | ConnectionPoolException exception) {
             System.out.println(exception);
         }

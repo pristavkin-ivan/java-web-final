@@ -42,4 +42,7 @@ public interface Attributes {
     String MALE = "male";
     String FEMALE = "female";
     String LOCALE = "locale";
+    String COMMAND = "command";
+    String URL = "url";
+    String USER = "user";
 }
