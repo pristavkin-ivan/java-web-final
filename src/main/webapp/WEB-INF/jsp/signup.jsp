@@ -27,8 +27,6 @@
 
 <body>
 
-<script src=<c:url value="/js/formValidation.js"/>></script>
-
 <c:if test="${sessionScope.login eq 'admin' and not empty sessionScope.isInstructor}">
     <c:import url="static/header.jsp" />
 </c:if>
@@ -36,25 +34,25 @@
 <main>
 <div id="form">
 
-    <form method="post" action="${pageContext.request.contextPath}/go" class="formWithValidation">
+    <form method="post" action="${pageContext.request.contextPath}/go"  onsubmit="return validate()">
 
-        <div>
+        <div class="form-div">
             <input type="hidden" name="command" value="signup"/>
 
             <br>
             <span><b><fmt:message key="label.name" bundle="${pageContent}"/></b> </span>
             <br>
-            <input type="text" name="name" id="name" class="name"/>
+            <input type="text" name="name" id="name" class="field"/>
 
             <br>
             <span><b><fmt:message key="label.login" bundle="${pageContent}"/></b> </span>
             <br>
-            <input type="text" name="login" id="login" class="login"/>
+            <input type="text" name="login" id="login" class="field"/>
 
             <br>
             <span><b><fmt:message key="label.password" bundle="${pageContent}"/></b> </span>
             <br>
-            <input type="password" name="password" id = "password" class="password"/>
+            <input type="password" name="password" id = "password" class="field"/>
             <c:choose>
 
                 <c:when test="${sessionScope.login eq 'admin' and not empty sessionScope.isInstructor}">
@@ -82,6 +80,7 @@
 
 </main>
 
+<script src=<c:url value="/js/formValidation.js"/>></script>
 </body>
 
 <c:import url="static/footer.jsp" />

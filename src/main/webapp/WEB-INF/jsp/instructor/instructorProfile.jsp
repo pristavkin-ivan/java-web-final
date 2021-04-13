@@ -22,9 +22,9 @@
 
     <h1><fmt:message key="title.profile" bundle="${pageContent}"/></h1>
 
-    <form method="post" action="${pageContext.request.contextPath}/go">
+    <form method="post" action="${pageContext.request.contextPath}/go" onsubmit="return validateName()" >
 
-        <div style="padding: 100px">
+        <div style="padding: 100px" class="form-div">
             <input type="hidden" name="command" value="update_profile"/>
 
             <br>
@@ -59,6 +59,6 @@
 </main>
 
 <c:import url="../static/footer.jsp"/>
-
+<c:import url="../static/footer.jsp"/>
 </body>
 </html>

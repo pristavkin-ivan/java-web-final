@@ -21,9 +21,9 @@
 <main>
     <h1><fmt:message key="title.profile" bundle="${pageContent}"/></h1>
 
-    <form method="post" action="${pageContext.request.contextPath}/go">
+    <form method="post" action="${pageContext.request.contextPath}/go" onsubmit="return validateName()">
 
-        <div >
+        <div class="form-div" >
             <input type="hidden" name="command" value="update_profile"/>
 
             <br>
@@ -60,6 +60,6 @@
 </main>
 
 <c:import url="../static/footer.jsp"/>
-
+<script src=<c:url value="/js/formValidation.js"/>></script>
 </body>
 </html>
