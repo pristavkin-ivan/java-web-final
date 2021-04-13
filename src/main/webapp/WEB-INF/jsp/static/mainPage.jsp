@@ -28,10 +28,7 @@
 
     <div>
         <h2>
-            <fmt:message key="info.fitnessCenter" bundle="${rb}"/>
-            <fmt:message key="info.fitnessCenter" bundle="${rb}"/>
-            <fmt:message key="info.fitnessCenter" bundle="${rb}"/>
-            <fmt:message key="info.fitnessCenter" bundle="${rb}"/>
+            ${info}
         </h2>
     </div>
 

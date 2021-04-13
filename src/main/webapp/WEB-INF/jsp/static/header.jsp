@@ -23,22 +23,21 @@
         </c:when>
 
         <c:otherwise>
-
-            <li>
-                <a href="${pageContext.request.contextPath}/go?command=show_profile">
-                    <fmt:message key="title.profile" bundle="${rb}"/>
-                </a>
-            </li>
-
             <li>
                 <a href="${pageContext.request.contextPath}/go?command=show_trainings">
                     <fmt:message key="title.myTrainings" bundle="${rb}"/>
                 </a>
             </li>
-
         </c:otherwise>
 
     </c:choose>
+
+    <li>
+        <a href="${pageContext.request.contextPath}/go?command=show_profile">
+            <fmt:message key="title.profile" bundle="${rb}"/>
+        </a>
+    </li>
+
     <li>
         <a href="${pageContext.request.contextPath}/go?command=show_instructors">
         <fmt:message key="title.instructors" bundle="${rb}"/>

@@ -28,6 +28,8 @@ public final class InstructorDAOImpl implements InstructorDAO<Instructor> {
     private static final String DELETE_INSTRUCTOR_BY_ID = "delete from instructor where i_id =?";
     private static final String UPDATE_INSTRUCTOR = "update Instructor set i_login = ?,i_name = ?, i_url = ?" +
             ", i_info = ? where i_id = ?";
+    private static final String UPDATE_ADMIN = "update Instructor set i_url = ?" +
+            ", i_info = ? where i_id = ?";
 
     private final static Logger LOGGER = LogManager.getLogger(ClientDAOImpl.class);
 
@@ -38,6 +40,7 @@ public final class InstructorDAOImpl implements InstructorDAO<Instructor> {
     private static final String URL_LABEL = "i_url";
     private static final String INFO_LABEL = "i_info";
     private static final String ADMIN = "admin";
+    private static final int ADMIN_ID = 6;
 
     InstructorDAOImpl(Connection connection) {
         this.connection = connection;
@@ -94,7 +97,7 @@ public final class InstructorDAOImpl implements InstructorDAO<Instructor> {
 
     @Override
     public boolean delete(Integer id) {
-        if (id.equals(6)) {
+        if (id.equals(ADMIN_ID)) {
             return true;
         }
 
@@ -138,12 +141,23 @@ public final class InstructorDAOImpl implements InstructorDAO<Instructor> {
 
     @Override
     public void update(Instructor entity) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_INSTRUCTOR)) {
-            configureUpdateStatement(entity, preparedStatement);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(getQuery(entity))) {
+            if(!entity.getId().equals(ADMIN_ID)) {
+                configureUpdateStatement(entity, preparedStatement);
+            } else {
+                configureAdminUpdateStatement(entity, preparedStatement);
+            }
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
         }
+    }
+
+    private String getQuery(Instructor entity) {
+        if(!entity.getId().equals(ADMIN_ID)) {
+            return UPDATE_INSTRUCTOR;
+        }
+        return UPDATE_ADMIN;
     }
 
     private void configureStatement(Instructor entity, PreparedStatement preparedStatement) throws SQLException {
@@ -153,11 +167,19 @@ public final class InstructorDAOImpl implements InstructorDAO<Instructor> {
     }
 
     private void configureUpdateStatement(Instructor entity, PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, entity.getLogin());
+        if(!entity.getId().equals(ADMIN_ID)) {
+            preparedStatement.setString(1, entity.getLogin());
+        }
         preparedStatement.setString(2, entity.getName());
         preparedStatement.setString(3, entity.getImgUrl());
         preparedStatement.setString(4, entity.getInfo());
         preparedStatement.setInt(5, entity.getId());
+    }
+
+    private void configureAdminUpdateStatement(Instructor entity, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, entity.getImgUrl());
+        preparedStatement.setString(2, entity.getInfo());
+        preparedStatement.setInt(3, entity.getId());
     }
 
     private Optional<Instructor> findByString(String string, String selectInstructorByString) {
