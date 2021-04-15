@@ -1,2 +1,6 @@
 # Project exclude paths
 /target/
+/.idea
+/java-web-final.iml
+/pom.xml
+/log
